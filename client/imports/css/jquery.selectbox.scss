@@ -1,0 +1,114 @@
+
+.sbHolder { width:300px; background:#fff;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px 8px 8px 8px;
+    float: left;
+    font-family: Arial,sans-serif;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    height: 33px;
+    position: relative;
+}
+
+
+.sbHolder:focus .sbSelector{
+	
+}
+.sbSelector{
+	display: block;
+	height: 30px;
+	left: 0;
+	line-height: 30px;
+	outline: none;
+	overflow: hidden;
+	position: absolute;
+	text-indent: 10px;
+	top: 0;
+	width:97%;
+}
+.sbSelector:link, .sbSelector:visited, .sbSelector:hover{
+	color: #9a9a9a;
+	outline: none;
+	text-decoration: none;
+}
+.sbToggle{
+	background:url(../images/arw_dwn.png) center center no-repeat;
+	display: block;
+	height: 30px;
+	outline: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 30px;
+}
+.sbToggle:hover{
+	background: url(../images/arw_dwn.png) center center no-repeat;
+}
+.sbToggleOpen{
+	background: url(../images/arw_up.png) center center no-repeat;
+}
+.sbToggleOpen:hover{
+	background: url(../images/arw_up.png) center center no-repeat;
+}
+.sbHolderDisabled{
+	background-color: #3C3C3C;
+	border: solid 1px #515151;
+}
+.sbHolderDisabled .sbHolder{
+	
+}
+.sbHolderDisabled .sbToggle{
+	
+}
+.sbOptions{
+  background:#fff;
+	border: solid 1px #43474a;
+	list-style: none;
+	left: 0px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 35px !important;
+	width:99%;
+	z-index: 9999; *z-index: 9999 !important;
+	overflow-y: auto;
+}
+.sbOptions li{
+	padding: 0; margin:0px;
+}
+.sbOptions a{
+	display: block;
+	outline: none;
+	padding: 7px 10px 7px 10px;
+	font-style:normal;
+}
+.sbOptions a:link, .sbOptions a:visited{
+	color: #1a1919;
+	text-decoration: none;
+}
+.sbOptions a:hover,
+.sbOptions a:focus,
+.sbOptions a.sbFocus{
+	color: #fff;
+	background:#282c30;
+}
+.sbOptions li.last a{
+	border-bottom: none;
+}
+.sbOptions .sbDisabled{
+	border-bottom: dotted 1px #515151;
+	color: #999;
+	display: block;
+	padding: 7px 0 7px 3px;
+}
+.sbOptions .sbGroup{
+	border-bottom: dotted 1px #515151;
+	color: #EBB52D;
+	display: block;
+	font-weight: bold;
+	padding: 7px 0 7px 3px;
+}
+.sbOptions .sbSub{
+	padding-left: 17px;
+}

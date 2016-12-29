@@ -300,7 +300,7 @@
 			sbOptions.appendTo(sbHolder);			
 			sbHolder.insertAfter($target);
 			
-			$("html").live('mousedown', function(e) {
+			$("document").on('mousedown','html', function(e) {
 				e.stopPropagation();          
 				$("select").selectbox('close'); 
 			});

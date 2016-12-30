@@ -11,7 +11,9 @@ import template from './app.component.html';
   template
   //styles: [main]
 })
+//@InjectUser("user")
 export class AppComponent {
+
   // parties: Observable<any[]>;
  // parties: Observable<Party[]>;
 

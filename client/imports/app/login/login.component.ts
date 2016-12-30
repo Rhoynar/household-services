@@ -2,17 +2,16 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 // import { Parties } from '../../../both/collections/parties.collection';
 // import { Party } from '../../../both/models/party.model';
-import { $ } from 'meteor/jquery';
-import template from './topnav.component.html';
+import template from './login.component.html';
 
 
 
 @Component({
-  selector: 'topnav',
+  selector: 'login',
   template
   //styles: [main]
 })
-export class TopnavComponent implements AfterViewInit {
+export class LoginComponent implements AfterViewInit {
   // parties: Observable<any[]>;
  // parties: Observable<Party[]>;
 
@@ -23,9 +22,6 @@ export class TopnavComponent implements AfterViewInit {
 
   ngAfterViewInit() {
         
-        $(document).ready(function () {
-        	$(".s-box").selectbox();
-		});
     }
 
 }

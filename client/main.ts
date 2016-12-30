@@ -10,7 +10,7 @@ platform.bootstrapModule(AppModule);
 
 
 Meteor.startup(function(){
-	$.getScript('js/bootstrap.js');
+	/*$.getScript('js/bootstrap.js');
 	$.getScript('js/owl.carousel.js', function(){
         // script should be loaded and do something with it. 
 
@@ -36,6 +36,6 @@ Meteor.startup(function(){
 	 
 	$.getScript('js/jquery.selectbox-0.2.js',function(){
 		$(".s-box").selectbox();
-	});
+	});*/
     
 });

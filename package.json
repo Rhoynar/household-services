@@ -1,27 +1,27 @@
 {
-  "name": "rhoynar",
-  "private": true,
+  "name": "rhoynarapp",
+  "version": "1.0.0",
+  "description": "rhoynar-app",
+  "main": "server.js",
   "scripts": {
-    "start": "meteor run"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@angular/common": "2.4.1",
-    "@angular/compiler": "2.4.1",
-    "@angular/core": "^2.4.1",
-    "@angular/forms": "2.4.1",
-    "@angular/platform-browser": "2.4.1",
-    "@angular/platform-browser-dynamic": "2.4.1",
-    "@angular/router": "3.4.1",
-    "angular2-meteor": "^0.7.1",
-    "angular2-meteor-accounts-ui": "^1.0.0",
-    "angular2-meteor-polyfills": "0.1.1",
-    "angular2-meteor-tests-polyfills": "0.0.2",
-    "babel-runtime": "6.18.0",
-    "bcrypt": "^1.0.1",
-    "jquery": "^3.1.1",
-    "meteor-node-stubs": "~0.2.0",
-    "meteor-rxjs": "^0.4.7",
-    "rxjs": "5.0.2",
-    "zone.js": "0.7.4"
+    "async": "~1.4.2",
+    "body-parser": "^1.15.2",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.5.3",
+    "debug": "~2.2.0",
+    "dotenv": "^2.0.0",
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "express-session": "^1.11.3",
+    "mongojs": "^2.4.0",
+    "morgan": "^1.6.1",
+    "passport": "^0.2.2",
+    "passport-facebook": "^2.1.1"
   }
 }

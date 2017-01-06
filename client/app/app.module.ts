@@ -1,0 +1,42 @@
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
+
+
+import { AppComponent }  from './app.component';
+import { routes } from './app.routes';
+import { TopnavComponent } from './components/topNav/topnav.component';
+import { LandingComponent } from './components/landingPage/landing.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { footerSectionComponent } from './components/footer-section/footer-section.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PackagesComponent } from './components/packages/packages.component';
+import { PackagessectionComponent } from './components/packages/packages-section.component';
+import { UserprofileComponent } from './components/userprofile/userprofiles.component';
+
+@NgModule({
+  imports:      [  
+        BrowserModule,
+    	FormsModule,
+    	ReactiveFormsModule,
+        HttpModule,
+    	RouterModule.forRoot(routes) 
+        ],
+  declarations: [ 
+        AppComponent,
+        TopnavComponent,
+        footerSectionComponent,
+        LandingComponent,
+        LoginComponent,
+        SignupComponent,
+        PackagesComponent,
+        PackagessectionComponent,
+        UserprofileComponent,
+        DashboardComponent 
+        ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }

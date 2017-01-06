@@ -1,0 +1,53 @@
+<topnav></topnav>
+<div class="inner-banner">
+  <div class="banner-img"><img src="images/inner-banner.jpg" alt="" />
+    <div class="inner-content">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+            <h1>Login</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="sign-in-box">
+                  <h3 class="inner-heading">Welcome! We are happy to see you again!</h3>
+                    <form>
+                      <div class="form-group">
+                          <label class="name-filed">Username</label>
+                            <input value="Enter your username" name="Email" id="Email" onblur="if (this.value == '') {this.value = 'Enter your username';}" onfocus="if (this.value == 'Enter your username') {this.value = '';}" class="sign-filed" type="text">
+                        </div>
+                        <div class="form-group">
+                          <label class="name-filed">Password</label>
+                            <input value="Enter your password" name="Email" id="Email" onblur="if (this.value == '') {this.value = 'Enter your password';}" onfocus="if (this.value == 'Enter your password') {this.value = '';}" class="sign-filed" type="text">
+                        </div>
+                        <div class="form-group Submit-inq">
+                        <div class="forgot-txt"><a href="#">Forgot Password?</a></div>
+                        <div class="submit_block">
+                            <button class="btn-bg submit">Submit <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                        </div>    
+                            
+                            
+                        </div>
+                        
+                        
+                        
+                        
+                        <p class="account-txt">Don’t have a account? <a [routerLink]="['/signup']">Register Now</a></p>
+                        
+                    </form>
+
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</div>
+<!--fotter-section-->
+<footer-section></footer-section>

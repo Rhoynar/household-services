@@ -1,4 +1,4 @@
-import { Route } from '@angular/router';
+import { Routes,RouterModule } from '@angular/router';
 import { TopnavComponent } from './components/topNav/topnav.component';
 import { LandingComponent } from './components/landingPage/landing.component';
 import { LoginComponent } from './components/login/login.component';
@@ -7,7 +7,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PackagesComponent } from './components/packages/packages.component';
 import { UserprofileComponent } from './components/userprofile/userprofiles.component';
 
-export const routes: Route[] = [
+const APP_ROUTES: Routes = [
   { path: '', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
@@ -16,3 +16,5 @@ export const routes: Route[] = [
   { path: 'packages', component: PackagesComponent },
   { path: 'profile', component: UserprofileComponent }
 ];
+
+export const routing =RouterModule.forRoot(APP_ROUTES);

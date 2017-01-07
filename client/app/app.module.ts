@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 
 
 import { AppComponent }  from './app.component';
-import { routes } from './app.routes';
+import { routing } from './app.routes';
 import { TopnavComponent } from './components/topNav/topnav.component';
 import { LandingComponent } from './components/landingPage/landing.component';
 import { LoginComponent } from './components/login/login.component';
@@ -23,7 +23,7 @@ import { UserprofileComponent } from './components/userprofile/userprofiles.comp
     	FormsModule,
     	ReactiveFormsModule,
         HttpModule,
-    	RouterModule.forRoot(routes) 
+    	routing
         ],
   declarations: [ 
         AppComponent,

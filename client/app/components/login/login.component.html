@@ -18,19 +18,19 @@
           <div class="col-md-12">
               <div class="sign-in-box">
                   <h3 class="inner-heading">Welcome! We are happy to see you again!</h3>
-                    <form>
+                    <form method="post" >
                       <div class="form-group">
                           <label class="name-filed">Username</label>
-                            <input value="Enter your username" name="Email" id="Email" onblur="if (this.value == '') {this.value = 'Enter your username';}" onfocus="if (this.value == 'Enter your username') {this.value = '';}" class="sign-filed" type="text">
+                            <input placeholder="Enter your Email" [(ngModel)]="useremail" name="useremail" id="useremail" class="sign-filed" type="text">
                         </div>
                         <div class="form-group">
                           <label class="name-filed">Password</label>
-                            <input value="Enter your password" name="Email" id="Email" onblur="if (this.value == '') {this.value = 'Enter your password';}" onfocus="if (this.value == 'Enter your password') {this.value = '';}" class="sign-filed" type="text">
+                            <input placeholder="Enter your password" [(ngModel)]="userpass"  name="userpass" id="userpass"  class="sign-filed" type="password">
                         </div>
                         <div class="form-group Submit-inq">
                         <div class="forgot-txt"><a href="#">Forgot Password?</a></div>
                         <div class="submit_block">
-                            <button class="btn-bg submit">Submit <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                            <button class="btn-bg submit" (click)="loginUser($event);">Submit <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                         </div>    
                             
                             

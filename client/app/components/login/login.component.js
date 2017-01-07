@@ -9,15 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var users_services_1 = require('../../services/users.services');
 var LoginComponent = (function () {
-    // parties: Observable<any[]>;
-    // parties: Observable<Party[]>;
-    function LoginComponent(UserServices) {
+    function LoginComponent(router, UserServices) {
         // this.parties = Parties.find({}).zone();
+        this.router = router;
         this.UserServices = UserServices;
     }
     LoginComponent.prototype.ngAfterViewInit = function () {
+    };
+    LoginComponent.prototype.loginUser = function (event) {
+        var _this = this;
+        event.preventDefault();
+        var user = {
+            useremail: this.useremail,
+            userpass: this.userpass,
+        };
+        this.UserServices.loginUser(user)
+            .subscribe(function (data) {
+            alert(data.msg);
+            _this.router.navigate(['/dashboard']);
+            //return false;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     LoginComponent = __decorate([
         core_1.Component({
@@ -25,7 +44,7 @@ var LoginComponent = (function () {
             selector: 'login',
             templateUrl: './login.component.html'
         }), 
-        __metadata('design:paramtypes', [users_services_1.UserServices])
+        __metadata('design:paramtypes', [router_1.Router, users_services_1.UserServices])
     ], LoginComponent);
     return LoginComponent;
 }());

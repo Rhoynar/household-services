@@ -16,10 +16,23 @@ var UserServices = (function () {
         this.http = http;
         console.log('User is initialised');
     }
+    UserServices.prototype.checkSession = function () {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('http://beta.cisin.com:3004/checksession', JSON.stringify({}), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
     UserServices.prototype.registerUser = function (newUser) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/signup', JSON.stringify(newUser), { headers: headers })
+        //return this.http.post('http://localhost:3000/signup',JSON.stringify(newUser),{headers:headers})
+        return this.http.post('http://beta.cisin.com:3004/signup', JSON.stringify(newUser), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
+    UserServices.prototype.loginUser = function (user) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('http://beta.cisin.com:3004/login', JSON.stringify(user), { headers: headers })
             .map(function (res) { return res.json(); });
     };
     UserServices = __decorate([

@@ -51,7 +51,7 @@ passport.use(new Strategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-     Users.findOne({ email: profile.email }, function(err, user) {
+     Users.findOne({ email: profile.emails[0].value }, function(err, user) {
             if(err) {
                 console.log(err);  // handle errors!
             }

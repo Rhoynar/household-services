@@ -23,6 +23,8 @@ var dashboard_component_1 = require('./components/dashboard/dashboard.component'
 var packages_component_1 = require('./components/packages/packages.component');
 var packages_section_component_1 = require('./components/packages/packages-section.component');
 var userprofiles_component_1 = require('./components/userprofile/userprofiles.component');
+var auth_services_1 = require('./services/auth.services');
+var users_services_1 = require('./services/users.services');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -47,6 +49,7 @@ var AppModule = (function () {
                 userprofiles_component_1.UserprofileComponent,
                 dashboard_component_1.DashboardComponent
             ],
+            providers: [auth_services_1.AuthGuard, users_services_1.UserServices],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

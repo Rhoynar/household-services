@@ -16,6 +16,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PackagesComponent } from './components/packages/packages.component';
 import { PackagessectionComponent } from './components/packages/packages-section.component';
 import { UserprofileComponent } from './components/userprofile/userprofiles.component';
+import { AuthGuard } from './services/auth.services';
+import { UserServices } from './services/users.services';
 
 @NgModule({
   imports:      [  
@@ -37,6 +39,7 @@ import { UserprofileComponent } from './components/userprofile/userprofiles.comp
         UserprofileComponent,
         DashboardComponent 
         ],
+providers:[AuthGuard,UserServices],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

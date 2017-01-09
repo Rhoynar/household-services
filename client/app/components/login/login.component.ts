@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit,OnChanges } from '@angular/core';
 import { CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { UserServices } from '../../services/users.services'
@@ -17,9 +17,11 @@ export class LoginComponent implements AfterViewInit {
   // parties: Observable<Party[]>;
   useremail: String;
   userpass: String;
+  
+  
   constructor(private router: Router, private UserServices: UserServices) {
     // this.parties = Parties.find({}).zone();
-
+   
   }
 
   ngAfterViewInit() {
@@ -34,20 +36,24 @@ export class LoginComponent implements AfterViewInit {
       useremail: this.useremail,
       userpass: this.userpass,
     }
+
     this.UserServices.loginUser(user)
-      .subscribe(data => {
-        alert(data.msg);
-        this.router.navigate(['/dashboard']);
-        //return false;
-      },
-      error => {
+      .subscribe(
+        data => {
+          
+          this.router.navigate(['/dashboard']);
+          //return false;
+        },
+        error => {
         
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        var errr = JSON.parse(err);
-        alert(errr.msg);
-      }
+          const body = error.json() || '';
+          const err = body.error || JSON.stringify(body);
+          var errr = JSON.parse(err);
+          alert(errr.msg);
+        }
       );
+
   }
+
 
 }

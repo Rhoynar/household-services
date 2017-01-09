@@ -28,7 +28,6 @@ var LoginComponent = (function () {
         };
         this.UserServices.loginUser(user)
             .subscribe(function (data) {
-            alert(data.msg);
             _this.router.navigate(['/dashboard']);
             //return false;
         }, function (error) {

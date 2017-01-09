@@ -109,6 +109,17 @@ router.post('/signup', function (req, res, next) {
     passport.authenticate('local-login');
 });
 
+
+router.get('/isloggedin',function(req,res){
+    if (req.isAuthenticated()){
+        res.status(200);
+        res.json({ msg: 'loggedIn' });
+    }else{
+        res.status(401);
+        res.json({ msg: 'no session' });
+    }
+});
+
 router.get('/dashboard',isLoggedIn, function (req, res) {
     res.render('index.html');
 });
@@ -118,6 +129,7 @@ router.get('/facebook', function (req, res, next) {
 });
 
 router.get('/packages',isLoggedIn, function (req, res) {
+    //res.send(req.user);
     res.render('index.html');
 });
 

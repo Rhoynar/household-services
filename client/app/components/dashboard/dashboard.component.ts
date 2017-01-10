@@ -1,30 +1,30 @@
-import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-declare var $:any;
+declare var $: any;
 
 
 
 @Component({
-  moduleId:module.id,
+  moduleId: module.id,
   selector: 'dashboard',
-  templateUrl:'./dashboard.component.html'
+  templateUrl: './dashboard.component.html'
   //styles: [main]
 })
 export class DashboardComponent implements AfterViewInit {
   // parties: Observable<any[]>;
- // parties: Observable<Party[]>;
+  // parties: Observable<Party[]>;
 
   constructor() {
-   // this.parties = Parties.find({}).zone();
+    // this.parties = Parties.find({}).zone();
 
   }
 
   ngAfterViewInit() {
-        
-        $(document).ready(function () {
-        	
-			$(".s-box").selectbox();
-		});
-    }
+
+    $(document).ready(function () {
+
+      $(".s-box").selectbox();
+    });
+  }
 
 }

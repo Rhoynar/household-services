@@ -14,17 +14,9 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var app_routes_1 = require('./app.routes');
-var topnav_component_1 = require('./components/topNav/topnav.component');
-var landing_component_1 = require('./components/landingPage/landing.component');
-var login_component_1 = require('./components/login/login.component');
-var signup_component_1 = require('./components/signup/signup.component');
-var footer_section_component_1 = require('./components/footer-section/footer-section.component');
-var dashboard_component_1 = require('./components/dashboard/dashboard.component');
-var packages_component_1 = require('./components/packages/packages.component');
-var packages_section_component_1 = require('./components/packages/packages-section.component');
-var userprofiles_component_1 = require('./components/userprofile/userprofiles.component');
-var auth_services_1 = require('./services/auth.services');
-var users_services_1 = require('./services/users.services');
+var index_1 = require('./components/index');
+var index_2 = require('./guards/index');
+var index_3 = require('./services/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -39,17 +31,18 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
-                topnav_component_1.TopnavComponent,
-                footer_section_component_1.footerSectionComponent,
-                landing_component_1.LandingComponent,
-                login_component_1.LoginComponent,
-                signup_component_1.SignupComponent,
-                packages_component_1.PackagesComponent,
-                packages_section_component_1.PackagessectionComponent,
-                userprofiles_component_1.UserprofileComponent,
-                dashboard_component_1.DashboardComponent
+                index_1.TopnavComponent,
+                index_1.footerSectionComponent,
+                index_1.LandingComponent,
+                index_1.LoginComponent,
+                index_1.SignupComponent,
+                index_1.PackagesComponent,
+                index_1.PackagessectionComponent,
+                index_1.UserprofileComponent,
+                index_1.DashboardComponent,
+                index_1.TokenComponent
             ],
-            providers: [auth_services_1.AuthGuard, users_services_1.UserServices],
+            providers: [index_2.AuthGuard, index_2.NotAuthGuard, index_3.UserServices, index_3.AuthenticationService],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

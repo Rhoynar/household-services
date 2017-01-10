@@ -7,15 +7,11 @@ var Clients = require('../models/clients');
 
 var router = express.Router();
 
-router.get('/',isNotLoggedIn, function (req, res) {
+var getTemplate=function (req, res) {
     res.render('index.html');
-});
+}
 
-router.get('/login',isNotLoggedIn, function (req, res) {
-    res.render('index.html');
-});
-
-getToken = function (headers) {
+var getToken = function (headers) {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
         if (parted.length === 2) {
@@ -28,20 +24,7 @@ getToken = function (headers) {
     }
 };
 
-/*router.post('/login', passport.authenticate('local-login', {
-        //successRedirect : '/dashboard', // redirect to the secure profile section
-        //failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true, // allow flash messages,
-        session:true
-    }), function(req, res,next) {
-        
-        //var decoded = passport.decode(token, config.secret);
-        console.log(req);
-        //res.send(req.user);
-        
-    });*/
-
-router.post('/login', function (req, res, next) {
+var login=function (req, res, next) {
     passport.authenticate('local-login', function (err, user, info) {
         if (err) { return next(err); }
         if (!user) {
@@ -58,23 +41,10 @@ router.post('/login', function (req, res, next) {
         });
 
     })(req, res, next);
-});
+}
 
-router.get('/signup',isNotLoggedIn, function (req, res) {
-    res.render('index.html');
-});
-
-router.get('/logout',isLoggedIn, function (req, res) {
-  req.logout();
-  res.redirect('/');
-});
-
-
-
-// process the signup form
-
-
-router.post('/signup', function (req, res, next) {
+var signup=function (req, res, next) {
+    console.log(req.body)
     var profile = req.body;
     //res.render('index.html');
     Users.findOne({ email: profile.useremail }, function (err, user) {
@@ -107,8 +77,58 @@ router.post('/signup', function (req, res, next) {
     });
 
     passport.authenticate('local-login');
+}
+
+    // route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+    
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated()){
+        return next();
+    }else{
+        // if they aren't redirect them to the home page
+        res.redirect('/');
+    }
+     
+} 
+
+function isNotLoggedIn(req, res, next) {
+    
+    // if user is authenticated in the session, carry on 
+    if (!req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/dashboard');
+} 
+
+
+
+router.get('/',isNotLoggedIn, getTemplate);
+
+router.get('/login',isNotLoggedIn, getTemplate);
+
+router.get('/dashboard',isLoggedIn, getTemplate);
+
+router.get('/createtoken',isLoggedIn, getTemplate);
+
+router.get('/facebook', getTemplate);
+
+router.get('/packages',isLoggedIn, getTemplate);
+
+router.get('/profile',isLoggedIn, getTemplate);
+
+router.post('/login', login);
+
+router.get('/signup',isNotLoggedIn, getTemplate);
+
+router.get('/logout',isLoggedIn, function (req, res) {
+  req.logout();
+  res.redirect('/');
 });
 
+// process the signup form
+router.post('/signup', signup);
 
 router.get('/isloggedin',function(req,res){
     if (req.isAuthenticated()){
@@ -118,57 +138,17 @@ router.get('/isloggedin',function(req,res){
         res.status(401);
         res.json({ msg: 'no session' });
     }
-});
-
-router.get('/dashboard',isLoggedIn, function (req, res) {
-    res.render('index.html');
-});
-
-router.get('/facebook', function (req, res, next) {
-    res.render('index.html');
-});
-
-router.get('/packages',isLoggedIn, function (req, res) {
-    //res.send(req.user);
-    res.render('index.html');
-});
-
-router.get('/profile',isLoggedIn, function (req, res) {
-    res.render('index.html');
-});
+})
 
 router.get('/facebooklogin',
     passport.authenticate('facebook', { authType: 'rerequest', scope: ['email', 'user_friends', 'manage_pages'] }));
 
 router.get('/facebookloginreturn',
-    passport.authenticate('facebook', { successRedirect: '/dashboard', failureRedirect: '/login' }),
+    passport.authenticate('facebook', { successRedirect: '/createtoken', failureRedirect: '/login' }),
     function (req, res) {
         //console.log(req.user);
         res.redirect('/dashboard');
-    });
-
-router.get('/profile',isLoggedIn, function (req, res) {
-        res.render('index.html', { user: req.user });
-    });
+    })
 
 
-    // route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-    console.log(req.isAuthenticated());
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-} 
-function isNotLoggedIn(req, res, next) {
-    console.log(req.isAuthenticated());
-    // if user is authenticated in the session, carry on 
-    if (!req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/dashboard');
-} 
 module.exports = router;

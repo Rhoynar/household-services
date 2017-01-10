@@ -19,6 +19,7 @@
                       <li><a href="javascript:void(0);">Property Managers</a> </li>
                       <li><a href="javascript:void(0);">Browse Services</a></li>
                       <li><a href="javascript:void(0);">Contractor </a> </li>
+                      <li *ngIf="loggedIn"><a href="javascript:void(0);" (click)="logout();">Logout </a> </li>
                       <li class="select-wrp">
                         <div class="select-block">
                           <select class="s-box">

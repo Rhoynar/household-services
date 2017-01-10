@@ -11,41 +11,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
-var TopnavComponent = (function () {
-    function TopnavComponent(router, authenticationService) {
+var TokenComponent = (function () {
+    function TokenComponent(router, authenticationService) {
+        var _this = this;
         this.router = router;
         this.authenticationService = authenticationService;
-        // this.parties = Parties.find({}).zone();
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
         }
+        // reset login status
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (result === true) {
+                _this.router.navigate(['/dashboard']);
+            }
+            else {
+                _this.router.navigate(['/login']);
+            }
+        });
     }
-    TopnavComponent.prototype.ngAfterViewInit = function () {
+    TokenComponent.prototype.ngAfterViewInit = function () {
         $(document).ready(function () {
             $(".s-box").selectbox();
         });
     };
-    TopnavComponent.prototype.logout = function () {
-        var _this = this;
-        // reset login status
-        this.authenticationService.logout()
-            .subscribe(function (data) {
-            _this.router.navigate(['/login']);
-            //return false;
-        }, function (error) {
-            _this.router.navigate(['/login']);
-        });
-    };
-    TopnavComponent = __decorate([
+    TokenComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'topnav',
-            templateUrl: './topnav.component.html'
+            selector: 'token',
+            template: '<div></div>'
         }), 
         __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
-    ], TopnavComponent);
-    return TopnavComponent;
+    ], TokenComponent);
+    return TokenComponent;
 }());
-exports.TopnavComponent = TopnavComponent;
-//# sourceMappingURL=topnav.component.js.map
+exports.TokenComponent = TokenComponent;
+//# sourceMappingURL=token.component.js.map

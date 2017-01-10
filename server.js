@@ -38,10 +38,6 @@ app.set('view engine','ejs');
 app.engine('html',require('ejs').renderFile);
 
 
-
-var index=require('./routes/index');
-var apis=require('./routes/apis');
-
 //set Static folder
 app.use(express.static(path.join(__dirname,'client')));
 
@@ -53,25 +49,14 @@ require('./config/passport')(passport); // pass passport for configuration
 
 
 
-
-
-
-
-
-
-
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/',index);
-app.use('/api',apis);
-
-
-
-
-
+//routes
+app.use('/',require('./routes/index'));
+app.use('/api',require('./routes/apis'));
 
 
 

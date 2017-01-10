@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 //import { UserServices } from './users.services';
-var index_1 = require('./index');
+var index_1 = require('../services/index');
 var AuthGuard = (function () {
     function AuthGuard(UserServices, router) {
         this.UserServices = UserServices;
@@ -60,4 +60,4 @@ var AuthGuard = (function () {
     return AuthGuard;
 }());
 exports.AuthGuard = AuthGuard;
-//# sourceMappingURL=auth.services.js.map
+//# sourceMappingURL=auth.guard.js.map

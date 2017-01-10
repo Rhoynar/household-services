@@ -9,7 +9,7 @@ var Users            = require('../models/users');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
-
+//console.log('sadsadsad');
     // Configure Passport authenticated session persistence.
     //
     // In order to restore authentication state across HTTP requests, Passport needs
@@ -102,7 +102,7 @@ passport.use(new Strategy({
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) { // callback with email and password from our form
-
+        console.log(email+'   '+password)
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         Users.findOne({ 'email' :  email }, function(err, user) {

@@ -13,31 +13,6 @@ export class UserServices{
     }
     authenticated:any;
    
-
-    isLoggedIn() :Observable<boolean>{
-        var subject = new Subject<boolean>();
-        subject.next(false);
-        var headers=new Headers();
-        headers.append('Content-Type', 'application/json');
-        this.http.get('http://beta.cisin.com:3004/isloggedin',{headers:headers})
-        //.map(this.extractData)
-         .map((res : Response) => res.json())
-        .subscribe(
-        (data) => {
-            console.log("next: returning true");
-          subject.next(true);
-          this.authenticated=true;
-          return true;
-        },
-        (error) => {
-             console.log("next: returning false");
-          this.authenticated=false;
-          subject.next(false);
-        }
-      );;//.catch(this.handleError);
-        return subject.asObservable().first();
-    }
-
     registerUser(newUser:any){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');

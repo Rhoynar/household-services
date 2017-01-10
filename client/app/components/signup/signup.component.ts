@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { UserServices } from '../../services/users.services'
+import { UserServices } from '../../services/index'
 declare var $: any;
 
 

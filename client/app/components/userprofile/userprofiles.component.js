@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var UserprofileComponent = (function () {
-    // parties: Observable<any[]>;
-    // parties: Observable<Party[]>;
     function UserprofileComponent() {
         // this.parties = Parties.find({}).zone();
+        JSON.parse;
+        console.log(JSON.parse(localStorage.getItem('currentUser')).token._id);
     }
     UserprofileComponent.prototype.ngAfterViewInit = function () {
         $(document).ready(function () {

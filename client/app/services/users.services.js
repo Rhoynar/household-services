@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
-var Rx_1 = require("rxjs/Rx");
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var UserServices = (function () {
@@ -19,27 +18,6 @@ var UserServices = (function () {
         this.http = http;
         console.log('User is initialised');
     }
-    UserServices.prototype.isLoggedIn = function () {
-        var _this = this;
-        var subject = new Rx_1.Subject();
-        subject.next(false);
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        this.http.get('http://beta.cisin.com:3004/isloggedin', { headers: headers })
-            .map(function (res) { return res.json(); })
-            .subscribe(function (data) {
-            console.log("next: returning true");
-            subject.next(true);
-            _this.authenticated = true;
-            return true;
-        }, function (error) {
-            console.log("next: returning false");
-            _this.authenticated = false;
-            subject.next(false);
-        });
-        ; //.catch(this.handleError);
-        return subject.asObservable().first();
-    };
     UserServices.prototype.registerUser = function (newUser) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');

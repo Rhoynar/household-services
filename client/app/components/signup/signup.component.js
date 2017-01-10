@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var users_services_1 = require('../../services/users.services');
+var index_1 = require('../../services/index');
 var SignupComponent = (function () {
     function SignupComponent(router, UserServices) {
         // this.parties = Parties.find({}).zone();
@@ -45,7 +45,7 @@ var SignupComponent = (function () {
             selector: 'signup',
             templateUrl: './signup.component.html',
         }), 
-        __metadata('design:paramtypes', [router_1.Router, users_services_1.UserServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.UserServices])
     ], SignupComponent);
     return SignupComponent;
 }());

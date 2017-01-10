@@ -11,12 +11,11 @@ declare var $:any;
   //styles: [main]
 })
 export class UserprofileComponent implements AfterViewInit {
-  // parties: Observable<any[]>;
- // parties: Observable<Party[]>;
-
+ 
   constructor() {
    // this.parties = Parties.find({}).zone();
-
+   JSON.parse
+   console.log(JSON.parse(localStorage.getItem('currentUser')).token._id);
   }
 
   ngAfterViewInit() {

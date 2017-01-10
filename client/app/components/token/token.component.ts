@@ -8,21 +8,35 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'topnav',
-  templateUrl: './topnav.component.html'
+  selector: 'token',
+  template: '<div></div>'
   //styles: [main]
 })
-export class TopnavComponent implements AfterViewInit {
+export class TokenComponent implements AfterViewInit {
   // parties: Observable<any[]>;
   // parties: Observable<Party[]>;
   loggedIn: any;
   constructor(private router: Router,
     private authenticationService: AuthenticationService) {
-    // this.parties = Parties.find({}).zone();
+    
     if (localStorage.getItem('currentUser')) {
       // logged in so return true
       this.loggedIn = true;
     }
+
+    // reset login status
+    this.authenticationService.generatetoken()
+            .subscribe(result => {
+                if (result === true) {
+                    this.router.navigate(['/dashboard']);
+                } else {
+                    this.router.navigate(['/login']);
+                }
+            });
+      
+
+
+
   }
 
   ngAfterViewInit() {
@@ -32,20 +46,6 @@ export class TopnavComponent implements AfterViewInit {
     });
   }
 
-  logout() {
-    // reset login status
-    this.authenticationService.logout()
-      .subscribe(
-      data => {
-
-        this.router.navigate(['/login']);
-        //return false;
-      },
-      error => {
-        this.router.navigate(['/login']);
-      }
-      );
-
-  }
+  
 
 }

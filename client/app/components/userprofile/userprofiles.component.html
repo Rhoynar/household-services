@@ -2,114 +2,114 @@
 <div class="inner-banner">
   <div class="banner-img"><img src="images/inner-banner.jpg" alt="" />
     <div class="inner-content">
-        <div class="container">
-            <div class="row">
-            <div class="col-md-12 no-padding">
-          <h1>User Profile</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 no-padding">
+            <h1>User Profile</h1>
           </div>
-          </div>
-          </div>
-          
         </div>
-     
+      </div>
+
+    </div>
+
   </div>
 </div>
 <package-section></package-section>
 <!--inner-mid-sec-->
 <div class="inner-mid-sec white-bg">
-    <div class="container">
-        <div class="row">
-            <div class="user-profile-page">
-                
-                <div class="col-md-12 no-padding">
-                    
-                    <div class="grey_block">
-              <div class="user_img_block">
-                <div class="user_img"><img src="images/user-pic.jpg" alt="">
+  <div class="container">
+    <div class="row">
+      <div class="user-profile-page">
+
+        <div class="col-md-12 no-padding">
+
+          <div class="grey_block">
+            <div class="user_img_block">
+              <div class="user_img"><img src="images/user-pic.jpg" alt="">
                 <div class="join-date">
                   <div class="mid-up">
-                    <div class="mid-in"> Joined on 05-11-2016 </div>
+                    <div class="mid-in"> Joined on {{userProfile?.created | date:"dd-MM-yyyy"}} </div>
                   </div>
                 </div>
-                </div>
-                
               </div>
-              <div class="user_deatil_info">
-                
-                <h2>John Duke</h2>
-                <ul class="user-info">
+
+            </div>
+            <div class="user_deatil_info">
+
+              <h2>{{userProfile.name}}</h2>
+              <ul class="user-info">
                 <li>- Manager</li>
-                <li><i class="fa fa-map-marker" aria-hidden="true"></i>Newyork, USA</li>
+                <li><i class="fa fa-map-marker" aria-hidden="true"></i>{{userProfile?.city}}, {{userProfile?.country}}</li>
               </ul>
-              
+
               <div class="profile-information clearfix">
-            <div class="profile-info-lf pull-left">
-              <h2>Profile Information</h2>
+                <div class="profile-info-lf pull-left">
+                  <h2>Profile Information</h2>
+                </div>
+                <div class="profile-info-lf pull-right"> <a [routerLink]="['/editprofile']" class="subscribe-btn edit"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a> </div>
+              </div>
+
+              <div class="information-deatil-lf">
+                <h4 class="information-heading">Contact Information</h4>
+                <div class="txt-box">
+                  <label>Phone:</label>
+                  <p><span class="blue-txt">{{userProfile?.phone}}</span></p>
+                </div>
+                <div class="txt-box add-inq">
+                  <label>Address:</label>
+                  <p>{{userProfile?.addresslineone}} <span>{{userProfile?.addresslinetwo}}</span></p>
+                </div>
+                <div class="txt-box">
+                  <label>Email:</label>
+                  <p><span><a href="mailto:{{userProfile?.email}}" class="blue-txt">{{userProfile?.email}}</a></span></p>
+                </div>
+              </div>
+
+
+
+
+              <div class="information-deatil-rh">
+                <h4 class="information-heading">Payment Information</h4>
+                <div class="txt-box">
+                  <label>Card Number</label>
+                  <p>123456789456123456</p>
+                </div>
+                <div class="txt-box">
+                  <label>Card Holder Name</label>
+                  <p>Jeremy Rose</p>
+                </div>
+
+                <div class="txt-box">
+                  <label>Expiry Date</label>
+                  <p>05/18</p>
+                </div>
+
+                <div class="txt-box">
+                  <label>Security Code</label>
+                  <p>***</p>
+                </div>
+
+
+
+
+
+
+
+
+
+
+              </div>
+
+              <div class="clearfix"></div>
+
             </div>
-            <div class="profile-info-lf pull-right"> <a href="#" class="subscribe-btn edit"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a> </div>
           </div>
-          
-          <div class="information-deatil-lf">
-              <h4 class="information-heading">Contact Information</h4>
-              <div class="txt-box">
-                <label>Phone:</label>
-                <p><span class="blue-txt">+1 123 456 7890</span></p>
-              </div>
-              <div class="txt-box add-inq">
-                <label>Address:</label>
-                <p>525 68th Street Newyork <span>NY 10651-78 156-187-90</span></p>
-              </div>
-              <div class="txt-box">
-                <label>Email:</label>
-                <p><span><a href="mailto:hello@company.com" class="blue-txt">hello@company.com</a></span></p>
-              </div>
-            </div>
-            
-            
-            
-            
-            <div class="information-deatil-rh">
-            <h4 class="information-heading">Payment Information</h4>
-                <div class="txt-box">
-                    <label>Card Number</label>
-                    <p>123456789456123456</p>
-                </div>
-                <div class="txt-box">
-                    <label>Card Holder Name</label>
-                    <p>Jeremy Rose</p>
-                </div>
-                
-                <div class="txt-box">
-                    <label>Expiry Date</label>
-                    <p>05/18</p>
-                </div>
-                
-                <div class="txt-box">
-                    <label>Security Code</label>
-                    <p>***</p>
-                </div>
-                
-               
 
-
-
-                
-
-
-
-            
-            </div>
-            
-            <div class="clearfix"></div>
-              
-              </div>
-            </div>
-                    
-                </div>
-                
-            </div>
         </div>
+
+      </div>
     </div>
+  </div>
 </div>
 <!--inner-mid-sec-->
 <!--fotter-section-->

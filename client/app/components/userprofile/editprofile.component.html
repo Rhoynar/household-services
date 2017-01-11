@@ -1,0 +1,95 @@
+<topnav></topnav>
+<div class="inner-banner">
+    <div class="banner-img"><img src="images/inner-banner.jpg" alt="" />
+        <div class="inner-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 no-padding">
+                        <h1>Edit User Profile</h1>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<package-section></package-section>
+<div class="inner-mid-sec white-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 no-padding">
+
+                <div class="form_block">
+                    <!--<h3></h3>-->
+                    <form>
+                        <div class="form-group">
+                            <label class="input-heading">Name :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.username" name="username" id="username" class="input-fill" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Email :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.useremail" name="useremail" id="useremail" class="input-fill" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Phone :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.userphone" name="userphone" id="userphone" class="input-fill" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="input-heading">Address Line 1 :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.addresslineone"  name="addresslineone" id="addresslineone" class="input-fill" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Address Line 2 :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.addresslinetwo"  name="addresslinetwo" id="addresslinetwo" class="input-fill" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">City :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.usercity"  name="usercity" id="usercity" class="input-fill" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Country :</label>
+                            <div class="input-box">
+                                <input type="text" [(ngModel)]="profile.usercountry"  name="usercountry" id="usercountry" class="input-fill" />
+                            </div>
+                        </div>
+
+                        <div class="form-group btn-wrp">
+
+                            <button class="sub-btn" (click)="updateProfile();">Submit</button>
+                            <button class="sub-btn cancel-btn" (click)="profilePage()">Cancel</button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--inner-mid-sec-->
+<!--fotter-section-->
+<footer-section></footer-section>

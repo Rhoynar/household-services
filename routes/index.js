@@ -118,6 +118,8 @@ router.get('/packages',isLoggedIn, getTemplate);
 
 router.get('/profile',isLoggedIn, getTemplate);
 
+router.get('/editprofile',isLoggedIn, getTemplate);
+
 router.post('/login', login);
 
 router.get('/signup',isNotLoggedIn, getTemplate);

@@ -9,7 +9,7 @@ import { AppComponent }  from './app.component';
 import { routing } from './app.routes';
 import { TopnavComponent,LandingComponent,LoginComponent,
   SignupComponent,DashboardComponent,PackagesComponent,
-  UserprofileComponent,TokenComponent,PackagessectionComponent,footerSectionComponent } from './components/index';
+  UserprofileComponent,TokenComponent,PackagessectionComponent,footerSectionComponent,EditprofileComponent } from './components/index';
 
 
 import { AuthGuard,NotAuthGuard } from './guards/index';
@@ -34,7 +34,8 @@ import { UserServices,AuthenticationService } from './services/index';
         PackagessectionComponent,
         UserprofileComponent,
         DashboardComponent ,
-        TokenComponent
+        TokenComponent,
+        EditprofileComponent
         ],
 providers:[AuthGuard,NotAuthGuard,UserServices,AuthenticationService],
   bootstrap:    [ AppComponent ]

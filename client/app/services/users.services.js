@@ -16,19 +16,31 @@ require('rxjs/add/operator/catch');
 var UserServices = (function () {
     function UserServices(http) {
         this.http = http;
+        this.API_ENDPOINT = 'http://beta.cisin.com:3004';
         console.log('User is initialised');
     }
     UserServices.prototype.registerUser = function (newUser) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        //return this.http.post('http://localhost:3000/signup',JSON.stringify(newUser),{headers:headers})
-        return this.http.post('http://beta.cisin.com:3004/signup', JSON.stringify(newUser), { headers: headers })
+        return this.http.post(this.API_ENDPOINT + '/signup', JSON.stringify(newUser), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.updateProfile = function (userProfile) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT + '/api/updateProfile', JSON.stringify(userProfile), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     UserServices.prototype.loginUser = function (user) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://beta.cisin.com:3004/login', JSON.stringify(user), { headers: headers })
+        return this.http.post(this.API_ENDPOINT + '/login', JSON.stringify(user), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.getUserProfile = function (profileId) {
+        // var headers=new Headers();
+        // headers.append('Content-Type', 'application/json');
+        return this.http.get(this.API_ENDPOINT + '/api/getprofile/' + profileId)
             .map(this.extractData); //.catch(this.handleError);;
     };
     UserServices.prototype.extractData = function (res) {

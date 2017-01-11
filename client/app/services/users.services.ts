@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers,Response} from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import { Observer, BehaviorSubject,Subject} from "rxjs/Rx";
+import { ProfileModel } from '../models/profile.model'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -12,20 +13,34 @@ export class UserServices{
 
     }
     authenticated:any;
-   
+   API_ENDPOINT='http://beta.cisin.com:3004';
+    
     registerUser(newUser:any){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
-        //return this.http.post('http://localhost:3000/signup',JSON.stringify(newUser),{headers:headers})
-        return this.http.post('http://beta.cisin.com:3004/signup',JSON.stringify(newUser),{headers:headers})
-        //return this.http.post('http://localhost:3000/signup',JSON.stringify(newUser),{headers:headers})
+        return this.http.post(this.API_ENDPOINT+'/signup',JSON.stringify(newUser),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    updateProfile(userProfile:ProfileModel){
+        var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT+'/api/updateProfile',JSON.stringify(userProfile),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 
     loginUser(user:any){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://beta.cisin.com:3004/login',JSON.stringify(user),{headers:headers})
+        return this.http.post(this.API_ENDPOINT+'/login',JSON.stringify(user),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+
+    getUserProfile(profileId:any){
+        // var headers=new Headers();
+        // headers.append('Content-Type', 'application/json');
+        return this.http.get(this.API_ENDPOINT+'/api/getprofile/'+profileId)
         .map(this.extractData);//.catch(this.handleError);;
     }
 

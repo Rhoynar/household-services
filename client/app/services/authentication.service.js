@@ -66,7 +66,7 @@ var AuthenticationService = (function () {
                 return true;
             }
             else {
-                // return false to indicate failed login
+                localStorage.removeItem('currentUser');
                 return false;
             }
         });

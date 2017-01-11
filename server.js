@@ -9,7 +9,13 @@ var session      = require('express-session');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(configDB.url, function (error) {
+    if (error) {
+        console.log(error);
+    }
+}); // connect to our database
+
+
 var Users = require('./models/users');
 var Clients = require('./models/clients');
 

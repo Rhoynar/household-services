@@ -9,6 +9,7 @@ __export(require('./signup/signup.component'));
 __export(require('./dashboard/dashboard.component'));
 __export(require('./packages/packages.component'));
 __export(require('./userprofile/userprofiles.component'));
+__export(require('./userprofile/editprofile.component'));
 __export(require('./token/token.component'));
 __export(require('./packages/packages-section.component'));
 __export(require('./footer-section/footer-section.component'));

@@ -40,7 +40,8 @@ var AppModule = (function () {
                 index_1.PackagessectionComponent,
                 index_1.UserprofileComponent,
                 index_1.DashboardComponent,
-                index_1.TokenComponent
+                index_1.TokenComponent,
+                index_1.EditprofileComponent
             ],
             providers: [index_2.AuthGuard, index_2.NotAuthGuard, index_3.UserServices, index_3.AuthenticationService],
             bootstrap: [app_component_1.AppComponent]

@@ -11,7 +11,12 @@ var userSchema = new Schema({
     providerId: String,
     provider:String,
     created:Date,
-    profile: Array
+    profile: Array,
+    phone: String,
+    addresslineone:String,
+    addresslinetwo:String,
+    city:String,
+    country:String,
 });
 
 

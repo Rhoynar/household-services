@@ -22,25 +22,42 @@
 
                 <div class="form_block">
                     <!--<h3></h3>-->
-                    <form>
-                        <div class="form-group">
+                    <form [formGroup]="profileUpdateForm" (ngSubmit)="submitForm()">
+                        <div class="form-group" [ngClass]="{'has-error':!profileUpdateForm.controls['username'].valid && profileUpdateForm.controls['username'].touched}">
                             <label class="input-heading">Name :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.username" name="username" id="username" class="input-fill" />
+                                <input type="text" name="username" id="username" class="input-fill" [formControl]="profileUpdateForm.controls['username']"
+                                />
+                                <div *ngIf="profileUpdateForm.controls['username'].hasError('required') && profileUpdateForm.controls['username'].touched"
+                                    class="alert alert-danger">You must include a name.</div>
+                                <div *ngIf="profileUpdateForm.controls['username'].hasError('minlength') && profileUpdateForm.controls['username'].touched"
+                                    class="alert alert-danger">Your name must be at least 5 characters long.</div>
+                                <div *ngIf="profileUpdateForm.controls['username'].hasError('usernameTaken') && profileUpdateForm.controls['username'].touched"
+                                    class="alert alert-danger">Username taken.</div>
+                                
                             </div>
+
                         </div>
 
                         <div class="form-group">
                             <label class="input-heading">Email :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.useremail" name="useremail" id="useremail" class="input-fill" />
+                                <input type="text" name="useremail" id="useremail" class="input-fill" [formControl]="profileUpdateForm.controls['useremail']"
+                                />
+                                
+                                
+                                <div *ngIf="profileUpdateForm.controls['useremail'].hasError('required') && profileUpdateForm.controls['useremail'].touched"
+                                    class="alert alert-danger">You must include a email.</div>
+                                <div *ngIf="profileUpdateForm.controls['useremail'].hasError('validateEmail') && profileUpdateForm.controls['useremail'].touched"
+                                    class="alert alert-danger">Please insert valid email address</div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="input-heading">Phone :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.userphone" name="userphone" id="userphone" class="input-fill" />
+                                <input type="text" name="userphone" id="userphone" class="input-fill" [formControl]="profileUpdateForm.controls['userphone']"
+                                />
                             </div>
                         </div>
 
@@ -48,34 +65,39 @@
                         <div class="form-group">
                             <label class="input-heading">Address Line 1 :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.addresslineone"  name="addresslineone" id="addresslineone" class="input-fill" />
+                                <input type="text" name="addresslineone" id="addresslineone" class="input-fill" [formControl]="profileUpdateForm.controls['addresslineone']"
+                                />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="input-heading">Address Line 2 :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.addresslinetwo"  name="addresslinetwo" id="addresslinetwo" class="input-fill" />
+                                <input type="text" name="addresslinetwo" id="addresslinetwo" class="input-fill" [formControl]="profileUpdateForm.controls['addresslinetwo']"
+                                />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="input-heading">City :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.usercity"  name="usercity" id="usercity" class="input-fill" />
+                                <input type="text" name="usercity" id="usercity" class="input-fill" [formControl]="profileUpdateForm.controls['usercity']"
+                                />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="input-heading">Country :</label>
                             <div class="input-box">
-                                <input type="text" [(ngModel)]="profile.usercountry"  name="usercountry" id="usercountry" class="input-fill" />
+                                <input type="text" name="usercountry" id="usercountry" class="input-fill" [formControl]="profileUpdateForm.controls['usercountry']"
+                                />
                             </div>
                         </div>
 
                         <div class="form-group btn-wrp">
 
-                            <button class="sub-btn" (click)="updateProfile();">Submit</button>
+                            <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->
+                            <button type="submit" [disabled]="!profileUpdateForm.valid" class="sub-btn">Submit</button>
                             <button class="sub-btn cancel-btn" (click)="profilePage()">Cancel</button>
 
                         </div>

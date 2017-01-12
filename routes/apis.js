@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var userModel = require('../models/users');
+var Users = require('../models/users');
 
 var authenticateUser = function (req, res, next) {
     console.log(req.body)
@@ -57,28 +58,27 @@ var updateProfile = function (req, res) {
     //userModel.
     updateDetails =
         {
-            name: req.body.firstname,
-            lastname: req.body.lastname,
-            shiptype: req.body.shiptype,
-            contact_no: req.body.contact_no,
-            address_line1: req.body.address_line1,
-            address_line2: req.body.address_line2,
-            city: req.body.city,
-            postal_code: req.body.postal_code,
-            country: req.body.country,
-            state: req.body.state,
-            billmode: req.body.billmode
+            name: req.body.username,
+            email: req.body.useremail,
+            phone: req.body.userphone,
+            addresslineone: req.body.addresslineone,
+            addresslinetwo: req.body.addresslinetwo,
+            city: req.body.usercity,
+            country: req.body.usercountry,
         }
 
-    /*userModel.findByIdAndUpdate(req.body.id, updateAddDetails, function (err, updateRes) {
+    Users.findByIdAndUpdate(req.body.id, updateDetails, function (err, updateRes) {
+        console.log(updateRes);
         if (err) {
+
             return res.json({ status: 'error', error: err });
         }
         else {
-            return res.json({ status: 'success', msg: 'Address updated successfully' });
+            
+            return res.json({ status: 'success', msg: 'User updated successfully' });
         }
-    });*/
-    return res.json({});
+    });
+    //return res.json({});
 }
 
 router.post('/authenticate', authenticateUser);

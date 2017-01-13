@@ -48,35 +48,4 @@ export class LoginComponent implements AfterViewInit,OnInit {
                 }
             });
     }
-
-
-  /*loginUser(event: any) {
-    event.preventDefault();
-
-    var user = {
-      useremail: this.useremail,
-      userpass: this.userpass,
-    }
-
-    this.UserServices.loginUser(user)
-      .subscribe(
-        data => {
-          
-          this.router.navigate(['/dashboard']);
-          //return false;
-        },
-        error => {
-        
-          const body = error.json() || '';
-          const err = body.error || JSON.stringify(body);
-          var errr = JSON.parse(err);
-          alert(errr.msg);
-        }
-      );
-
-  }*/
-
-  
-
-
 }

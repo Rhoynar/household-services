@@ -2,19 +2,18 @@ import {Injectable} from '@angular/core';
 import {Http, Headers,Response} from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import { Observer, BehaviorSubject,Subject} from "rxjs/Rx";
-import {Control} from '@angular/common';
+import { FormControl } from '@angular/forms';
 import 'rxjs/Rx';
-//import {CHECK_USER_ENDPOINT} from './api';
+
 
 interface IUsernameEmailValidator {
 }
 
-function checkUser(control: Control, source: string) : Observable<IUsernameEmailValidator> {
+function checkUser(control: FormControl, source: string,http:Http) : Observable<IUsernameEmailValidator> {
 
   // Manually inject Http
-  let injector = Injector.resolveAndCreate([HTTP_PROVIDERS]);
-  let http = injector.get(Http);
-
+  
+ let API_ENDPOINT='http://beta.cisin.com:3004';
   // Return an observable with null if the
   // username or email doesn't yet exist, or
   // an objet with the rejetion reason if they do
@@ -22,7 +21,7 @@ function checkUser(control: Control, source: string) : Observable<IUsernameEmail
     control
       .valueChanges
       .debounceTime(400)
-      .flatMap(value => http.post(CHECK_USER_ENDPOINT, JSON.stringify({ [source]: value })))
+      .flatMap(value => http.post(API_ENDPOINT, JSON.stringify({ [source]: value })))
       .subscribe(
         data => {
           obs.next(null);
@@ -30,7 +29,7 @@ function checkUser(control: Control, source: string) : Observable<IUsernameEmail
         },
         error => {
           let message = error.json().message;
-          let reason;
+          let reason:any;
           if (message === 'Username taken') {
             reason = 'usernameTaken';
           }
@@ -46,13 +45,13 @@ function checkUser(control: Control, source: string) : Observable<IUsernameEmail
 
 export class UsernameEmailValidator {
 
-  constructor() {}
+  constructor(private http:Http) {}
 
-  static checkUsername(control: Control) {
-    return checkUser(control, 'username');
+  static checkUsername(control: FormControl,http:Http) {
+    return checkUser(control, 'username',http);
   }
 
-  static checkEmail(control: Control) {
-    return checkUser(control, 'email');
+  static checkEmail(control: FormControl,http:Http) {
+    return checkUser(control, 'email',http);
   }
 }

@@ -32,11 +32,11 @@ var createtoken = function (req, res) {
     if (req.user) {
         res.status(200);
         res.json({ 'token': req.user });
-        res.send();
+        //res.send();
     } else {
         res.status(200);
         res.json({});
-        res.send();
+        //res.send();
     }
 
 }
@@ -74,17 +74,58 @@ var updateProfile = function (req, res) {
             return res.json({ status: 'error', error: err });
         }
         else {
-            
+
             return res.json({ status: 'success', msg: 'User updated successfully' });
         }
     });
     //return res.json({});
 }
 
+var checkUniqueEmail = function (req, res) {
+    console.log(req.body)
+
+    // Users.where('age').gte(25)
+    //     .where('tags').in(['movie', 'music', 'art'])
+    //     .select('name', 'age', 'tags')
+    //     .skip(20)
+    //     .limit(10)
+    //     .asc('age')
+    //     .slaveOk()
+    //     .hint({ age: 1, name: 1 })
+    //     .exec(callback);
+
+
+
+
+    var query = Users.find({});
+    
+    if (req.body.id) {
+        id = req.body.id;
+        query.where('_id').ne(id);
+    }
+    
+    email = req.body.email;
+    
+    query.where('email').eq(email);
+    query.exec(function (err, docs) {
+        console.log(docs);
+        if (err) {
+
+            return res.json({ status: 'error', error: err });
+        } else if (docs.length <= 0) {
+
+            return res.json({ status: 'success', msg: 'available' });
+        } else {
+            return res.json({ status: 'success', msg: 'notavailable' });
+        }
+    });
+
+}
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);
 router.get('/getprofile/:id', getProfile);
 router.post('/updateProfile', updateProfile);
+router.post('/checkUniqueEmail', checkUniqueEmail);
 
 
 module.exports = router;

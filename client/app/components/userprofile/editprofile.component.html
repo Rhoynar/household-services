@@ -28,13 +28,13 @@
                             <div class="input-box">
                                 <input type="text" name="username" id="username" class="input-fill" [formControl]="profileUpdateForm.controls['username']"
                                 />
+
                                 <div *ngIf="profileUpdateForm.controls['username'].hasError('required') && profileUpdateForm.controls['username'].touched"
                                     class="alert alert-danger">You must include a name.</div>
                                 <div *ngIf="profileUpdateForm.controls['username'].hasError('minlength') && profileUpdateForm.controls['username'].touched"
                                     class="alert alert-danger">Your name must be at least 5 characters long.</div>
-                                <div *ngIf="profileUpdateForm.controls['username'].hasError('usernameTaken') && profileUpdateForm.controls['username'].touched"
-                                    class="alert alert-danger">Username taken.</div>
                                 
+
                             </div>
 
                         </div>
@@ -44,12 +44,17 @@
                             <div class="input-box">
                                 <input type="text" name="useremail" id="useremail" class="input-fill" [formControl]="profileUpdateForm.controls['useremail']"
                                 />
-                                
-                                
+
+
                                 <div *ngIf="profileUpdateForm.controls['useremail'].hasError('required') && profileUpdateForm.controls['useremail'].touched"
                                     class="alert alert-danger">You must include a email.</div>
                                 <div *ngIf="profileUpdateForm.controls['useremail'].hasError('validateEmail') && profileUpdateForm.controls['useremail'].touched"
                                     class="alert alert-danger">Please insert valid email address</div>
+                                <div *ngIf="profileUpdateForm.controls['useremail'].hasError('emailTaken') && profileUpdateForm.controls['useremail'].touched"
+                                    class="alert alert-danger">Email allready taken.</div>
+                                <div *ngIf="profileUpdateForm.controls['useremail'].pending">
+                                    Fetching data from the server...
+                                </div>
                             </div>
                         </div>
 

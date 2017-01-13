@@ -1,7 +1,11 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { UserServices } from '../../services/index'
+import { ProfileModel } from '../../models/profile.model';
+import { CustomValidator } from '../../validators/custom.validator';
 declare var $: any;
 
 
@@ -12,7 +16,7 @@ declare var $: any;
   templateUrl: './signup.component.html',
   //styles: [main]
 })
-export class SignupComponent implements AfterViewInit {
+export class SignupComponent implements AfterViewInit, OnInit {
   // parties: Observable<any[]>;
   // parties: Observable<Party[]>;
   users: Observable<any[]>;
@@ -20,20 +24,30 @@ export class SignupComponent implements AfterViewInit {
   useremail: String;
   userpass: String;
 
-  constructor(private router: Router, private UserServices: UserServices) {
-    // this.parties = Parties.find({}).zone();
 
+  profileSignupForm: FormGroup;
+  customValidator = new CustomValidator(this.http);
+
+  constructor(
+    private http: Http,
+    private fb: FormBuilder,
+    private router: Router,
+    private userService: UserServices) {
   }
 
-  registerUser(event: any) {
-    event.preventDefault();
+  ngOnInit() {
+    this.profileSignupForm = this.fb.group({
+      username: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
+      useremail: ['', Validators.compose([this.customValidator.validEmail, Validators.required]), Validators.composeAsync([this.customValidator.emailTaken.bind(this.customValidator)])],
+      userpass: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
 
-    var newUser = {
-      username: this.username,
-      useremail: this.useremail,
-      userpass: this.userpass,
-    }
-    this.UserServices.registerUser(newUser)
+    });
+  }
+
+  registerUser() {
+
+
+    this.userService.registerUser(this.profileSignupForm.value)
       .subscribe(data => {
         alert(data.msg);
         this.router.navigate(['/login']);

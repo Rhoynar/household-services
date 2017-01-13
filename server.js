@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var flash    = require('connect-flash');
 var session      = require('express-session');
 
+
+var Zoho = require('zoho');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
@@ -19,6 +21,17 @@ mongoose.connect(configDB.url, function (error) {
 var Users = require('./models/users');
 var Clients = require('./models/clients');
 
+var crm = new Zoho.CRM({
+  authtoken: 'bad18eba1ff45jk7858b8ae88a77fa30'
+});
+
+crm.getRecords('Leads', function (err, data) {
+  if (err) {
+    return console.log(err);
+  }
+ 
+  console.log(data);
+});
 
 require('dotenv').config();
 

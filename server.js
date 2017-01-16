@@ -25,13 +25,13 @@ var crm = new Zoho.CRM({
   authtoken: 'bad18eba1ff45jk7858b8ae88a77fa30'
 });
 
-crm.getRecords('Leads', function (err, data) {
-  if (err) {
-    return console.log(err);
-  }
+// crm.getRecords('Leads', function (err, data) {
+//   if (err) {
+//     return console.log(err);
+//   }
  
-  console.log(data);
-});
+//   console.log(data);
+// });
 
 require('dotenv').config();
 

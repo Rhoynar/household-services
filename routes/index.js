@@ -2,12 +2,12 @@ var express = require('express');
 var passport = require('passport');
 var Users = require('../models/users');
 var Clients = require('../models/clients');
-
+var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 
 
 var router = express.Router();
 
-var getTemplate=function (req, res) {
+var getTemplate = function (req, res) {
     res.render('index.html');
 }
 
@@ -24,7 +24,7 @@ var getToken = function (headers) {
     }
 };
 
-var login=function (req, res, next) {
+var login = function (req, res, next) {
     passport.authenticate('local-login', function (err, user, info) {
         if (err) { return next(err); }
         if (!user) {
@@ -43,7 +43,7 @@ var login=function (req, res, next) {
     })(req, res, next);
 }
 
-var signup=function (req, res, next) {
+var signup = function (req, res, next) {
     console.log(req.body)
     var profile = req.body;
     //res.render('index.html');
@@ -79,64 +79,34 @@ var signup=function (req, res, next) {
     passport.authenticate('local-login');
 }
 
-    // route middleware to make sure a user is logged in
+// route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-    
+
     // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         return next();
-    }else{
+    } else {
         // if they aren't redirect them to the home page
         res.redirect('/');
     }
-     
-} 
+
+}
 
 function isNotLoggedIn(req, res, next) {
-    
+
     // if user is authenticated in the session, carry on 
     if (!req.isAuthenticated())
         return next();
 
     // if they aren't redirect them to the home page
     res.redirect('/dashboard');
-} 
+}
 
-
-
-router.get('/',isNotLoggedIn, getTemplate);
-
-router.get('/login',isNotLoggedIn, getTemplate);
-
-router.get('/dashboard',isLoggedIn, getTemplate);
-
-router.get('/createtoken',isLoggedIn, getTemplate);
-
-router.get('/facebook', getTemplate);
-
-router.get('/packages',isLoggedIn, getTemplate);
-
-router.get('/profile',isLoggedIn, getTemplate);
-
-router.get('/editprofile',isLoggedIn, getTemplate);
-
-router.post('/login', login);
-
-router.get('/signup',isNotLoggedIn, getTemplate);
-
-router.get('/logout',isLoggedIn, function (req, res) {
-  req.logout();
-  res.redirect('/');
-});
-
-// process the signup form
-router.post('/signup', signup);
-
-router.get('/isloggedin',function(req,res){
-    if (req.isAuthenticated()){
+router.get('/isloggedin', function (req, res) {
+    if (req.isAuthenticated()) {
         res.status(200);
         res.json({ msg: 'loggedIn' });
-    }else{
+    } else {
         res.status(401);
         res.json({ msg: 'no session' });
     }
@@ -151,6 +121,69 @@ router.get('/facebookloginreturn',
         //console.log(req.user);
         res.redirect('/dashboard');
     })
+
+// =====================================
+// GOOGLE ROUTES =======================
+// =====================================
+// send to google to do the authentication
+// profile gets us their basic information including their name
+// email gets their emails
+router.get('/googlelogin', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// the callback after google has authenticated the user
+router.get('/googleloginreturn',
+    passport.authenticate('google', { successRedirect: '/createtoken', failureRedirect: '/login' }),
+    function (req, res) {
+        //console.log(req.user);
+        res.redirect('/dashboard');
+    })
+
+
+
+
+router.get('/', isNotLoggedIn, getTemplate);
+
+router.get('/login', isNotLoggedIn, getTemplate);
+
+router.get('/dashboard', isLoggedIn, getTemplate);
+
+router.get('/createtoken', isLoggedIn, getTemplate);
+
+router.get('/facebook', getTemplate);
+
+router.get('/packages', isLoggedIn, getTemplate);
+
+router.get('/profile', isLoggedIn, getTemplate);
+
+router.get('/editprofile', isLoggedIn, getTemplate);
+
+router.post('/login', login);
+
+router.get('/signup', isNotLoggedIn, getTemplate);
+
+router.get('/logout', isLoggedIn, function (req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
+// process the signup form
+router.post('/signup', signup);
+
+router.get('/stripe', function (req, res) {
+    stripe.balance.retrieve({
+        stripe_account: "cisin"
+    }).then(function (balance) {
+        // The balance object for the connected account 
+        console.log(balance)
+    }).catch(function (err) {
+        // Error 
+        console.log(err);
+    });
+    res.send({ title: 'rakesh', data: [{ tt: 'sd', rt: "sdsd" }] });
+    //res.render('test', { title: 'rakesh', data: [{ tt: 'sd', rt: "sdsd" }] });
+});
+
+
 
 
 module.exports = router;

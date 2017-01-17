@@ -4,4 +4,5 @@ function __export(m) {
 }
 __export(require('./authentication.service'));
 __export(require('./users.services'));
+__export(require('./stripe.services'));
 //# sourceMappingURL=index.js.map

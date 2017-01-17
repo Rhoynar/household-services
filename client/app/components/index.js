@@ -13,4 +13,5 @@ __export(require('./userprofile/editprofile.component'));
 __export(require('./token/token.component'));
 __export(require('./packages/packages-section.component'));
 __export(require('./footer-section/footer-section.component'));
+__export(require('./stripe/stripe.component'));
 //# sourceMappingURL=index.js.map

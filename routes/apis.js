@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var userModel = require('../models/users');
+
 var Users = require('../models/users');
+var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 
 var authenticateUser = function (req, res, next) {
     console.log(req.body)
@@ -44,7 +45,7 @@ var createtoken = function (req, res) {
 var getProfile = function (req, res) {
     //console.log(req.params.id);
 
-    userModel.findById(req.params.id, function (err, docs) {
+    Users.findById(req.params.id, function (err, docs) {
         return res.status(200).json(docs)
         //return res.send();
     });
@@ -68,7 +69,7 @@ var updateProfile = function (req, res) {
         }
 
     Users.findByIdAndUpdate(req.body.id, updateDetails, function (err, updateRes) {
-        console.log(updateRes);
+
         if (err) {
 
             return res.json({ status: 'error', error: err });
@@ -98,14 +99,14 @@ var checkUniqueEmail = function (req, res) {
 
 
     var query = Users.find({});
-    
+
     if (req.body.id) {
         id = req.body.id;
         query.where('_id').ne(id);
     }
-    
+
     email = req.body.email;
-    
+
     query.where('email').eq(email);
     query.exec(function (err, docs) {
         console.log(docs);
@@ -121,11 +122,73 @@ var checkUniqueEmail = function (req, res) {
     });
 
 }
+
+
+var createStripeCust = function (req, res) {
+
+    stripe.customers.create({
+        description: 'Customer ' + req.user.email,
+        email: req.user.email,
+        source: {
+            object: 'card',
+            number: req.body.number,
+            exp_month: req.body.exp_month,
+            exp_year: req.body.exp_year,
+            cvc: req.body.cvc
+
+        } // obtained with Stripe.js
+    }, function (err, customer) {
+
+        if (err) {
+            res.json({ status: 'error', msg: err.message });
+        }
+
+        updateDetails =
+            {
+                stripeCustomerId: customer.id,
+                stripeCustomer: customer
+            }
+
+        Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
+
+            if (err) {
+
+                return res.json({ status: 'error', error: err });
+            }
+            else {
+
+                return res.json({ status: 'success', msg: 'Card added succesfully' });
+            }
+        });
+
+    });
+
+}
+
+var getStripeCard = function (req, res) {
+
+
+
+    Users.findById(req.user.id, function (err, user) {
+        stripe.customers.listCards(user.stripeCustomerId,
+        function (err, cards) {
+            // asynchronously called
+            res.send({ status: 'success', result: cards.data });
+        });
+        
+    });
+
+
+
+}
+
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);
 router.get('/getprofile/:id', getProfile);
 router.post('/updateProfile', updateProfile);
 router.post('/checkUniqueEmail', checkUniqueEmail);
+router.post('/createStripeCust', createStripeCust);
+router.get('/getStripeCard', getStripeCard);
 
 
 module.exports = router;

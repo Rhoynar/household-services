@@ -17,6 +17,8 @@ var userSchema = new Schema({
     addresslinetwo:String,
     city:String,
     country:String,
+    stripeCustomerId:String,
+    stripeCustomer:{}
 });
 
 

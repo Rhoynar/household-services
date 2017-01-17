@@ -10,13 +10,13 @@ import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, PackagessectionComponent,
-  footerSectionComponent, EditprofileComponent
+  footerSectionComponent, EditprofileComponent,StripesComponent
 } from './components/index';
 
 
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
-import { UserServices, AuthenticationService } from './services/index';
+import { UserServices, AuthenticationService,StripeServices } from './services/index';
 
 @NgModule({
   imports: [
@@ -38,9 +38,10 @@ import { UserServices, AuthenticationService } from './services/index';
     UserprofileComponent,
     DashboardComponent,
     TokenComponent,
+    StripesComponent,
     EditprofileComponent
   ],
-  providers: [AuthGuard, NotAuthGuard, UserServices, AuthenticationService],
+  providers: [AuthGuard, NotAuthGuard, UserServices, AuthenticationService,StripeServices],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

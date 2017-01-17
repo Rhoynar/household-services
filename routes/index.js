@@ -150,7 +150,7 @@ router.get('/dashboard', isLoggedIn, getTemplate);
 router.get('/createtoken', isLoggedIn, getTemplate);
 
 router.get('/facebook', getTemplate);
-
+router.get('/stripes', getTemplate);
 router.get('/packages', isLoggedIn, getTemplate);
 
 router.get('/profile', isLoggedIn, getTemplate);
@@ -169,17 +169,33 @@ router.get('/logout', isLoggedIn, function (req, res) {
 // process the signup form
 router.post('/signup', signup);
 
+
+//list customers
 router.get('/stripe', function (req, res) {
-    stripe.balance.retrieve({
-        stripe_account: "cisin"
-    }).then(function (balance) {
-        // The balance object for the connected account 
-        console.log(balance)
-    }).catch(function (err) {
-        // Error 
-        console.log(err);
-    });
-    res.send({ title: 'rakesh', data: [{ tt: 'sd', rt: "sdsd" }] });
+
+    // stripe.customers.retrieveCard(
+    //     'cus_9wr1iT7iAPrwNj',
+    //     'card_19cxJ4FDNaMLRX5o3TMV5ss8',
+    //     function (err, obj) {
+    //         res.send({ title: 'rakesh', data: obj });
+    //     }
+    // );
+
+    stripe.customers.listCards('cus_9wr1iT7iAPrwNj',
+        function (err, cards) {
+            // asynchronously called
+            res.send({ title: 'rakesh', data: cards });
+        });
+
+
+    // stripe.customers.list(
+    //     { limit: 3 },
+    //     function (err, customers) {
+    //         // asynchronously called
+    //         res.send({ title: 'rakesh', data: customers });
+    //     }
+    // );
+
     //res.render('test', { title: 'rakesh', data: [{ tt: 'sd', rt: "sdsd" }] });
 });
 

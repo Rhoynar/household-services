@@ -30,10 +30,10 @@ var StripeServices = (function () {
         return this.http.get(this.API_ENDPOINT + '/api/getStripeCard', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
-    StripeServices.prototype.loginUser = function (user) {
+    StripeServices.prototype.deleteCards = function (sourceJson) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/login', JSON.stringify(user), { headers: headers })
+        return this.http.post(this.API_ENDPOINT + '/api/deleteCards', JSON.stringify(sourceJson), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.getUserProfile = function (profileId) {

@@ -126,61 +126,131 @@ var checkUniqueEmail = function (req, res) {
 
 var createStripeCust = function (req, res) {
 
-    stripe.customers.create({
-        description: 'Customer ' + req.user.email,
-        email: req.user.email,
-        source: {
-            object: 'card',
-            number: req.body.number,
-            exp_month: req.body.exp_month,
-            exp_year: req.body.exp_year,
-            cvc: req.body.cvc
+    Users.findById(req.user.id, function (err, userDoc) {
+        if (!userDoc.stripeCustomerId || userDoc.stripeCustomerId == '') {
+            stripe.customers.create({
+                description: 'Customer ' + req.user.email,
+                email: req.user.email,
+                source: {
+                    object: 'card',
+                    number: req.body.number,
+                    exp_month: req.body.exp_month,
+                    exp_year: req.body.exp_year,
+                    cvc: req.body.cvc
 
-        } // obtained with Stripe.js
-    }, function (err, customer) {
+                } // obtained with Stripe.js
+            }, function (err, customer) {
 
-        if (err) {
-            res.json({ status: 'error', msg: err.message });
+                if (err) {
+                    res.json({ status: 'error', msg: err.message });
+                }
+
+                updateDetails =
+                    {
+                        stripeCustomerId: customer.id,
+                        stripeCustomer: customer
+                    }
+
+                Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
+
+                    if (err) {
+
+                        return res.json({ status: 'error', error: err });
+                    }
+                    else {
+
+                        return res.json({ status: 'success', msg: 'Customer and Card added succesfully' });
+                    }
+                });
+
+            });
+        } else {
+
+            stripe.customers.createSource(
+                userDoc.stripeCustomerId,
+                {
+                    source: {
+                        object: 'card',
+                        number: req.body.number,
+                        exp_month: req.body.exp_month,
+                        exp_year: req.body.exp_year,
+                        cvc: req.body.cvc
+
+                    }
+                },
+                function (err, card) {
+                    userDoc.stripeCustomer.sources.total_count++;
+
+                    userDoc.stripeCustomer.sources.data.push(card);
+                    updateDetails =
+                        {
+                            stripeCustomer: userDoc.stripeCustomer
+                        }
+
+                    Users.findByIdAndUpdate(userDoc.id, updateDetails, function (err, updateRes) {
+
+                        if (err) {
+
+                            return res.json({ status: 'error', error: err });
+                        }
+                        else {
+
+                            return res.json({ status: 'success', msg: 'Card added succesfully' });
+                        }
+                    });
+                }
+            );
+
         }
 
-        updateDetails =
-            {
-                stripeCustomerId: customer.id,
-                stripeCustomer: customer
-            }
-
-        Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
-
-            if (err) {
-
-                return res.json({ status: 'error', error: err });
-            }
-            else {
-
-                return res.json({ status: 'success', msg: 'Card added succesfully' });
-            }
-        });
 
     });
+
+
+
 
 }
 
 var getStripeCard = function (req, res) {
 
+    Users.findById(req.user.id, function (err, userDoc) {
 
+        if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') {
+            stripe.customers.listCards(userDoc.stripeCustomerId,
+                function (err, cards) {
+                    // asynchronously called
+                    if (cards) {
+                        res.send({ status: 'success', stripe_cus_id: userDoc.stripeCustomerId, result: cards.data });
+                    } else {
+                        res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
+                    }
+                    console.log(cards);
 
-    Users.findById(req.user.id, function (err, user) {
-        stripe.customers.listCards(user.stripeCustomerId,
-        function (err, cards) {
-            // asynchronously called
-            res.send({ status: 'success', result: cards.data });
-        });
-        
+                });
+        } else {
+            res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
+        }
+
     });
 
-
-
 }
+
+var deleteStripeCards = function (req, res) {
+    stripe.customers.deleteCard(
+        req.body.customerId,
+        req.body.cardId,
+        function (err, confirmation) {
+            // asynchronously called
+            if(err){
+                res.send({ status: 'error', msg:'Unable to delete, please try again later'});
+            }else{
+                res.send({ status: 'success', msg:'Card Deleted succesfully'});
+            }
+        }
+    );
+}
+
+router.post('/deleteCards', deleteStripeCards);
 
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);

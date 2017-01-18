@@ -14,17 +14,46 @@ var StripesComponent = (function () {
     function StripesComponent(_zone, stripeServices) {
         this._zone = _zone;
         this.stripeServices = stripeServices;
+        this.stripeCustomerId = '';
+        this.stripeCards = [];
+        this.cardListVisibility = true; //hidden
+        this.cardFormVisibility = true; //hidden
         this.getCards();
     }
+    StripesComponent.prototype.showCardForm = function () {
+        this.cardFormVisibility = false; //shown 
+    };
+    StripesComponent.prototype.deleteCard = function (cardId) {
+        var _this = this;
+        var sourceJson = { customerId: this.stripeCustomerId, cardId: cardId };
+        this.stripeServices.deleteCards(sourceJson).subscribe(function (data) {
+            if (data.status == 'error') {
+                alert(data.msg);
+            }
+            else {
+                alert(data.msg);
+            }
+            _this.getCards();
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     StripesComponent.prototype.getCards = function () {
         var _this = this;
         this.stripeServices.getCards()
             .subscribe(function (data) {
-            if (data.status == 'error') {
-                console.log(data.msg);
+            _this.stripeCustomerId = data.stripe_cus_id;
+            _this.stripeCards = data.result;
+            if (_this.stripeCards.length > 0) {
+                _this.cardListVisibility = false; //shown
+                _this.cardFormVisibility = true;
             }
             else {
-                _this.stripeCards = data.result;
+                _this.cardListVisibility = true; //hidden
+                _this.cardFormVisibility = false; //shown 
             }
             //this.router.navigate(['/login']);
             //return false;
@@ -34,6 +63,9 @@ var StripesComponent = (function () {
             var errr = JSON.parse(err);
             alert(errr.msg);
         });
+    };
+    StripesComponent.prototype.keys = function (values) {
+        return Object.keys(values);
     };
     StripesComponent.prototype.getToken = function () {
         var _this = this;

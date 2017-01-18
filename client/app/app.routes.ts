@@ -12,7 +12,7 @@ const APP_ROUTES: Routes = [
   { path: 'createtoken',component: TokenComponent},
   { path: 'dashboard', component: DashboardComponent ,canActivate: [AuthGuard]},
   { path: 'facebook', component: TopnavComponent },
-  { path: 'stripes', component: StripesComponent },
+  { path: 'stripes', component: StripesComponent ,canActivate: [AuthGuard]},
   { path: 'packages', component: PackagesComponent ,canActivate: [AuthGuard]},
   { path: 'profile', component: UserprofileComponent,canActivate: [AuthGuard] },
   { path: 'editprofile', component: EditprofileComponent,canActivate: [AuthGuard] }

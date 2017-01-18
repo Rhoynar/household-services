@@ -9,7 +9,7 @@ var APP_ROUTES = [
     { path: 'createtoken', component: index_1.TokenComponent },
     { path: 'dashboard', component: index_1.DashboardComponent, canActivate: [index_2.AuthGuard] },
     { path: 'facebook', component: index_1.TopnavComponent },
-    { path: 'stripes', component: index_1.StripesComponent },
+    { path: 'stripes', component: index_1.StripesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'packages', component: index_1.PackagesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'profile', component: index_1.UserprofileComponent, canActivate: [index_2.AuthGuard] },
     { path: 'editprofile', component: index_1.EditprofileComponent, canActivate: [index_2.AuthGuard] }

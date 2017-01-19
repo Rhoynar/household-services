@@ -17,7 +17,7 @@ var DashboardComponent = (function () {
     }
     DashboardComponent.prototype.ngAfterViewInit = function () {
         $(document).ready(function () {
-            $(".s-box").selectbox();
+            //$(".s-box").selectbox();
         });
     };
     DashboardComponent = __decorate([

@@ -44,7 +44,7 @@ var AppModule = (function () {
                 index_1.StripesComponent,
                 index_1.EditprofileComponent
             ],
-            providers: [index_2.AuthGuard, index_2.NotAuthGuard, index_3.UserServices, index_3.AuthenticationService, index_3.StripeServices],
+            providers: [index_2.AuthGuard, index_2.NotAuthGuard, index_3.CommunityServices, index_3.UserServices, index_3.AuthenticationService, index_3.StripeServices],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

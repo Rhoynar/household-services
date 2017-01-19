@@ -16,7 +16,7 @@ import {
 
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
-import { UserServices, AuthenticationService,StripeServices } from './services/index';
+import { CommunityServices,UserServices, AuthenticationService,StripeServices } from './services/index';
 
 @NgModule({
   imports: [
@@ -41,7 +41,7 @@ import { UserServices, AuthenticationService,StripeServices } from './services/i
     StripesComponent,
     EditprofileComponent
   ],
-  providers: [AuthGuard, NotAuthGuard, UserServices, AuthenticationService,StripeServices],
+  providers: [AuthGuard, NotAuthGuard,CommunityServices, UserServices, AuthenticationService,StripeServices],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

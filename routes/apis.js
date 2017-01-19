@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 
 var Users = require('../models/users');
+var Communities = require('../models/communities');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 
 var authenticateUser = function (req, res, next) {
@@ -241,13 +242,26 @@ var deleteStripeCards = function (req, res) {
         req.body.cardId,
         function (err, confirmation) {
             // asynchronously called
-            if(err){
-                res.send({ status: 'error', msg:'Unable to delete, please try again later'});
-            }else{
-                res.send({ status: 'success', msg:'Card Deleted succesfully'});
+            if (err) {
+                res.send({ status: 'error', msg: 'Unable to delete, please try again later' });
+            } else {
+                res.send({ status: 'success', msg: 'Card Deleted succesfully' });
             }
         }
     );
+}
+
+
+var getAllCommunities = function (req, res) {
+
+    Communities.find({}, function (err, communityDoc) {
+        if (err) {
+            res.send({ status: 'error', msg: 'unable to fetch communities , please later', error: err });
+        } else {
+            res.send({ status: 'success', result: communityDoc });
+        }
+    });
+
 }
 
 router.post('/deleteCards', deleteStripeCards);
@@ -259,6 +273,7 @@ router.post('/updateProfile', updateProfile);
 router.post('/checkUniqueEmail', checkUniqueEmail);
 router.post('/createStripeCust', createStripeCust);
 router.get('/getStripeCard', getStripeCard);
+router.get('/getAllCommunities', getAllCommunities);
 
 
 module.exports = router;

@@ -12,19 +12,46 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var TopnavComponent = (function () {
-    function TopnavComponent(router, authenticationService) {
+    function TopnavComponent(router, authenticationService, communityService) {
+        var _this = this;
         this.router = router;
         this.authenticationService = authenticationService;
+        this.communityService = communityService;
+        this.communities = [];
+        this.communityChanged = false;
+        this.selectedCommunity = { id: '', name: 'Select Community' };
+        this.communityDropdownVisible = false;
         // this.parties = Parties.find({}).zone();
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
         }
-    }
-    TopnavComponent.prototype.ngAfterViewInit = function () {
-        $(document).ready(function () {
-            $(".s-box").selectbox();
+        if (localStorage.getItem('selectedCommunity')) {
+            this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
+        }
+        this.communityService.getCommunities()
+            .subscribe(function (data) {
+            if (data.status == 'success') {
+                _this.communities = data.result;
+                _this.communityChanged = true;
+            }
+        }, function (error) {
+            _this.router.navigate(['/login']);
         });
+    }
+    TopnavComponent.prototype.showDropDown = function () {
+        this.communityDropdownVisible = true;
+    };
+    TopnavComponent.prototype.onCommunityChange = function (id, name) {
+        //this.selectedCommunity = newValue;
+        this.communityDropdownVisible = false;
+        this.selectedCommunity = { id: id, name: name };
+        localStorage.setItem('selectedCommunity', JSON.stringify(this.selectedCommunity));
+    };
+    TopnavComponent.prototype.ngAfterViewInit = function () {
+        // $(document).ready(function () {
+        //   $(".s-box").selectbox();
+        // });
     };
     TopnavComponent.prototype.logout = function () {
         var _this = this;
@@ -43,7 +70,7 @@ var TopnavComponent = (function () {
             selector: 'topnav',
             templateUrl: './topnav.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService, index_1.CommunityServices])
     ], TopnavComponent);
     return TopnavComponent;
 }());

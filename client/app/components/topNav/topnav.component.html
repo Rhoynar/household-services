@@ -2,7 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3">
-        <div class="logo"><a [routerLink]="['/']"><img src="images/logo.png" alt="logo" /></a> </div>
+        <div class="logo">
+          <a [routerLink]="['/']"><img src="images/logo.png" alt="logo" /></a>
+        </div>
       </div>
       <div class="col-sm-9 navi-top">
         <div class="navi">
@@ -17,20 +19,32 @@
                     <ul class="nav navbar-nav">
                       <li class="active"><a [routerLink]="['/dashboard']" class="active">Homeowner</a> </li>
                       <li><a href="javascript:void(0);">Property Managers</a> </li>
-                      <li><a href="javascript:void(0);">Browse Services</a></li>
+                      <li><a [routerLink]="['/services']">Browse Services</a></li>
                       <li><a href="javascript:void(0);">Contractor </a> </li>
                       <li *ngIf="loggedIn"><a href="javascript:void(0);" (click)="logout();">Logout </a> </li>
                       <li class="select-wrp">
                         <div class="select-block">
-                          <select class="s-box">
+
+                          <!--<select class="s-box" [(ngModel)]="selectedCommunity" >
                             <option value="">Select Community</option>
-                          </select>
+                            <option value="{{eachCommunity._id}}" *ngFor='let eachCommunity of communities; let last = last; let index=index'>{{eachCommunity.name}} {{last? execSelect():''}}</option>
+                          </select>-->
+                          <div class="sbHolder">
+                            <a href="javascript:void(0);" [ngClass]="{sbToggleClose: communityDropdownVisible===false,sbToggleOpen:communityDropdownVisible===true}"
+                              class="sbToggle "></a>
+                            <a href="javascript:void(0);" (click)="showDropDown();" class="sbSelector">{{selectedCommunity.name}}</a>
+                            <ul class="sbOptions" [hidden]="!communityDropdownVisible">
+                              <li><a href="javascript:void(0);" (click)="onCommunityChange('','Select Community')">Select Community</a></li>
+                              <li><a href="javascript:void(0);" (click)="onCommunityChange(eachCommunity._id,eachCommunity.name)"
+                                  *ngFor='let eachCommunity of communities;'>{{eachCommunity.name}}</a></li>
+                            </ul>
+                          </div>
                         </div>
                       </li>
                     </ul>
                   </div>
                 </div>
-                <!-- /.nav-collapse --> 
+                <!-- /.nav-collapse -->
               </nav>
             </div>
           </div>

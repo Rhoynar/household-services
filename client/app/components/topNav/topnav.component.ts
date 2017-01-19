@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { AuthenticationService } from '../../services/index'
+import { AuthenticationService, CommunityServices } from '../../services/index'
 declare var $: any;
 
 
@@ -16,20 +16,57 @@ export class TopnavComponent implements AfterViewInit {
   // parties: Observable<any[]>;
   // parties: Observable<Party[]>;
   loggedIn: any;
+  communities: any = [];
+  communityChanged = false;
+  selectedCommunity: {} = { id: '', name: 'Select Community' };
+  communityDropdownVisible = false;
   constructor(private router: Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService, private communityService: CommunityServices) {
     // this.parties = Parties.find({}).zone();
     if (localStorage.getItem('currentUser')) {
       // logged in so return true
       this.loggedIn = true;
     }
+
+    if (localStorage.getItem('selectedCommunity')) {
+      
+      this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
+    }
+
+
+    this.communityService.getCommunities()
+      .subscribe(
+      data => {
+        if (data.status == 'success') {
+          this.communities = data.result
+          this.communityChanged = true;
+        }
+
+      },
+      error => {
+        this.router.navigate(['/login']);
+      }
+      );
+
   }
 
-  ngAfterViewInit() {
+  showDropDown() {
+    this.communityDropdownVisible = true;
+  }
 
-    $(document).ready(function () {
-      $(".s-box").selectbox();
-    });
+  onCommunityChange(id: String, name: String) {
+    //this.selectedCommunity = newValue;
+    this.communityDropdownVisible = false;
+    this.selectedCommunity = { id: id, name: name };
+    localStorage.setItem('selectedCommunity',JSON.stringify(this.selectedCommunity));
+  }
+
+  
+
+  ngAfterViewInit() {
+    // $(document).ready(function () {
+    //   $(".s-box").selectbox();
+    // });
   }
 
   logout() {

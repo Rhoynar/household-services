@@ -23,7 +23,7 @@ export class DashboardComponent implements AfterViewInit {
 
     $(document).ready(function () {
 
-      $(".s-box").selectbox();
+      //$(".s-box").selectbox();
     });
   }
 

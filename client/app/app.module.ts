@@ -10,13 +10,14 @@ import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, PackagessectionComponent,
-  footerSectionComponent, EditprofileComponent,StripesComponent
+  footerSectionComponent, EditprofileComponent, StripesComponent,
+  ServicesComponent
 } from './components/index';
 
 
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
-import { CommunityServices,UserServices, AuthenticationService,StripeServices } from './services/index';
+import { CommunityServices, UserServices, AuthenticationService, StripeServices } from './services/index';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { CommunityServices,UserServices, AuthenticationService,StripeServices } 
   ],
   declarations: [
     AppComponent,
+    ServicesComponent,
     TopnavComponent,
     footerSectionComponent,
     LandingComponent,
@@ -40,8 +42,9 @@ import { CommunityServices,UserServices, AuthenticationService,StripeServices } 
     TokenComponent,
     StripesComponent,
     EditprofileComponent
+    
   ],
-  providers: [AuthGuard, NotAuthGuard,CommunityServices, UserServices, AuthenticationService,StripeServices],
+  providers: [AuthGuard, NotAuthGuard, CommunityServices, UserServices, AuthenticationService, StripeServices],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

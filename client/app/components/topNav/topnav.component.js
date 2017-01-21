@@ -13,21 +13,21 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var TopnavComponent = (function () {
     function TopnavComponent(router, authenticationService, communityService) {
+        // this.parties = Parties.find({}).zone();
         var _this = this;
         this.router = router;
         this.authenticationService = authenticationService;
         this.communityService = communityService;
+        // parties: Observable<any[]>;
+        // parties: Observable<Party[]>;
+        this.selectedCommunity = { id: '', name: 'Select Community' };
+        this.emitCommunityChange = new core_1.EventEmitter();
         this.communities = [];
         this.communityChanged = false;
-        this.selectedCommunity = { id: '', name: 'Select Community' };
         this.communityDropdownVisible = false;
-        // this.parties = Parties.find({}).zone();
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
-        }
-        if (localStorage.getItem('selectedCommunity')) {
-            this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
         }
         this.communityService.getCommunities()
             .subscribe(function (data) {
@@ -46,12 +46,13 @@ var TopnavComponent = (function () {
         //this.selectedCommunity = newValue;
         this.communityDropdownVisible = false;
         this.selectedCommunity = { id: id, name: name };
+        this.emitCommunityChange.emit(this.selectedCommunity);
         localStorage.setItem('selectedCommunity', JSON.stringify(this.selectedCommunity));
     };
     TopnavComponent.prototype.ngAfterViewInit = function () {
-        // $(document).ready(function () {
-        //   $(".s-box").selectbox();
-        // });
+        if (localStorage.getItem('selectedCommunity')) {
+            this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
+        }
     };
     TopnavComponent.prototype.logout = function () {
         var _this = this;
@@ -64,11 +65,19 @@ var TopnavComponent = (function () {
             _this.router.navigate(['/login']);
         });
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], TopnavComponent.prototype, "selectedCommunity", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], TopnavComponent.prototype, "emitCommunityChange", void 0);
     TopnavComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'topnav',
-            templateUrl: './topnav.component.html'
+            templateUrl: './topnav.component.html',
         }), 
         __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService, index_1.CommunityServices])
     ], TopnavComponent);

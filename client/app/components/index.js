@@ -14,4 +14,5 @@ __export(require('./token/token.component'));
 __export(require('./packages/packages-section.component'));
 __export(require('./footer-section/footer-section.component'));
 __export(require('./stripe/stripe.component'));
+__export(require('./communityServices/services.component'));
 //# sourceMappingURL=index.js.map

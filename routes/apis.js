@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 
 var Users = require('../models/users');
+var Services = require('../models/services');
 var Communities = require('../models/communities');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 
@@ -264,6 +265,21 @@ var getAllCommunities = function (req, res) {
 
 }
 
+var getAllServices=function (req, res) {
+    var condition={};
+    if(req.body.id!=''){
+       condition= {communityId:req.body.id};
+    }
+    Services.find(condition, function (err, serviceDoc) {
+        if (err) {
+            res.send({ status: 'error', msg: 'unable to fetch communities , please later', error: err });
+        } else {
+            res.send({ status: 'success', result: serviceDoc });
+        }
+    });
+
+}
+
 router.post('/deleteCards', deleteStripeCards);
 
 router.post('/authenticate', authenticateUser);
@@ -274,6 +290,7 @@ router.post('/checkUniqueEmail', checkUniqueEmail);
 router.post('/createStripeCust', createStripeCust);
 router.get('/getStripeCard', getStripeCard);
 router.get('/getAllCommunities', getAllCommunities);
+router.post('/getAllServices',getAllServices);
 
 
 module.exports = router;

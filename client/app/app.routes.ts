@@ -2,7 +2,8 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
-  UserprofileComponent, TokenComponent, EditprofileComponent, StripesComponent
+  UserprofileComponent, TokenComponent, EditprofileComponent, 
+  StripesComponent,ServicesComponent
 } from './components/index';
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
@@ -17,7 +18,7 @@ const APP_ROUTES: Routes = [
   { path: 'stripes', component: StripesComponent, canActivate: [AuthGuard] },
   { path: 'packages', component: PackagesComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: UserprofileComponent, canActivate: [AuthGuard] },
-  { path: 'services', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'services', component: ServicesComponent },
   { path: 'editprofile', component: EditprofileComponent, canActivate: [AuthGuard] }
 
 ];

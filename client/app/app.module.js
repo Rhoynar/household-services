@@ -31,6 +31,7 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
+                index_1.ServicesComponent,
                 index_1.TopnavComponent,
                 index_1.footerSectionComponent,
                 index_1.LandingComponent,

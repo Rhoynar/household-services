@@ -50,6 +50,7 @@ export class StripesComponent {
         alert(errr.msg);
       });
   }
+  
   getCards() {
     this.stripeServices.getCards()
       .subscribe(data => {

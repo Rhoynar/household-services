@@ -7,48 +7,26 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 @Injectable() 
-export class StripeServices{
+export class CommunityServices{
     constructor(private http:Http){
     }
 
    API_ENDPOINT='http://beta.cisin.com:3004';
     
-    postCardDetails(cardDetails:any){
+
+    getCommunities(){
+        
+        return this.http.get(this.API_ENDPOINT+'/api/getAllCommunities')
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getAllServices(communitySelection:any){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT+'/api/createStripeCust',JSON.stringify(cardDetails),{headers:headers})
+
+        return this.http.post(this.API_ENDPOINT+'/api/getAllServices', JSON.stringify(communitySelection),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
-
-    getCards(){
-        var headers=new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT+'/api/getStripeCard',{headers:headers})
-        .map(this.extractData);//.catch(this.handleError);;
-    }
-
-    deleteCards(sourceJson:any){
-        var headers=new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT+'/api/deleteCards',JSON.stringify(sourceJson),{headers:headers})
-        .map(this.extractData);//.catch(this.handleError);;
-    }
-
-
-    getUserProfile(profileId:any){
-        // var headers=new Headers();
-        // headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT+'/api/getprofile/'+profileId)
-        .map(this.extractData);//.catch(this.handleError);;
-    }
-
-    createServiceCharge(cardDetails:any,selectedService:any){
-        var headers=new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT+'/api/createCharges',JSON.stringify({cardDetails:cardDetails,selectedService:selectedService}),{headers:headers})
-        .map(this.extractData);//.catch(this.handleError);;
-    }
-
 
      private extractData(res: Response) {
         let body = res.json();

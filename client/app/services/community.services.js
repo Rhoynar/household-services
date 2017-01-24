@@ -13,46 +13,26 @@ var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
-var StripeServices = (function () {
-    function StripeServices(http) {
+var CommunityServices = (function () {
+    function CommunityServices(http) {
         this.http = http;
         this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
-    StripeServices.prototype.postCardDetails = function (cardDetails) {
+    CommunityServices.prototype.getCommunities = function () {
+        return this.http.get(this.API_ENDPOINT + '/api/getAllCommunities')
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    CommunityServices.prototype.getAllServices = function (communitySelection) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/createStripeCust', JSON.stringify(cardDetails), { headers: headers })
+        return this.http.post(this.API_ENDPOINT + '/api/getAllServices', JSON.stringify(communitySelection), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
-    StripeServices.prototype.getCards = function () {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT + '/api/getStripeCard', { headers: headers })
-            .map(this.extractData); //.catch(this.handleError);;
-    };
-    StripeServices.prototype.deleteCards = function (sourceJson) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/deleteCards', JSON.stringify(sourceJson), { headers: headers })
-            .map(this.extractData); //.catch(this.handleError);;
-    };
-    StripeServices.prototype.getUserProfile = function (profileId) {
-        // var headers=new Headers();
-        // headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT + '/api/getprofile/' + profileId)
-            .map(this.extractData); //.catch(this.handleError);;
-    };
-    StripeServices.prototype.createServiceCharge = function (cardDetails, selectedService) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/createCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
-            .map(this.extractData); //.catch(this.handleError);;
-    };
-    StripeServices.prototype.extractData = function (res) {
+    CommunityServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
-    StripeServices.prototype.handleError = function (error) {
+    CommunityServices.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
         var errMsg;
         if (error instanceof http_1.Response) {
@@ -68,11 +48,11 @@ var StripeServices = (function () {
         //let body = error.json();
         //return Observable.throw(body || { });
     };
-    StripeServices = __decorate([
+    CommunityServices = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], StripeServices);
-    return StripeServices;
+    ], CommunityServices);
+    return CommunityServices;
 }());
-exports.StripeServices = StripeServices;
-//# sourceMappingURL=stripe.services.js.map
+exports.CommunityServices = CommunityServices;
+//# sourceMappingURL=community.services.js.map

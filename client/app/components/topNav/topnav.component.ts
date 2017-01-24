@@ -1,4 +1,4 @@
-import { Component,Input,Output,EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AuthenticationService, CommunityServices } from '../../services/index'
@@ -16,23 +16,28 @@ declare var $: any;
 export class TopnavComponent implements AfterViewInit {
   // parties: Observable<any[]>;
   // parties: Observable<Party[]>;
-  @Input() 
-  selectedCommunity:{}={id:'',name:'Select Community'};
-  @Output() 
-  emitCommunityChange =new EventEmitter<any>();
-  
+  @Input()
+  selectedCommunity: {} = { id: '', name: 'Select Community' };
+  @Output()
+  emitCommunityChange = new EventEmitter<any>();
+
   loggedIn: any;
   communities: any = [];
   communityChanged = false;
-  
+
   communityDropdownVisible = false;
+
+
   constructor(private router: Router,
     private authenticationService: AuthenticationService, private communityService: CommunityServices) {
     // this.parties = Parties.find({}).zone();
-   
+
     if (localStorage.getItem('currentUser')) {
       // logged in so return true
       this.loggedIn = true;
+    }
+    if (localStorage.getItem('selectedCommunity')) {
+      this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
     }
 
     this.communityService.getCommunities()
@@ -57,7 +62,7 @@ export class TopnavComponent implements AfterViewInit {
   onCommunityChange(id: String, name: String) {
     //this.selectedCommunity = newValue;
     this.communityDropdownVisible = false;
-    
+
     this.selectedCommunity = { id: id, name: name };
     this.emitCommunityChange.emit(this.selectedCommunity);
     localStorage.setItem('selectedCommunity', JSON.stringify(this.selectedCommunity));
@@ -66,10 +71,7 @@ export class TopnavComponent implements AfterViewInit {
 
 
   ngAfterViewInit() {
-    if (localStorage.getItem('selectedCommunity')) {
-      this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
-    }
-    
+    this.communityDropdownVisible = false;
   }
 
   logout() {

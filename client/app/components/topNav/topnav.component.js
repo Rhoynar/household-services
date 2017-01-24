@@ -29,6 +29,9 @@ var TopnavComponent = (function () {
             // logged in so return true
             this.loggedIn = true;
         }
+        if (localStorage.getItem('selectedCommunity')) {
+            this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
+        }
         this.communityService.getCommunities()
             .subscribe(function (data) {
             if (data.status == 'success') {
@@ -50,9 +53,7 @@ var TopnavComponent = (function () {
         localStorage.setItem('selectedCommunity', JSON.stringify(this.selectedCommunity));
     };
     TopnavComponent.prototype.ngAfterViewInit = function () {
-        if (localStorage.getItem('selectedCommunity')) {
-            this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
-        }
+        this.communityDropdownVisible = false;
     };
     TopnavComponent.prototype.logout = function () {
         var _this = this;

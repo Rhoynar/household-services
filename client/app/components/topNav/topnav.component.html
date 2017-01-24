@@ -19,9 +19,9 @@
                 <div class="collapse navbar-collapse js-navbar-collapse">
                   <div class="navi-menu">
                     <ul class="nav navbar-nav">
-                      <li class="active"><a [routerLink]="['/dashboard']" class="active">Homeowner</a> </li>
+                      <li [ngClass]="{active: router.url==='/dashboard'}" ><a [routerLink]="['/dashboard']" class="active">Homeowner</a> </li>
                       <li><a href="javascript:void(0);">Property Managers</a> </li>
-                      <li><a [routerLink]="['/services']">Browse Services</a></li>
+                      <li [ngClass]="{active: router.url==='/services'}"><a [routerLink]="['/services']">Browse Services</a></li>
                       <li><a href="javascript:void(0);">Contractor </a> </li>
                       <li *ngIf="loggedIn"><a href="javascript:void(0);" (click)="logout();">Logout </a> </li>
                       <li class="select-wrp">

@@ -13,6 +13,7 @@ var APP_ROUTES = [
     { path: 'packages', component: index_1.PackagesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'profile', component: index_1.UserprofileComponent, canActivate: [index_2.AuthGuard] },
     { path: 'services', component: index_1.ServicesComponent },
+    // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
     { path: 'editprofile', component: index_1.EditprofileComponent, canActivate: [index_2.AuthGuard] }
 ];
 exports.routing = router_1.RouterModule.forRoot(APP_ROUTES);

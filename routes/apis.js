@@ -5,6 +5,7 @@ var passport = require('passport');
 var Users = require('../models/users');
 var Services = require('../models/services');
 var Communities = require('../models/communities');
+var Charges = require('../models/charges');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 
 var authenticateUser = function (req, res, next) {
@@ -214,26 +215,33 @@ var createStripeCust = function (req, res) {
 }
 
 var getStripeCard = function (req, res) {
+    if (req.user) {
+        Users.findById(req.user.id, function (err, userDoc) {
 
-    Users.findById(req.user.id, function (err, userDoc) {
+            if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') {
+                stripe.customers.listCards(userDoc.stripeCustomerId,
+                    function (err, cards) {
+                        // asynchronously called
+                        if (cards) {
+                            res.send({ status: 'success', stripe_cus_id: userDoc.stripeCustomerId, result: cards.data });
+                        } else {
+                            res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
+                        }
+                        console.log(cards);
 
-        if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') {
-            stripe.customers.listCards(userDoc.stripeCustomerId,
-                function (err, cards) {
-                    // asynchronously called
-                    if (cards) {
-                        res.send({ status: 'success', stripe_cus_id: userDoc.stripeCustomerId, result: cards.data });
-                    } else {
-                        res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
-                    }
-                    console.log(cards);
+                    });
+            } else {
+                res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
+            }
 
-                });
-        } else {
-            res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
-        }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
 
-    });
+    }
+
 
 }
 
@@ -265,10 +273,10 @@ var getAllCommunities = function (req, res) {
 
 }
 
-var getAllServices=function (req, res) {
-    var condition={};
-    if(req.body.id!=''){
-       condition= {communityId:req.body.id};
+var getAllServices = function (req, res) {
+    var condition = {};
+    if (req.body.id != '') {
+        condition = { communityId: req.body.id };
     }
     Services.find(condition, function (err, serviceDoc) {
         if (err) {
@@ -278,6 +286,66 @@ var getAllServices=function (req, res) {
         }
     });
 
+}
+
+
+var createCharges = function (req, res) {
+
+    if (req.user) {
+        var cardDetails = req.body.cardDetails;
+        var selectedService = req.body.selectedService;
+        
+        Users.findById(req.user.id, function (err, userDoc) {
+            
+            if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') {
+
+                stripe.charges.create({
+                    amount: 2000,
+                    currency: "usd",
+                    receipt_email: userDoc.email,
+                    customer: userDoc.stripeCustomerId,
+                    source: cardDetails.id, // obtained with Stripe.js
+                    description: "Charge for community service " + selectedService._id
+                }, function (err, charge) {
+                    // asynchronously called
+            
+                    if (charge) {
+                        var newCharge = new Charges();
+                        newCharge.serviceId = selectedService._id;
+                        newCharge.amount = 2000;
+                        newCharge.clientId = userDoc._id;
+                        newCharge.stripeChargeId = charge.id;
+                        newCharge.chargeDetail = charge;
+                        newCharge.created = Date.now();
+                        newCharge.save(function (err) {
+                            if (err) {
+                                res.status(400);
+                                res.json({ msg: err });  // handle errors!
+                            } else {
+                                res.status(200);
+                                res.send({ status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" });
+                            }
+                        });
+                        
+                    } else {
+                        res.send({ status: 'error', result: [], msg: "Some error occured please try later" });
+                    }
+
+                });
+
+
+
+            } else {
+                res.status(401);
+                res.send({ status: 'error', msg: "Some error occured please try later", result: [] });
+            }
+
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
 }
 
 router.post('/deleteCards', deleteStripeCards);
@@ -290,7 +358,7 @@ router.post('/checkUniqueEmail', checkUniqueEmail);
 router.post('/createStripeCust', createStripeCust);
 router.get('/getStripeCard', getStripeCard);
 router.get('/getAllCommunities', getAllCommunities);
-router.post('/getAllServices',getAllServices);
-
+router.post('/getAllServices', getAllServices);
+router.post('/createCharges', createCharges);
 
 module.exports = router;

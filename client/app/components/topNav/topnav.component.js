@@ -13,7 +13,6 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var TopnavComponent = (function () {
     function TopnavComponent(router, authenticationService, communityService) {
-        // this.parties = Parties.find({}).zone();
         var _this = this;
         this.router = router;
         this.authenticationService = authenticationService;
@@ -25,10 +24,13 @@ var TopnavComponent = (function () {
         this.communities = [];
         this.communityChanged = false;
         this.communityDropdownVisible = false;
-        if (localStorage.getItem('currentUser')) {
-            // logged in so return true
-            this.loggedIn = true;
-        }
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (localStorage.getItem('currentUser')) {
+                // logged in so return true
+                _this.loggedIn = true;
+            }
+        });
         if (localStorage.getItem('selectedCommunity')) {
             this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
         }

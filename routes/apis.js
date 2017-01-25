@@ -205,12 +205,7 @@ var createStripeCust = function (req, res) {
             );
 
         }
-
-
     });
-
-
-
 
 }
 
@@ -288,59 +283,158 @@ var getAllServices = function (req, res) {
 
 }
 
+var _internalCreateCharge = function (userDoc, selectedService, cardDetails) {
+    stripe.charges.create({
+        amount: 2000,
+        currency: "usd",
+        receipt_email: userDoc.email,
+        customer: userDoc.stripeCustomerId,
+        source: cardDetails.id, // obtained with Stripe.js
+        description: "Charge for community service " + selectedService._id
+    }, function (err, charge) {
+        // asynchronously called
+
+        if (charge) {
+            var newCharge = new Charges();
+            newCharge.serviceId = selectedService._id;
+            newCharge.amount = 2000;
+            newCharge.clientId = userDoc._id;
+            newCharge.stripeChargeId = charge.id;
+            newCharge.chargeDetail = charge;
+            newCharge.created = Date.now();
+            newCharge.save(function (err) {
+                if (err) {
+
+                    return { statuscode: 400, msg: err };  // handle errors!
+                } else {
+                    res.status(200);
+                    return { statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" };
+                }
+            });
+
+        } else {
+            return { statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later" };
+        }
+
+    });
+}
 
 var createCharges = function (req, res) {
 
     if (req.user) {
         var cardDetails = req.body.cardDetails;
         var selectedService = req.body.selectedService;
-        
+
         Users.findById(req.user.id, function (err, userDoc) {
-            
+
             if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') {
-
-                stripe.charges.create({
-                    amount: 2000,
-                    currency: "usd",
-                    receipt_email: userDoc.email,
-                    customer: userDoc.stripeCustomerId,
-                    source: cardDetails.id, // obtained with Stripe.js
-                    description: "Charge for community service " + selectedService._id
-                }, function (err, charge) {
-                    // asynchronously called
-            
-                    if (charge) {
-                        var newCharge = new Charges();
-                        newCharge.serviceId = selectedService._id;
-                        newCharge.amount = 2000;
-                        newCharge.clientId = userDoc._id;
-                        newCharge.stripeChargeId = charge.id;
-                        newCharge.chargeDetail = charge;
-                        newCharge.created = Date.now();
-                        newCharge.save(function (err) {
-                            if (err) {
-                                res.status(400);
-                                res.json({ msg: err });  // handle errors!
-                            } else {
-                                res.status(200);
-                                res.send({ status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" });
-                            }
-                        });
-                        
-                    } else {
-                        res.send({ status: 'error', result: [], msg: "Some error occured please try later" });
-                    }
-
-                });
-
-
-
+                response = _internalCreateCharge(userDoc, selectedService, cardDetails);
+                res.status(response.statuscode);
+                res.send(response);
             } else {
                 res.status(401);
                 res.send({ status: 'error', msg: "Some error occured please try later", result: [] });
             }
 
         });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+var addandcreateCharges = function (req, res) {
+
+    if (req.user) {
+        var cardObject = req.body.cardDetails;
+        var selectedService = req.body.selectedService;
+
+
+
+        Users.findById(req.user.id, function (err, userDoc) {
+            if (!userDoc.stripeCustomerId || userDoc.stripeCustomerId == '') {
+                stripe.customers.create({
+                    description: 'Customer ' + req.user.email,
+                    email: req.user.email,
+                    source: {
+                        object: 'card',
+                        number: cardObject.number,
+                        exp_month: cardObject.exp_month,
+                        exp_year: cardObject.exp_year,
+                        cvc: cardObject.cvc
+
+                    } // obtained with Stripe.js
+                }, function (err, customer) {
+
+                    if (err) {
+                        res.json({ status: 'error', msg: err.message });
+                    } else {
+                        updateDetails =
+                            {
+                                stripeCustomerId: customer.id,
+                                stripeCustomer: customer
+                            }
+
+                        Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
+
+                            if (err) {
+
+                                return res.json({ status: 'error', error: err, msg: 'Card is added, but Unable to update user record' });
+                            }
+                            else {
+                                cardDetails = customer.sources[0];
+                                response = _internalCreateCharge(userDoc, selectedService, cardDetails);
+                                res.status(response.statuscode);
+                                res.send(response);
+                            }
+                        });
+                    }
+
+
+
+                });
+            } else {
+
+                stripe.customers.createSource(
+                    userDoc.stripeCustomerId,
+                    {
+                        source: {
+                            object: 'card',
+                            number: cardObject.number,
+                            exp_month: cardObject.exp_month,
+                            exp_year: cardObject.exp_year,
+                            cvc: cardObject.cvc
+
+                        }
+                    },
+                    function (err, card) {
+                        userDoc.stripeCustomer.sources.total_count++;
+
+                        userDoc.stripeCustomer.sources.data.push(card);
+                        updateDetails =
+                            {
+                                stripeCustomer: userDoc.stripeCustomer
+                            }
+
+                        Users.findByIdAndUpdate(userDoc.id, updateDetails, function (err, updateRes) {
+
+                            if (err) {
+
+                                return res.json({ status: 'error', error: err });
+                            }
+                            else {
+                                response = _internalCreateCharge(userDoc, selectedService, card);
+                                res.status(response.statuscode);
+                                res.send(response);
+                            }
+                        });
+                    }
+                );
+
+            }
+        });
+
     } else {
         res.status(401);
         res.json({ status: 'error', msg: 'some error occured' });
@@ -360,5 +454,6 @@ router.get('/getStripeCard', getStripeCard);
 router.get('/getAllCommunities', getAllCommunities);
 router.post('/getAllServices', getAllServices);
 router.post('/createCharges', createCharges);
+router.post('/addandcreateCharges', addandcreateCharges);
 
 module.exports = router;

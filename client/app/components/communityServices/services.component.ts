@@ -42,7 +42,7 @@ export class ServicesComponent implements AfterViewInit, OnInit, OnDestroy {
   //end of constructor
 
   buyService(serviceId: any, serviceIndex: any) {
-    console.log(serviceId + ' ' + serviceIndex);
+    
     this.selectedService = this.availableServices[serviceIndex];
     this.getCards();
     this.servicesVisibility = true;//hide this section
@@ -56,9 +56,9 @@ export class ServicesComponent implements AfterViewInit, OnInit, OnDestroy {
     this.selectedServiceVision = true;//hide
   }
 
-  selectCard(cardId: any) {
+  selectCard(cardDetails: any) {
     this.cvc = '';
-    this.selectedCardId = cardId;
+    this.selectedCardId = cardDetails.id;
   }
 
   makePayment(cardDetails: any) {
@@ -80,6 +80,33 @@ export class ServicesComponent implements AfterViewInit, OnInit, OnDestroy {
         );
     }
 
+  }
+
+  addCardAndPay(){
+    this.stripeServices.postCardAndServiceDetails({
+      number: this.cardNumber,
+      exp_month: this.expiryMonth,
+      exp_year: this.expiryYear,
+      cvc: this.cvc,
+      
+    },this.selectedService)
+      .subscribe(data => {
+        if (data.status == 'error') {
+          alert(data.error);
+        } else {
+          alert(data.msg);
+        }
+        this.getCards();
+        //this.router.navigate(['/login']);
+        //return false;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+      }
+      );
   }
 
   //get users credit cards
@@ -111,16 +138,14 @@ export class ServicesComponent implements AfterViewInit, OnInit, OnDestroy {
       );
   }
 
-  showCardForm() {
-    this.cardFormVisibility = false; //shown 
-    this.cardListVisibility = true; //shown 
-  }
+  
 
   toggleCards() {
-    this.selectCard('');
+    this.selectedCardId='';
     this.cardFormVisibility = !this.cardFormVisibility; //shown 
     this.cardListVisibility = !this.cardListVisibility; //shown 
   }
+
   myCrazyCallback(test: any) {
     // console.log(test);
     this.selectedCommunity = test;

@@ -24,6 +24,12 @@ var StripeServices = (function () {
         return this.http.post(this.API_ENDPOINT + '/api/createStripeCust', JSON.stringify(cardDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    StripeServices.prototype.postCardAndServiceDetails = function (cardDetails, selectedService) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT + '/api/addandcreateCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     StripeServices.prototype.getCards = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');

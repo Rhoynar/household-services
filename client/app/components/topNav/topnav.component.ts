@@ -28,14 +28,21 @@ export class TopnavComponent implements AfterViewInit {
   communityDropdownVisible = false;
 
 
-  constructor(private router: Router,
-    private authenticationService: AuthenticationService, private communityService: CommunityServices) {
-    // this.parties = Parties.find({}).zone();
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private communityService: CommunityServices) {
 
-    if (localStorage.getItem('currentUser')) {
-      // logged in so return true
-      this.loggedIn = true;
-    }
+
+    this.authenticationService.generatetoken()
+      .subscribe(result => {
+        if (localStorage.getItem('currentUser')) {
+          // logged in so return true
+          this.loggedIn = true;
+        }
+      });
+
+
     if (localStorage.getItem('selectedCommunity')) {
       this.selectedCommunity = JSON.parse(localStorage.getItem('selectedCommunity'));
     }

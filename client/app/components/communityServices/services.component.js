@@ -31,7 +31,6 @@ var ServicesComponent = (function () {
     }
     //end of constructor
     ServicesComponent.prototype.buyService = function (serviceId, serviceIndex) {
-        console.log(serviceId + ' ' + serviceIndex);
         this.selectedService = this.availableServices[serviceIndex];
         this.getCards();
         this.servicesVisibility = true; //hide this section
@@ -43,9 +42,9 @@ var ServicesComponent = (function () {
         this.cardFormVisibility = true;
         this.selectedServiceVision = true; //hide
     };
-    ServicesComponent.prototype.selectCard = function (cardId) {
+    ServicesComponent.prototype.selectCard = function (cardDetails) {
         this.cvc = '';
-        this.selectedCardId = cardId;
+        this.selectedCardId = cardDetails.id;
     };
     ServicesComponent.prototype.makePayment = function (cardDetails) {
         this.selectedCardId = cardDetails.id;
@@ -61,6 +60,31 @@ var ServicesComponent = (function () {
                 alert(errr.msg);
             });
         }
+    };
+    ServicesComponent.prototype.addCardAndPay = function () {
+        var _this = this;
+        this.stripeServices.postCardAndServiceDetails({
+            number: this.cardNumber,
+            exp_month: this.expiryMonth,
+            exp_year: this.expiryYear,
+            cvc: this.cvc,
+        }, this.selectedService)
+            .subscribe(function (data) {
+            if (data.status == 'error') {
+                alert(data.error);
+            }
+            else {
+                alert(data.msg);
+            }
+            _this.getCards();
+            //this.router.navigate(['/login']);
+            //return false;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     //get users credit cards
     ServicesComponent.prototype.getCards = function () {
@@ -86,12 +110,8 @@ var ServicesComponent = (function () {
             alert(errr.msg);
         });
     };
-    ServicesComponent.prototype.showCardForm = function () {
-        this.cardFormVisibility = false; //shown 
-        this.cardListVisibility = true; //shown 
-    };
     ServicesComponent.prototype.toggleCards = function () {
-        this.selectCard('');
+        this.selectedCardId = '';
         this.cardFormVisibility = !this.cardFormVisibility; //shown 
         this.cardListVisibility = !this.cardListVisibility; //shown 
     };

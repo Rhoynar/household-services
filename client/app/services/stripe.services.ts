@@ -20,6 +20,14 @@ export class StripeServices{
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    postCardAndServiceDetails(cardDetails:any,selectedService:any){
+        var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT+'/api/addandcreateCharges',JSON.stringify({cardDetails:cardDetails,selectedService:selectedService}),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+
+    }
+
     getCards(){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');

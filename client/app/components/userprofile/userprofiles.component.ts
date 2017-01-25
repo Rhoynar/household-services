@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit,OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AuthenticationService, UserServices } from '../../services/index'
@@ -13,10 +13,13 @@ declare var $: any;
   templateUrl: './userprofiles.component.html'
   //styles: [main]
 })
-export class UserprofileComponent implements AfterViewInit,OnInit {
-  userProfile: any={};
-  constructor(private router: Router,
-    private authenticationService: AuthenticationService, private userService: UserServices) {
+export class UserprofileComponent implements AfterViewInit, OnInit {
+  userProfile: any = {};
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private userService: UserServices
+  ) {
 
     this.authenticationService.generatetoken()
       .subscribe(result => {
@@ -25,16 +28,16 @@ export class UserprofileComponent implements AfterViewInit,OnInit {
         }
       });
 
-    
+
   }
-  ngOnInit(){
+  ngOnInit() {
     var userData = JSON.parse(localStorage.getItem('currentUser')).token;
     this.userService.getUserProfile(userData._id)
       .subscribe(data => {
         this.userProfile = data;
-        
+
       },
-      error=>{
+      error => {
         console.log(error);
       })
   }

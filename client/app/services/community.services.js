@@ -28,6 +28,12 @@ var CommunityServices = (function () {
         return this.http.post(this.API_ENDPOINT + '/api/getAllServices', JSON.stringify(communitySelection), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    CommunityServices.prototype.getMyServices = function () {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.get(this.API_ENDPOINT + '/api/getMyServices', { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     CommunityServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};

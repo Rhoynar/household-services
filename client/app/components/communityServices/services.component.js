@@ -47,12 +47,14 @@ var ServicesComponent = (function () {
         this.selectedCardId = cardDetails.id;
     };
     ServicesComponent.prototype.makePayment = function (cardDetails) {
+        var _this = this;
         this.selectedCardId = cardDetails.id;
         var con = confirm('Are you Sure, you wanna make this payment?');
         if (con) {
             this.stripeServices.createServiceCharge(cardDetails, this.selectedService)
                 .subscribe(function (data) {
                 alert(data.msg);
+                _this.router.navigate(['/deals']);
             }, function (error) {
                 var body = error.json() || '';
                 var err = body.error || JSON.stringify(body);
@@ -77,7 +79,7 @@ var ServicesComponent = (function () {
                 alert(data.msg);
             }
             _this.getCards();
-            //this.router.navigate(['/login']);
+            _this.router.navigate(['/deals']);
             //return false;
         }, function (error) {
             var body = error.json() || '';

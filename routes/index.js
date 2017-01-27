@@ -152,6 +152,7 @@ router.get('/createtoken', isLoggedIn, getTemplate);
 router.get('/facebook', getTemplate);
 router.get('/services', getTemplate);
 router.get('/stripes', isLoggedIn,getTemplate);
+router.get('/deals', isLoggedIn,getTemplate);
 router.get('/packages', isLoggedIn, getTemplate);
 
 router.get('/profile', isLoggedIn, getTemplate);

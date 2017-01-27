@@ -69,6 +69,7 @@ export class ServicesComponent implements AfterViewInit, OnInit, OnDestroy {
         .subscribe(data => {
 
           alert(data.msg);
+          this.router.navigate(['/deals']);
         },
         error => {
           const body = error.json() || '';
@@ -97,7 +98,7 @@ export class ServicesComponent implements AfterViewInit, OnInit, OnDestroy {
           alert(data.msg);
         }
         this.getCards();
-        //this.router.navigate(['/login']);
+        this.router.navigate(['/deals']);
         //return false;
       },
       error => {

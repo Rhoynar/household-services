@@ -12,6 +12,7 @@ var APP_ROUTES = [
     { path: 'stripes', component: index_1.StripesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'packages', component: index_1.PackagesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'profile', component: index_1.UserprofileComponent, canActivate: [index_2.AuthGuard] },
+    { path: 'deals', component: index_1.DealsComponent, canActivate: [index_2.AuthGuard] },
     { path: 'services', component: index_1.ServicesComponent },
     // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
     { path: 'editprofile', component: index_1.EditprofileComponent, canActivate: [index_2.AuthGuard] }

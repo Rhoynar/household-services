@@ -28,6 +28,13 @@ export class CommunityServices{
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    getMyServices(){
+        var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.get(this.API_ENDPOINT+'/api/getMyServices',{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
      private extractData(res: Response) {
         let body = res.json();
         return body || { };

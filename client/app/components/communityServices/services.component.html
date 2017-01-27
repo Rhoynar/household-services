@@ -135,12 +135,12 @@
               <ul class="time-info">
                 <li>{{eachCard.exp_month}}</li>
                 <li>{{eachCard.exp_year}}</li>
-                <li>{{eachCard}}</li>
+                
               </ul>
               <div class="">
-                <div *ngIf="eachCard.id==selectedCardId">
+                <!--<div *ngIf="eachCard.id==selectedCardId">
                   <input type="text" ng name="cvvNumber" [(ngModel)]="cvc" id="cvvNumber" placeholder="CVV"/>
-                </div>
+                </div>-->
                 <button class="dash-btn blue" (click)="makePayment(eachCard)">Pay $ 20</button>
                 <!--<button class="dash-btn blue" *ngIf="eachCard.id==selectedCardId" (click)="makePayment(eachCard)">Submit</button>-->
                 
@@ -165,7 +165,7 @@
 
           <h1>Custom Stripe Form</h1>
 
-          <form action="" method="POST" id="payment-form" (submit)="getToken()">
+          <form action="" method="POST" id="payment-form" (submit)="addCardAndPay()">
             <span class="payment-message">{{message}}</span>
 
             <div class="form-group">
@@ -193,7 +193,7 @@
             <div class="form-group btn-wrp">
 
               <button type="button" class="sub-btn" (click)="toggleCards()">Cancel</button>
-              <button type="submit" class="sub-btn" (click)="addCardAndPay();">Submit</button>
+              <button type="submit" class="sub-btn" >Submit</button>
             </div>
 
           </form>

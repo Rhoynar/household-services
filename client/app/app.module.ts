@@ -11,7 +11,7 @@ import {
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, PackagessectionComponent,
   footerSectionComponent, EditprofileComponent, StripesComponent,
-  ServicesComponent
+  ServicesComponent,DealsComponent
 } from './components/index';
 
 
@@ -41,7 +41,8 @@ import { CommunityServices, UserServices, AuthenticationService, StripeServices 
     DashboardComponent,
     TokenComponent,
     StripesComponent,
-    EditprofileComponent
+    EditprofileComponent,
+    DealsComponent
     
   ],
   providers: [AuthGuard, NotAuthGuard, CommunityServices, UserServices, AuthenticationService, StripeServices],

@@ -12,7 +12,7 @@ var authenticateUser = function (req, res, next) {
     console.log(req.body)
     passport.authenticate('local-login', function (err, user, info) {
         if (err) { return next(err); }
-        console.log(user + 'test me');
+
         if (!user) {
             res.status(400);
             res.json({ msg: 'User Not found or invalid password' });
@@ -56,7 +56,7 @@ var getProfile = function (req, res) {
 }
 
 var updateProfile = function (req, res) {
-    console.log(req.body)
+
     var profile = req.body;
     //res.render('index.html');
     //userModel.
@@ -86,7 +86,7 @@ var updateProfile = function (req, res) {
 }
 
 var checkUniqueEmail = function (req, res) {
-    console.log(req.body)
+
 
     // Users.where('age').gte(25)
     //     .where('tags').in(['movie', 'music', 'art'])
@@ -112,7 +112,7 @@ var checkUniqueEmail = function (req, res) {
 
     query.where('email').eq(email);
     query.exec(function (err, docs) {
-        console.log(docs);
+
         if (err) {
 
             return res.json({ status: 'error', error: err });
@@ -209,6 +209,7 @@ var createStripeCust = function (req, res) {
 
 }
 
+
 var getStripeCard = function (req, res) {
     if (req.user) {
         Users.findById(req.user.id, function (err, userDoc) {
@@ -222,7 +223,7 @@ var getStripeCard = function (req, res) {
                         } else {
                             res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] });
                         }
-                        console.log(cards);
+
 
                     });
             } else {
@@ -283,7 +284,7 @@ var getAllServices = function (req, res) {
 
 }
 
-var _internalCreateCharge = function (userDoc, selectedService, cardDetails) {
+var _internalCreateCharge = function (userDoc, selectedService, cardDetails, res) {
     stripe.charges.create({
         amount: 2000,
         currency: "usd",
@@ -302,18 +303,23 @@ var _internalCreateCharge = function (userDoc, selectedService, cardDetails) {
             newCharge.stripeChargeId = charge.id;
             newCharge.chargeDetail = charge;
             newCharge.created = Date.now();
-            newCharge.save(function (err) {
+            return newCharge.save(function (err) {
                 if (err) {
-
-                    return { statuscode: 400, msg: err };  // handle errors!
+                    //return { statuscode: 400, msg: err };  // handle errors!
+                    res.status(400);
+                    res.send({ statuscode: 400, msg: err });
                 } else {
+
+                    //return { statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" };
                     res.status(200);
-                    return { statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" };
+                    res.send({ statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" });
                 }
             });
 
         } else {
-            return { statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later" };
+            res.status(200);
+            res.send({ statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later" });
+            //return { statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later" };
         }
 
     });
@@ -328,9 +334,8 @@ var createCharges = function (req, res) {
         Users.findById(req.user.id, function (err, userDoc) {
 
             if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') {
-                response = _internalCreateCharge(userDoc, selectedService, cardDetails);
-                res.status(response.statuscode);
-                res.send(response);
+                _internalCreateCharge(userDoc, selectedService, cardDetails, res);
+
             } else {
                 res.status(401);
                 res.send({ status: 'error', msg: "Some error occured please try later", result: [] });
@@ -384,9 +389,8 @@ var addandcreateCharges = function (req, res) {
                             }
                             else {
                                 cardDetails = customer.sources[0];
-                                response = _internalCreateCharge(userDoc, selectedService, cardDetails);
-                                res.status(response.statuscode);
-                                res.send(response);
+                                _internalCreateCharge(userDoc, selectedService, cardDetails, res);
+
                             }
                         });
                     }
@@ -424,9 +428,8 @@ var addandcreateCharges = function (req, res) {
                                 return res.json({ status: 'error', error: err });
                             }
                             else {
-                                response = _internalCreateCharge(userDoc, selectedService, card);
-                                res.status(response.statuscode);
-                                res.send(response);
+                                _internalCreateCharge(userDoc, selectedService, card, res);
+
                             }
                         });
                     }
@@ -442,6 +445,90 @@ var addandcreateCharges = function (req, res) {
     }
 }
 
+
+
+var getMyServices = function (req, res) {
+    if (req.user) {
+
+        /*Charges.find({ clientId: req.user.id }).lean().exec()
+            .then(function (chargeDoc) {
+
+                var i = -1;
+                var next = function () {
+
+                    i++;
+
+                    if (i < chargeDoc.length) {
+
+                        Services.findById(chargeDoc[i].serviceId).lean().exec()
+                            .then(function (serviceDocs) {
+
+
+                                chargeDoc[i].serviceDetails = serviceDocs;
+
+                                next();
+                            }).catch(function (err) {
+
+                            });
+
+                    } else {
+                        console.log(result);
+                        res.status(200);
+                        res.send({ statuscode: 200, status: 'success', result: chargeDoc });
+                    }
+                }
+                next();
+
+
+            })
+            .then(undefined, function (err) {
+                //Handle error
+            })*/
+
+        Charges.find({ clientId: req.user.id }).lean().exec(function (err, chargeDoc) {
+            if (err) {
+                res.status(401);
+                res.json({ status: 'error', msg: 'some error occured' });
+                return res.send();
+            } else {
+                var i = -1;
+                var next = function () {
+
+                    i++;
+
+                    if (i < chargeDoc.length) {
+
+                        Services.findById(chargeDoc[i].serviceId).lean().exec(function (err, serviceDoc) {
+                            if (err) {
+                                res.status(401);
+                                res.json({ status: 'error', msg: 'some error occured' });
+                                return res.send();
+                            } else {
+                                chargeDoc[i].serviceDetails = serviceDoc;
+                                next();
+                            }
+                        });
+                    } else {
+
+                        res.status(200);
+                        res.send({ statuscode: 200, status: 'success', result: chargeDoc });
+                    }
+                }
+                next();
+
+            }
+
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+
+
+
 router.post('/deleteCards', deleteStripeCards);
 
 router.post('/authenticate', authenticateUser);
@@ -455,5 +542,6 @@ router.get('/getAllCommunities', getAllCommunities);
 router.post('/getAllServices', getAllServices);
 router.post('/createCharges', createCharges);
 router.post('/addandcreateCharges', addandcreateCharges);
+router.get('/getMyServices', getMyServices);
 
 module.exports = router;

@@ -15,4 +15,5 @@ __export(require('./packages/packages-section.component'));
 __export(require('./footer-section/footer-section.component'));
 __export(require('./stripe/stripe.component'));
 __export(require('./communityServices/services.component'));
+__export(require('./deals/deals.component'));
 //# sourceMappingURL=index.js.map

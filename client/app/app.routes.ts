@@ -3,7 +3,7 @@ import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, EditprofileComponent, 
-  StripesComponent,ServicesComponent
+  StripesComponent,ServicesComponent,DealsComponent
 } from './components/index';
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
@@ -18,6 +18,7 @@ const APP_ROUTES: Routes = [
   { path: 'stripes', component: StripesComponent, canActivate: [AuthGuard] },
   { path: 'packages', component: PackagesComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: UserprofileComponent, canActivate: [AuthGuard] },
+  { path: 'deals', component: DealsComponent, canActivate: [AuthGuard] },
   { path: 'services', component: ServicesComponent },
  // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
   { path: 'editprofile', component: EditprofileComponent, canActivate: [AuthGuard] }

@@ -3,13 +3,14 @@ import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, EditprofileComponent, 
-  StripesComponent,ServicesComponent,DealsComponent
+  StripesComponent,ServicesComponent,DealsComponent,LandingOneComponent
 } from './components/index';
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
 
 const APP_ROUTES: Routes = [
-  { path: '', component: LandingComponent, canActivate: [NotAuthGuard] },
+  //{ path: '', component: LandingComponent, canActivate: [NotAuthGuard] },
+  { path: '', component: LandingOneComponent, canActivate: [NotAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [NotAuthGuard] },
   { path: 'createtoken', component: TokenComponent },

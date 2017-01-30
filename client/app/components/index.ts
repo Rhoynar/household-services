@@ -1,5 +1,7 @@
 export * from './topNav/topnav.component';
+export * from './topNav/topnavone.component';
 export * from './landingPage/landing.component';
+export * from './landingPage/landingone.component';
 export * from './login/login.component';
 export * from './signup/signup.component';
 export * from './dashboard/dashboard.component';
@@ -12,3 +14,4 @@ export * from './footer-section/footer-section.component';
 export * from './stripe/stripe.component';
 export * from './communityServices/services.component';
 export * from './deals/deals.component';
+

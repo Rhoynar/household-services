@@ -5,7 +5,8 @@
     <meta name="viewport"  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rhoynar</title>
     <base href="/">
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css" />-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/owl.carousel.css" />
     <link rel="stylesheet" href="css/owl.transitions.css" />
     <link href="css/font-awesome.css" rel="stylesheet" type="text/css">
@@ -32,9 +33,14 @@
         Stripe.setPublishableKey('pk_test_5hfLgmZdXPr09rkFMavSFd3H');
         System.import('app').catch(function(err){ console.error(err); });
     </script>
+    
+    
   </head>
 
   <body>
-    <app>Loading , Please Wait ...</app>
+    <app>
+      <div class="load"></div>
+      
+    </app>
   </body>
 </html>

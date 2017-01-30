@@ -11,10 +11,12 @@ import {
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, PackagessectionComponent,
   footerSectionComponent, EditprofileComponent, StripesComponent,
-  ServicesComponent,DealsComponent
+  ServicesComponent,DealsComponent,LandingOneComponent,
+  TopnavOneComponent
 } from './components/index';
 
 
+import { ModalModule } from 'ng2-bootstrap';
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
 import { CommunityServices, UserServices, AuthenticationService, StripeServices } from './services/index';
@@ -25,14 +27,17 @@ import { CommunityServices, UserServices, AuthenticationService, StripeServices 
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    routing,
+    ModalModule.forRoot()
   ],
   declarations: [
     AppComponent,
     ServicesComponent,
     TopnavComponent,
+    TopnavOneComponent,
     footerSectionComponent,
     LandingComponent,
+    LandingOneComponent,
     LoginComponent,
     SignupComponent,
     PackagesComponent,

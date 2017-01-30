@@ -3,7 +3,8 @@ var router_1 = require('@angular/router');
 var index_1 = require('./components/index');
 var index_2 = require('./guards/index');
 var APP_ROUTES = [
-    { path: '', component: index_1.LandingComponent, canActivate: [index_2.NotAuthGuard] },
+    //{ path: '', component: LandingComponent, canActivate: [NotAuthGuard] },
+    { path: '', component: index_1.LandingOneComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'login', component: index_1.LoginComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'signup', component: index_1.SignupComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'createtoken', component: index_1.TokenComponent },

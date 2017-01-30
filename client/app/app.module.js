@@ -15,6 +15,7 @@ var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var app_routes_1 = require('./app.routes');
 var index_1 = require('./components/index');
+var ng2_bootstrap_1 = require('ng2-bootstrap');
 var index_2 = require('./guards/index');
 var index_3 = require('./services/index');
 var AppModule = (function () {
@@ -27,14 +28,17 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 forms_1.ReactiveFormsModule,
                 http_1.HttpModule,
-                app_routes_1.routing
+                app_routes_1.routing,
+                ng2_bootstrap_1.ModalModule.forRoot()
             ],
             declarations: [
                 app_component_1.AppComponent,
                 index_1.ServicesComponent,
                 index_1.TopnavComponent,
+                index_1.TopnavOneComponent,
                 index_1.footerSectionComponent,
                 index_1.LandingComponent,
+                index_1.LandingOneComponent,
                 index_1.LoginComponent,
                 index_1.SignupComponent,
                 index_1.PackagesComponent,

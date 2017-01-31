@@ -15,7 +15,9 @@ var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var app_routes_1 = require('./app.routes');
 var index_1 = require('./components/index');
+//installed modules
 var ng2_bootstrap_1 = require('ng2-bootstrap');
+var core_2 = require("angular2-google-maps/core");
 var index_2 = require('./guards/index');
 var index_3 = require('./services/index');
 var AppModule = (function () {
@@ -29,7 +31,11 @@ var AppModule = (function () {
                 forms_1.ReactiveFormsModule,
                 http_1.HttpModule,
                 app_routes_1.routing,
-                ng2_bootstrap_1.ModalModule.forRoot()
+                ng2_bootstrap_1.ModalModule.forRoot(),
+                core_2.AgmCoreModule.forRoot({
+                    apiKey: "AIzaSyD7UAWwbYiO3Xjdp8nES-xp8h7s3YY7jjc",
+                    libraries: ["places"]
+                }),
             ],
             declarations: [
                 app_component_1.AppComponent,

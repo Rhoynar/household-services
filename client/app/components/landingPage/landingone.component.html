@@ -10,12 +10,57 @@
 
 
       <div bsModal #learnMoreModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        aria-hidden="true" [config]="{backdrop: 'static',keyboard:false}">
+        <div class="fullscreen-modal">
+          <div class="modal-content">
+
+
+
+            <div class="modal-body ">
+              <button type="button" class="close pull-right" (click)="learnMoreModal.hide()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h3 class="text-center">Local trusted profestionals in your area.</h3>
+              <div class="col-md-12 jumbotron">
+                <div class="col-md-2">
+                  <img src="images/workservice.png" />
+                </div>
+                <div class="col-md-10">
+                  <ul class="list-group">
+                    <li class="list-group-item">Monthly packages for mowing and cleaning</li>
+                    <li class="list-group-item">Trusted and honest trusted profestionals</li>
+                    <li class="list-group-item">100% Guarantee or your service is free</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    
+                  </ul>
+                  <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="control-label" for="inputBasicEmail">Enter your address to continue</label>
+                          <!--<input class="form-control" id="inputBasicEmail" name="inputEmail" placeholder="Your address" type="text">-->
+                          <div class="form-group">
+                            <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [ngModel]="searchControl">
+                          </div>
+                        </div>
+
+                      </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div bsModal #getStartedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true" [config]="{backdrop: 'static',keyboard:false}">
+        <div class="modal-dialog modal-lg fullscreen-modal">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title pull-left">Learn More</h4>
-              <button type="button" class="close pull-right" (click)="learnMoreModal.hide()" aria-label="Close">
+              <h4 class="modal-title pull-left">Get Started</h4>
+              <button type="button" class="close pull-right" (click)="getStartedModal.hide()" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -56,7 +101,7 @@
 
           <div class="col-md-12">
             <button class="col-md-4 btn btn-primary pull-left" (click)="learnMoreModal.show()">Learn More</button>
-            <button class="col-md-4 btn btn-primary pull-right" (click)="lgModal.show()">Get Started</button>
+            <button class="col-md-4 btn btn-primary pull-right" (click)="getStartedModal.show()">Get Started</button>
 
           </div>
         </div>

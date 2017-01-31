@@ -730,3 +730,16 @@ ul.user-info li i{ padding-right:10px;}
     width: 100%;
     height: 100%;
 }
+
+.fullscreen-modal{
+  height: 100%;
+  width: 100%
+}
+
+.fullscreen-modal .modal-content{
+  min-height: 100%;
+}
+
+.pac-container {
+        z-index: 10000 !important;
+    }

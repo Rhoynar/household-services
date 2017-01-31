@@ -15,8 +15,9 @@ import {
   TopnavOneComponent
 } from './components/index';
 
-
+//installed modules
 import { ModalModule } from 'ng2-bootstrap';
+import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
 import { CommunityServices, UserServices, AuthenticationService, StripeServices } from './services/index';
@@ -28,7 +29,11 @@ import { CommunityServices, UserServices, AuthenticationService, StripeServices 
     ReactiveFormsModule,
     HttpModule,
     routing,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyD7UAWwbYiO3Xjdp8nES-xp8h7s3YY7jjc",
+      libraries: ["places"]
+    }),
   ],
   declarations: [
     AppComponent,

@@ -11,7 +11,7 @@ import {
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, PackagessectionComponent,
   footerSectionComponent, EditprofileComponent, StripesComponent,
-  ServicesComponent,DealsComponent,LandingOneComponent,
+  ServicesComponent, DealsComponent, LandingOneComponent,
   TopnavOneComponent
 } from './components/index';
 
@@ -20,7 +20,10 @@ import { ModalModule } from 'ng2-bootstrap';
 import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { AuthGuard, NotAuthGuard } from './guards/index';
-import { CommunityServices, UserServices, AuthenticationService, StripeServices } from './services/index';
+import {
+  CommunityServices, UserServices, AuthenticationService,
+  StripeServices, GooglePlaceService, PackageServices
+} from './services/index';
 
 @NgModule({
   imports: [
@@ -53,9 +56,18 @@ import { CommunityServices, UserServices, AuthenticationService, StripeServices 
     StripesComponent,
     EditprofileComponent,
     DealsComponent
-    
+
   ],
-  providers: [AuthGuard, NotAuthGuard, CommunityServices, UserServices, AuthenticationService, StripeServices],
+  providers: [
+    AuthGuard,
+    NotAuthGuard,
+    CommunityServices,
+    UserServices,
+    AuthenticationService,
+    StripeServices,
+    GooglePlaceService,
+    PackageServices
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

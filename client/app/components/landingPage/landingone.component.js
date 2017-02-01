@@ -10,10 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var core_2 = require('angular2-google-maps/core');
+var index_1 = require('../../services/index');
 var LandingOneComponent = (function () {
-    function LandingOneComponent(mapsAPILoader, ngZone) {
+    function LandingOneComponent(mapsAPILoader, ngZone, googlePlace, packageService) {
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
+        this.googlePlace = googlePlace;
+        this.packageService = packageService;
+        this.postal_code = '';
+        this.searched = false;
+        /*street_number: any = '';
+        street: any = '';
+        city: any = '';
+        state: any = '';
+        
+        district: any = '';
+        country: any = '';
+        lat: any = '';
+        lng: any = '';
+        adr_address: any = '';
+        name: any = '';
+        types: any = '';
+        vicinity: any = '';*/
         this.searchControl = '';
     }
     LandingOneComponent.prototype.ngOnInit = function () {
@@ -35,8 +53,36 @@ var LandingOneComponent = (function () {
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
+                    _this.postal_code = _this.googlePlace.postal_code(place.address_components) ? _this.googlePlace.postal_code(place.address_components) : null;
+                    /*this.street_number = this.googlePlace.street_number(place.address_components) ?this.googlePlace.street_number(place.address_components) : null;
+                    this.street = this.googlePlace.street(place.address_components) ? this.googlePlace.street(place.address_components) : null;
+                    this.city = this.googlePlace.city(place.address_components) ? this.googlePlace.city(place.address_components) : null;
+                    this.state = this.googlePlace.state(place.address_components) ? this.googlePlace.state(place.address_components) : null;
+                    this.district = this.googlePlace.administrative_area_level_2(place.address_components) ? this.googlePlace.administrative_area_level_2(place.address_components) : null;
+                    this.country = this.googlePlace.country(place.address_components) ? this.googlePlace.country(place.address_components) : null;
+                    this.lat = place.geometry.location.lat() ? place.geometry.location.lat() : null;
+                    this.lng = place.geometry.location.lng() ? place.geometry.location.lng() : null;
+                    this.adr_address = place.formatted_address ? place.formatted_address : null;
+                    this.name = place.name ? place.name : null;
+                    this.types = place.types ? place.types : null;
+                    this.vicinity = place.vicinity ? place.vicinity : null;*/
                 });
             });
+        });
+    };
+    LandingOneComponent.prototype.searchPackages = function () {
+        var _this = this;
+        if ('' == this.searchControl || '' == this.postal_code) {
+            alert("Please enter any address");
+            return false;
+        }
+        this.packageService.getPackageByZipcode(this.postal_code)
+            .subscribe(function (data) {
+            if (data.status == 'success') {
+                _this.packages = data.result;
+                _this.searched = true;
+            }
+        }, function (error) {
         });
     };
     LandingOneComponent.prototype.ngAfterViewInit = function () {
@@ -51,7 +97,7 @@ var LandingOneComponent = (function () {
             selector: 'landing-one',
             templateUrl: './landingone.component.html'
         }), 
-        __metadata('design:paramtypes', [core_2.MapsAPILoader, core_1.NgZone])
+        __metadata('design:paramtypes', [core_2.MapsAPILoader, core_1.NgZone, index_1.GooglePlaceService, index_1.PackageServices])
     ], LandingOneComponent);
     return LandingOneComponent;
 }());

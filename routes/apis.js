@@ -4,6 +4,7 @@ var passport = require('passport');
 
 var Users = require('../models/users');
 var Services = require('../models/services');
+var Packages = require('../models/packages');
 var Communities = require('../models/communities');
 var Charges = require('../models/charges');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
@@ -261,7 +262,7 @@ var getAllCommunities = function (req, res) {
 
     Communities.find({}, function (err, communityDoc) {
         if (err) {
-            res.send({ status: 'error', msg: 'unable to fetch communities , please later', error: err });
+            res.send({ status: 'error', msg: 'unable to fetch communities , please try later', error: err });
         } else {
             res.send({ status: 'success', result: communityDoc });
         }
@@ -276,13 +277,15 @@ var getAllServices = function (req, res) {
     }
     Services.find(condition, function (err, serviceDoc) {
         if (err) {
-            res.send({ status: 'error', msg: 'unable to fetch communities , please later', error: err });
+            res.send({ status: 'error', msg: 'unable to fetch communities , please try later', error: err });
         } else {
             res.send({ status: 'success', result: serviceDoc });
         }
     });
 
 }
+
+
 
 var _internalCreateCharge = function (userDoc, selectedService, cardDetails, res) {
     stripe.charges.create({
@@ -526,7 +529,20 @@ var getMyServices = function (req, res) {
     }
 }
 
+var getPackageByZipcode = function (req, res) {
+    var condition = {};
+    if (req.body.id != '') {
+        condition = { postalcode: req.body.postalCode };
+    }
+    Packages.find(condition, function (err, packageDoc) {
+        if (err) {
+            res.send({ status: 'error', msg: 'unable to fetch packages , please try later', error: err });
+        } else {
+            res.send({ status: 'success', result: packageDoc });
+        }
+    });
 
+}
 
 
 router.post('/deleteCards', deleteStripeCards);
@@ -543,5 +559,5 @@ router.post('/getAllServices', getAllServices);
 router.post('/createCharges', createCharges);
 router.post('/addandcreateCharges', addandcreateCharges);
 router.get('/getMyServices', getMyServices);
-
+router.post('/getPackageByZipcode',getPackageByZipcode);
 module.exports = router;

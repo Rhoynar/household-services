@@ -57,6 +57,20 @@ export class StripeServices{
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    payPackageWithCard(cardDetails:any,selectedService:any,isNewCard:any,doSave:any){
+        var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT+'/api/createPackageCharges',JSON.stringify({cardDetails:cardDetails,selectedService:selectedService,isNewCard:isNewCard,doSave:doSave}),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    payPackageWithToken(cardDetails:any,selectedService:any){
+        var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT+'/api/payPackageWithToken',JSON.stringify({cardDetails:cardDetails,selectedService:selectedService}),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
 
      private extractData(res: Response) {
         let body = res.json();

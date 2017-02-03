@@ -145,6 +145,7 @@ router.get('/', isNotLoggedIn, getTemplate);
 
 router.get('/login', isNotLoggedIn, getTemplate);
 
+
 router.get('/dashboard', isLoggedIn, getTemplate);
 
 router.get('/createtoken', isLoggedIn, getTemplate);
@@ -167,6 +168,7 @@ router.get('/logout', isLoggedIn, function (req, res) {
     req.logout();
     res.redirect('/');
 });
+router.get('/package/purchase/:id', isLoggedIn, getTemplate);
 
 // process the signup form
 router.post('/signup', signup);

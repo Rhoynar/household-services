@@ -21,7 +21,13 @@ var PackageServices = (function () {
     PackageServices.prototype.getPackageByZipcode = function (postalCode) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode }), { headers: headers })
+        return this.http.post(this.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    PackageServices.prototype.getPackageByid = function (packageId) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT + '/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     PackageServices.prototype.extractData = function (res) {

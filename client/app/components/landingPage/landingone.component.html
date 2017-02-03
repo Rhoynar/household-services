@@ -14,14 +14,12 @@
         <div class="fullscreen-modal">
           <div class="modal-content">
 
-
-
             <div class="modal-body ">
-              <button type="button" class="close pull-right" (click)="learnMoreModal.hide()" aria-label="Close">
+              <button type="button" class="close pull-right" (click)="hideLearnmoreModal();" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
 
-              <div class="col-md-12 jumbotron" *ngIf="!searched">
+              <div class="col-md-12 jumbotron" [ngClass]="{'hide': searched}">
                 <h3 class="text-center">Local trusted profestionals in your area.</h3>
                 <div class="col-md-2">
                   <img src="images/workservice.png" />
@@ -55,7 +53,7 @@
               </div>
 
 
-              <div class="col-md-12 jumbotron" *ngIf="searched">
+              <div class="col-md-12 jumbotron" [ngClass]="{'hide': !searched}">
                 <h3 class="text-center">Monthly maintenance packages</h3>
                 <p class="text-center">Automatic repeat scheduling, cancel anytime.</p>
 
@@ -64,9 +62,16 @@
                   <ul class="list-group">
                     <li class="list-group-item" *ngFor="let feature of package.features">{{feature}}</li>
                   </ul>
-                  <p class="text-center">${{package.price}} Monthly</p>
+                  <p class="text-center" [ngSwitch]="package.frequency">
+                    ${{package.price}} 
+                    <span *ngSwitchCase="'monthly'">Per Month</span>
+                    <span *ngSwitchCase="'yearly'">Per Year</span>
+                    <span *ngSwitchDefault></span>
+                  </p>
+                  
                   <div class="form-group text-center">
-                    <button type="button" class="btn btn-success">Select</button>
+                    <button type="button" class="btn btn-success" [routerLink]="['/package/purchase',package._id]" *ngIf="loggedIn">Select</button>
+                    <button type="button" class="btn btn-success" [routerLink]="['/login']" *ngIf="!loggedIn">Select</button>
                   </div>
 
                 </div>
@@ -131,7 +136,7 @@
 
           <div class="col-md-12">
             <button class="col-md-4 btn btn-primary pull-left" (click)="learnMoreModal.show()">Learn More</button>
-            <button class="col-md-4 btn btn-primary pull-right" (click)="getStartedModal.show()">Get Started</button>
+            <button class="col-md-4 btn btn-primary pull-right" (click)="learnMoreModal.show()">Get Started</button>
 
           </div>
         </div>

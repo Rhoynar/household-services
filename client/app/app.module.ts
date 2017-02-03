@@ -12,7 +12,7 @@ import {
   UserprofileComponent, TokenComponent, PackagessectionComponent,
   footerSectionComponent, EditprofileComponent, StripesComponent,
   ServicesComponent, DealsComponent, LandingOneComponent,
-  TopnavOneComponent
+  TopnavOneComponent,PackagePurchaseComponent
 } from './components/index';
 
 //installed modules
@@ -39,34 +39,18 @@ import {
     }),
   ],
   declarations: [
-    AppComponent,
-    ServicesComponent,
-    TopnavComponent,
-    TopnavOneComponent,
-    footerSectionComponent,
-    LandingComponent,
-    LandingOneComponent,
-    LoginComponent,
-    SignupComponent,
-    PackagesComponent,
-    PackagessectionComponent,
-    UserprofileComponent,
-    DashboardComponent,
-    TokenComponent,
-    StripesComponent,
-    EditprofileComponent,
-    DealsComponent
+    AppComponent,ServicesComponent,TopnavComponent,
+    TopnavOneComponent,footerSectionComponent,LandingComponent,
+    LandingOneComponent,LoginComponent,SignupComponent,
+    PackagesComponent,PackagessectionComponent,UserprofileComponent,
+    DashboardComponent,TokenComponent,    StripesComponent,
+    EditprofileComponent,DealsComponent,PackagePurchaseComponent
 
   ],
   providers: [
-    AuthGuard,
-    NotAuthGuard,
-    CommunityServices,
-    UserServices,
-    AuthenticationService,
-    StripeServices,
-    GooglePlaceService,
-    PackageServices
+    AuthGuard,NotAuthGuard,CommunityServices,
+    UserServices,AuthenticationService,StripeServices,
+    GooglePlaceService,PackageServices
   ],
   bootstrap: [AppComponent]
 })

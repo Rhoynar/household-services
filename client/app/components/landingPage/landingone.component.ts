@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, NgZone, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 declare var $: any;
+import { ModalDirective } from 'ng2-bootstrap';
 import { MapsAPILoader } from 'angular2-google-maps/core';
-import { GooglePlaceService,PackageServices } from '../../services/index';
+import { AuthenticationService,GooglePlaceService, PackageServices } from '../../services/index';
 
 @Component({
   moduleId: module.id,
@@ -12,11 +13,13 @@ import { GooglePlaceService,PackageServices } from '../../services/index';
 })
 export class LandingOneComponent implements AfterViewInit, OnInit {
 
-  @ViewChild("search")
-  public searchElementRef: ElementRef;
-  packages:any;
+  @ViewChild('learnMoreModal') public learnMoreModal: ModalDirective;
+  @ViewChild("search") public searchElementRef: ElementRef;
+
+  packages: any;
   postal_code: any = '';
-  searched=false;
+  searched = false;
+  loggedIn=false;
   /*street_number: any = '';
   street: any = '';
   city: any = '';
@@ -36,14 +39,28 @@ export class LandingOneComponent implements AfterViewInit, OnInit {
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
     private googlePlace: GooglePlaceService,
-    private packageService:PackageServices) {
+    private packageService: PackageServices,
+    private authenticationService: AuthenticationService) {
 
+      this.authenticationService.generatetoken()
+      .subscribe(result => {
+        if (result === false) {
+          this.loggedIn=false;
+        }else{
+          this.loggedIn=true;
+        }
+      });
 
   }
 
+  hideLearnmoreModal() {
+    this.learnMoreModal.hide();
+    this.searchControl = '';
+    this.postal_code = '';
+    this.searched = false;
+  }
+  
   ngOnInit() {
-
-
     //create search FormControl
     this.searchControl = '';
 
@@ -88,8 +105,8 @@ export class LandingOneComponent implements AfterViewInit, OnInit {
     });
   }
 
-  searchPackages(){
-    if(''==this.searchControl || ''==this.postal_code){
+  searchPackages() {
+    if ('' == this.searchControl || '' == this.postal_code) {
       alert("Please enter any address");
       return false;
     }
@@ -103,7 +120,7 @@ export class LandingOneComponent implements AfterViewInit, OnInit {
         }
       },
       error => {
-        
+
       }
       );
 

@@ -4,7 +4,7 @@ var index_1 = require('./components/index');
 var index_2 = require('./guards/index');
 var APP_ROUTES = [
     //{ path: '', component: LandingComponent, canActivate: [NotAuthGuard] },
-    { path: '', component: index_1.LandingOneComponent, canActivate: [index_2.NotAuthGuard] },
+    { path: '', component: index_1.LandingOneComponent },
     { path: 'login', component: index_1.LoginComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'signup', component: index_1.SignupComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'createtoken', component: index_1.TokenComponent },
@@ -14,6 +14,7 @@ var APP_ROUTES = [
     { path: 'packages', component: index_1.PackagesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'profile', component: index_1.UserprofileComponent, canActivate: [index_2.AuthGuard] },
     { path: 'deals', component: index_1.DealsComponent, canActivate: [index_2.AuthGuard] },
+    { path: 'package/purchase/:id', component: index_1.PackagePurchaseComponent, canActivate: [index_2.AuthGuard] },
     { path: 'services', component: index_1.ServicesComponent },
     // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
     { path: 'editprofile', component: index_1.EditprofileComponent, canActivate: [index_2.AuthGuard] }

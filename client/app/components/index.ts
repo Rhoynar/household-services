@@ -14,4 +14,5 @@ export * from './footer-section/footer-section.component';
 export * from './stripe/stripe.component';
 export * from './communityServices/services.component';
 export * from './deals/deals.component';
+export * from './packages/packagepurchase.component';
 

@@ -38,33 +38,17 @@ var AppModule = (function () {
                 }),
             ],
             declarations: [
-                app_component_1.AppComponent,
-                index_1.ServicesComponent,
-                index_1.TopnavComponent,
-                index_1.TopnavOneComponent,
-                index_1.footerSectionComponent,
-                index_1.LandingComponent,
-                index_1.LandingOneComponent,
-                index_1.LoginComponent,
-                index_1.SignupComponent,
-                index_1.PackagesComponent,
-                index_1.PackagessectionComponent,
-                index_1.UserprofileComponent,
-                index_1.DashboardComponent,
-                index_1.TokenComponent,
-                index_1.StripesComponent,
-                index_1.EditprofileComponent,
-                index_1.DealsComponent
+                app_component_1.AppComponent, index_1.ServicesComponent, index_1.TopnavComponent,
+                index_1.TopnavOneComponent, index_1.footerSectionComponent, index_1.LandingComponent,
+                index_1.LandingOneComponent, index_1.LoginComponent, index_1.SignupComponent,
+                index_1.PackagesComponent, index_1.PackagessectionComponent, index_1.UserprofileComponent,
+                index_1.DashboardComponent, index_1.TokenComponent, index_1.StripesComponent,
+                index_1.EditprofileComponent, index_1.DealsComponent, index_1.PackagePurchaseComponent
             ],
             providers: [
-                index_2.AuthGuard,
-                index_2.NotAuthGuard,
-                index_3.CommunityServices,
-                index_3.UserServices,
-                index_3.AuthenticationService,
-                index_3.StripeServices,
-                index_3.GooglePlaceService,
-                index_3.PackageServices
+                index_2.AuthGuard, index_2.NotAuthGuard, index_3.CommunityServices,
+                index_3.UserServices, index_3.AuthenticationService, index_3.StripeServices,
+                index_3.GooglePlaceService, index_3.PackageServices
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

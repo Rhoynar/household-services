@@ -54,6 +54,18 @@ var StripeServices = (function () {
         return this.http.post(this.API_ENDPOINT + '/api/createCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    StripeServices.prototype.payPackageWithCard = function (cardDetails, selectedService, isNewCard, doSave) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT + '/api/createPackageCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService, isNewCard: isNewCard, doSave: doSave }), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    StripeServices.prototype.payPackageWithToken = function (cardDetails, selectedService) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.API_ENDPOINT + '/api/payPackageWithToken', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     StripeServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};

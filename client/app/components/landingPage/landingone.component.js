@@ -9,16 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var ng2_bootstrap_1 = require('ng2-bootstrap');
 var core_2 = require('angular2-google-maps/core');
 var index_1 = require('../../services/index');
 var LandingOneComponent = (function () {
-    function LandingOneComponent(mapsAPILoader, ngZone, googlePlace, packageService) {
+    function LandingOneComponent(mapsAPILoader, ngZone, googlePlace, packageService, authenticationService) {
+        var _this = this;
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
         this.googlePlace = googlePlace;
         this.packageService = packageService;
+        this.authenticationService = authenticationService;
         this.postal_code = '';
         this.searched = false;
+        this.loggedIn = false;
         /*street_number: any = '';
         street: any = '';
         city: any = '';
@@ -33,7 +37,22 @@ var LandingOneComponent = (function () {
         types: any = '';
         vicinity: any = '';*/
         this.searchControl = '';
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (result === false) {
+                _this.loggedIn = false;
+            }
+            else {
+                _this.loggedIn = true;
+            }
+        });
     }
+    LandingOneComponent.prototype.hideLearnmoreModal = function () {
+        this.learnMoreModal.hide();
+        this.searchControl = '';
+        this.postal_code = '';
+        this.searched = false;
+    };
     LandingOneComponent.prototype.ngOnInit = function () {
         var _this = this;
         //create search FormControl
@@ -88,6 +107,10 @@ var LandingOneComponent = (function () {
     LandingOneComponent.prototype.ngAfterViewInit = function () {
     };
     __decorate([
+        core_1.ViewChild('learnMoreModal'), 
+        __metadata('design:type', ng2_bootstrap_1.ModalDirective)
+    ], LandingOneComponent.prototype, "learnMoreModal", void 0);
+    __decorate([
         core_1.ViewChild("search"), 
         __metadata('design:type', core_1.ElementRef)
     ], LandingOneComponent.prototype, "searchElementRef", void 0);
@@ -97,7 +120,7 @@ var LandingOneComponent = (function () {
             selector: 'landing-one',
             templateUrl: './landingone.component.html'
         }), 
-        __metadata('design:paramtypes', [core_2.MapsAPILoader, core_1.NgZone, index_1.GooglePlaceService, index_1.PackageServices])
+        __metadata('design:paramtypes', [core_2.MapsAPILoader, core_1.NgZone, index_1.GooglePlaceService, index_1.PackageServices, index_1.AuthenticationService])
     ], LandingOneComponent);
     return LandingOneComponent;
 }());

@@ -18,4 +18,5 @@ __export(require('./footer-section/footer-section.component'));
 __export(require('./stripe/stripe.component'));
 __export(require('./communityServices/services.component'));
 __export(require('./deals/deals.component'));
+__export(require('./packages/packagepurchase.component'));
 //# sourceMappingURL=index.js.map

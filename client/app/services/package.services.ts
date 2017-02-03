@@ -17,9 +17,20 @@ export class PackageServices{
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
 
-        return this.http.post(this.API_ENDPOINT+'/api/getPackageByZipcode', JSON.stringify({'postalCode':postalCode}),{headers:headers})
+        return this.http.post(this.API_ENDPOINT+'/api/getPackageByZipcode', JSON.stringify({'postalCode':postalCode,'frequency':'monthly'}),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
+
+    getPackageByid(packageId:any){
+        var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.post(this.API_ENDPOINT+'/api/getPackageByid', JSON.stringify({'packageId':packageId}),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+
+    
 
     
 

@@ -13,17 +13,19 @@ var router_1 = require('@angular/router');
 require('rxjs/add/operator/switchMap');
 var index_1 = require('../../services/index');
 var PackagePurchaseComponent = (function () {
-    function PackagePurchaseComponent(activatedRoute, stripeServices, packageServices, router) {
+    function PackagePurchaseComponent(activatedRoute, stripeServices, packageServices, router, alertService) {
         var _this = this;
         this.activatedRoute = activatedRoute;
         this.stripeServices = stripeServices;
         this.packageServices = packageServices;
         this.router = router;
+        this.alertService = alertService;
         this.stripeCards = [];
         this.stripeCustomerId = '';
         this.packageId = '';
         this.packageDetails = {};
         this.useCardId = '';
+        this.processingCard = false;
         var params = this.activatedRoute.snapshot.params;
         this.packageId = params.id;
         this.packageServices.getPackageByid(this.packageId)
@@ -39,27 +41,34 @@ var PackagePurchaseComponent = (function () {
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
             alert(errr.msg);
+            _this.alertService.error(errr.msg, 'package-error');
         });
         this.getCards();
     }
     PackagePurchaseComponent.prototype.makePayment = function (cardDetails) {
+        var _this = this;
         var con = confirm('Are you Sure, you wanna make this payment?');
         if (con) {
+            this.processingCard = true;
             var isNewCard = 'no';
             var doSave = 'no';
             this.stripeServices.payPackageWithCard(cardDetails, this.packageDetails, isNewCard, doSave)
                 .subscribe(function (data) {
                 alert(data.msg);
-                //this.router.navigate(['/deals']);
+                _this.processingCard = false;
+                _this.router.navigate(['/deals']);
             }, function (error) {
                 var body = error.json() || '';
                 var err = body.error || JSON.stringify(body);
                 var errr = JSON.parse(err);
-                alert(errr.msg);
+                //alert(errr.msg);
+                _this.alertService.error(errr.msg, 'card-error');
             });
         }
     };
     PackagePurchaseComponent.prototype.payWithCard = function () {
+        var _this = this;
+        this.processingCard = true;
         this.stripeServices.payPackageWithToken({
             number: this.cardNumber,
             exp_month: this.expiryMonth,
@@ -67,14 +76,16 @@ var PackagePurchaseComponent = (function () {
             cvc: this.cvc,
         }, this.packageDetails)
             .subscribe(function (data) {
+            _this.processingCard = false;
             if (data.status == 'error') {
                 alert(data.error);
+                _this.getCards();
             }
             else {
                 alert(data.msg);
+                _this.router.navigate(['/deals']);
             }
-            //this.getCards();
-            //this.router.navigate(['/deals']);
+            //
             //return false;
         }, function (error) {
             var body = error.json() || '';
@@ -85,6 +96,7 @@ var PackagePurchaseComponent = (function () {
     };
     PackagePurchaseComponent.prototype.payWithCardAndSave = function () {
         var _this = this;
+        this.processingCard = true;
         var isNewCard = 'yes';
         var doSave = 'yes';
         var cardObject = {
@@ -93,14 +105,16 @@ var PackagePurchaseComponent = (function () {
         };
         this.stripeServices.payPackageWithCard(cardObject, this.packageDetails, isNewCard, doSave)
             .subscribe(function (data) {
+            _this.processingCard = false;
             if (data.status == 'error') {
                 alert(data.error);
+                _this.getCards();
             }
             else {
                 alert(data.msg);
+                _this.router.navigate(['/deals']);
             }
-            _this.getCards();
-            //this.router.navigate(['/deals']);
+            //this.getCards();
             //return false;
         }, function (error) {
             var body = error.json() || '';
@@ -120,10 +134,12 @@ var PackagePurchaseComponent = (function () {
     //get users credit cards
     PackagePurchaseComponent.prototype.getCards = function () {
         var _this = this;
+        this.processingCard = true;
         this.stripeServices.getCards()
             .subscribe(function (data) {
             _this.stripeCustomerId = data.stripe_cus_id;
             _this.stripeCards = data.result;
+            _this.processingCard = false;
             // if (this.stripeCards.length > 0) {
             //   this.cardListVisibility = false; //shown
             //   this.cardFormVisibility = true;
@@ -144,7 +160,7 @@ var PackagePurchaseComponent = (function () {
             selector: 'package-purchase',
             templateUrl: './packagepurchase.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.ActivatedRoute, index_1.StripeServices, index_1.PackageServices, router_1.Router])
+        __metadata('design:paramtypes', [router_1.ActivatedRoute, index_1.StripeServices, index_1.PackageServices, router_1.Router, index_1.AlertService])
     ], PackagePurchaseComponent);
     return PackagePurchaseComponent;
 }());

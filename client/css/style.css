@@ -791,3 +791,30 @@ ul.user-info li i{ padding-right:10px;}
 .signup-box{
   border-right: 1px solid #CCCCCC;
 }
+
+
+
+
+.cg-busy-backdrop {
+    background-color: hsl(0, 0%, 100%);
+    opacity: 0.7;
+}
+.cg-busy {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 9999;
+}
+
+.cg-busy-div {
+    background-image: url("../images/pIkfp.gif");
+    background-position: 50% 20px;
+    background-repeat: no-repeat;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

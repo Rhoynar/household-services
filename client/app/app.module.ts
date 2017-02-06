@@ -6,6 +6,9 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routes';
+
+import { AlertComponent } from './directives/index';
+
 import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
@@ -22,7 +25,8 @@ import { AgmCoreModule } from "angular2-google-maps/core";
 import { AuthGuard, NotAuthGuard } from './guards/index';
 import {
   CommunityServices, UserServices, AuthenticationService,
-  StripeServices, GooglePlaceService, PackageServices
+  StripeServices, GooglePlaceService, PackageServices,
+  AlertService
 } from './services/index';
 
 @NgModule({
@@ -44,13 +48,14 @@ import {
     LandingOneComponent,LoginComponent,SignupComponent,
     PackagesComponent,PackagessectionComponent,UserprofileComponent,
     DashboardComponent,TokenComponent,    StripesComponent,
-    EditprofileComponent,DealsComponent,PackagePurchaseComponent
+    EditprofileComponent,DealsComponent,PackagePurchaseComponent,
+    AlertComponent
 
   ],
   providers: [
     AuthGuard,NotAuthGuard,CommunityServices,
     UserServices,AuthenticationService,StripeServices,
-    GooglePlaceService,PackageServices
+    GooglePlaceService,PackageServices,AlertService
   ],
   bootstrap: [AppComponent]
 })

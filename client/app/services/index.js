@@ -8,4 +8,5 @@ __export(require('./stripe.services'));
 __export(require('./community.services'));
 __export(require('./google-place.services'));
 __export(require('./package.services'));
+__export(require('./alert.services'));
 //# sourceMappingURL=index.js.map

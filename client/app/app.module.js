@@ -14,12 +14,13 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var app_routes_1 = require('./app.routes');
-var index_1 = require('./components/index');
+var index_1 = require('./directives/index');
+var index_2 = require('./components/index');
 //installed modules
 var ng2_bootstrap_1 = require('ng2-bootstrap');
 var core_2 = require("angular2-google-maps/core");
-var index_2 = require('./guards/index');
-var index_3 = require('./services/index');
+var index_3 = require('./guards/index');
+var index_4 = require('./services/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -38,17 +39,18 @@ var AppModule = (function () {
                 }),
             ],
             declarations: [
-                app_component_1.AppComponent, index_1.ServicesComponent, index_1.TopnavComponent,
-                index_1.TopnavOneComponent, index_1.footerSectionComponent, index_1.LandingComponent,
-                index_1.LandingOneComponent, index_1.LoginComponent, index_1.SignupComponent,
-                index_1.PackagesComponent, index_1.PackagessectionComponent, index_1.UserprofileComponent,
-                index_1.DashboardComponent, index_1.TokenComponent, index_1.StripesComponent,
-                index_1.EditprofileComponent, index_1.DealsComponent, index_1.PackagePurchaseComponent
+                app_component_1.AppComponent, index_2.ServicesComponent, index_2.TopnavComponent,
+                index_2.TopnavOneComponent, index_2.footerSectionComponent, index_2.LandingComponent,
+                index_2.LandingOneComponent, index_2.LoginComponent, index_2.SignupComponent,
+                index_2.PackagesComponent, index_2.PackagessectionComponent, index_2.UserprofileComponent,
+                index_2.DashboardComponent, index_2.TokenComponent, index_2.StripesComponent,
+                index_2.EditprofileComponent, index_2.DealsComponent, index_2.PackagePurchaseComponent,
+                index_1.AlertComponent
             ],
             providers: [
-                index_2.AuthGuard, index_2.NotAuthGuard, index_3.CommunityServices,
-                index_3.UserServices, index_3.AuthenticationService, index_3.StripeServices,
-                index_3.GooglePlaceService, index_3.PackageServices
+                index_3.AuthGuard, index_3.NotAuthGuard, index_4.CommunityServices,
+                index_4.UserServices, index_4.AuthenticationService, index_4.StripeServices,
+                index_4.GooglePlaceService, index_4.PackageServices, index_4.AlertService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

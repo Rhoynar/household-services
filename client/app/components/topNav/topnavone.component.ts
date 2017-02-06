@@ -16,16 +16,38 @@ declare var $: any;
 export class TopnavOneComponent implements AfterViewInit {
 
 
-
+  loggedIn: any;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private communityService: CommunityServices) {
 
+    this.authenticationService.generatetoken()
+      .subscribe(result => {
+        if (localStorage.getItem('currentUser')) {
+          // logged in so return true
+          this.loggedIn = true;
+        }
+      });
+
   }
 
+  logout() {
+    // reset login status
+    this.authenticationService.logout()
+      .subscribe(
+      data => {
 
+        this.router.navigate(['/login']);
+        //return false;
+      },
+      error => {
+        this.router.navigate(['/login']);
+      }
+      );
+
+  }
 
 
 

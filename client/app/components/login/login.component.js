@@ -15,13 +15,15 @@ var http_1 = require('@angular/http');
 var index_1 = require('../../services/index');
 var custom_validator_1 = require('../../validators/custom.validator');
 var LoginComponent = (function () {
-    function LoginComponent(http, fb, router, UserServices, authenticationService) {
+    function LoginComponent(http, fb, route, router, UserServices, authenticationService, alertService) {
         // this.parties = Parties.find({}).zone();
         this.http = http;
         this.fb = fb;
+        this.route = route;
         this.router = router;
         this.UserServices = UserServices;
         this.authenticationService = authenticationService;
+        this.alertService = alertService;
         this.loading = false;
         this.error = '';
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
@@ -36,6 +38,8 @@ var LoginComponent = (function () {
             useremail: ['', forms_1.Validators.compose([this.customValidator.validEmail, forms_1.Validators.required]), forms_1.Validators.composeAsync([this.customValidator.emailTaken.bind(this.customValidator)])],
             userpass: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.minLength(8)])],
         });
+        // get return url from route parameters or default to '/'
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     };
     LoginComponent.prototype.loginUser = function (event) {
         var _this = this;
@@ -43,12 +47,28 @@ var LoginComponent = (function () {
         this.authenticationService.login(this.loginuseremail, this.loginuserpass)
             .subscribe(function (result) {
             if (result === true) {
-                _this.router.navigate(['/dashboard']);
+                _this.router.navigate([_this.returnUrl]);
             }
             else {
                 _this.error = 'Username or password is incorrect';
                 _this.loading = false;
             }
+        }, function (error) {
+            // In a real world app, we might use a remote logging infrastructure
+            var errMsg;
+            if (error instanceof http_1.Response) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                //errMsg = `${error.status} - ${error.statusText || ''} ${body.msg}`;
+                errMsg = body.msg;
+            }
+            else {
+                errMsg = error.message ? error.message : error.toString();
+            }
+            _this.alertService.error(errMsg, 'login');
+            //return Observable.throw(errMsg);
+            //let body = error.json();
+            //return Observable.throw(body || { });
         });
     };
     LoginComponent.prototype.registerUser = function () {
@@ -62,7 +82,7 @@ var LoginComponent = (function () {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
-            alert(errr.msg);
+            _this.alertService.error(errr.msg, 'signup');
         });
     };
     LoginComponent = __decorate([
@@ -71,7 +91,7 @@ var LoginComponent = (function () {
             selector: 'login',
             templateUrl: './login.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.UserServices, index_1.AuthenticationService])
+        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.ActivatedRoute, router_1.Router, index_1.UserServices, index_1.AuthenticationService, index_1.AlertService])
     ], LoginComponent);
     return LoginComponent;
 }());

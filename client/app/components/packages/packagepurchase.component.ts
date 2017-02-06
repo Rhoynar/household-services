@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 declare var $: any;
-import { StripeServices, PackageServices } from '../../services/index';
+import { StripeServices, PackageServices,AlertService } from '../../services/index';
 
 
 
@@ -26,11 +26,14 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
   expiryYear: string;
   cvc: string;
 
+  processingCard:any=false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private stripeServices: StripeServices,
     private packageServices: PackageServices,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     let params: any = this.activatedRoute.snapshot.params;
     this.packageId = params.id;
@@ -49,6 +52,7 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
         const err = body.error || JSON.stringify(body);
         var errr = JSON.parse(err);
         alert(errr.msg);
+        this.alertService.error(errr.msg,'package-error');
 
       }
       );
@@ -62,24 +66,29 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
 
     var con = confirm('Are you Sure, you wanna make this payment?');
     if (con) {
+      this.processingCard=true;
       var isNewCard = 'no';
       var doSave = 'no';
       this.stripeServices.payPackageWithCard(cardDetails, this.packageDetails, isNewCard, doSave)
         .subscribe(data => {
           alert(data.msg);
-          //this.router.navigate(['/deals']);
+          this.processingCard=false;
+          this.router.navigate(['/deals']);
         },
         error => {
           const body = error.json() || '';
           const err = body.error || JSON.stringify(body);
           var errr = JSON.parse(err);
-          alert(errr.msg);
+          //alert(errr.msg);
+          this.alertService.error(errr.msg,'card-error');
+          
         }
         );
     }
   }
 
   payWithCard() {
+    this.processingCard=true;
     this.stripeServices.payPackageWithToken({
       number: this.cardNumber,
       exp_month: this.expiryMonth,
@@ -87,13 +96,16 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
       cvc: this.cvc,
     }, this.packageDetails)
       .subscribe(data => {
+        this.processingCard=false;
         if (data.status == 'error') {
           alert(data.error);
+          this.getCards();
         } else {
           alert(data.msg);
+          this.router.navigate(['/deals']);
         }
-        //this.getCards();
-        //this.router.navigate(['/deals']);
+        //
+        
         //return false;
       },
       error => {
@@ -106,6 +118,7 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
   }
 
   payWithCardAndSave() {
+    this.processingCard=true;
     var isNewCard = 'yes';
     var doSave = 'yes';
     var cardObject = {
@@ -114,13 +127,16 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
     };
     this.stripeServices.payPackageWithCard(cardObject, this.packageDetails, isNewCard, doSave)
       .subscribe(data => {
+        this.processingCard=false;
         if (data.status == 'error') {
           alert(data.error);
+          this.getCards();
         } else {
           alert(data.msg);
+          this.router.navigate(['/deals']);
         }
-        this.getCards();
-        //this.router.navigate(['/deals']);
+        //this.getCards();
+        
         //return false;
       },
       error => {
@@ -145,11 +161,13 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
 
   //get users credit cards
   getCards() {
+    this.processingCard=true;
     this.stripeServices.getCards()
       .subscribe(data => {
 
         this.stripeCustomerId = data.stripe_cus_id;
         this.stripeCards = data.result;
+        this.processingCard=false;
         // if (this.stripeCards.length > 0) {
         //   this.cardListVisibility = false; //shown
         //   this.cardFormVisibility = true;

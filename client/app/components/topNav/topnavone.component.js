@@ -13,10 +13,29 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var TopnavOneComponent = (function () {
     function TopnavOneComponent(router, authenticationService, communityService) {
+        var _this = this;
         this.router = router;
         this.authenticationService = authenticationService;
         this.communityService = communityService;
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (localStorage.getItem('currentUser')) {
+                // logged in so return true
+                _this.loggedIn = true;
+            }
+        });
     }
+    TopnavOneComponent.prototype.logout = function () {
+        var _this = this;
+        // reset login status
+        this.authenticationService.logout()
+            .subscribe(function (data) {
+            _this.router.navigate(['/login']);
+            //return false;
+        }, function (error) {
+            _this.router.navigate(['/login']);
+        });
+    };
     TopnavOneComponent.prototype.ngAfterViewInit = function () {
     };
     TopnavOneComponent = __decorate([

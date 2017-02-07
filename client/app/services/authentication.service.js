@@ -40,6 +40,29 @@ var AuthenticationService = (function () {
             }
         });
     };
+    AuthenticationService.prototype.adminLogin = function (username, password) {
+        var _this = this;
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/admin/login', JSON.stringify({ useremail: username, userpass: password }), { headers: headers })
+            .map(function (response) {
+            // login successful if there's a jwt token in the response
+            var token = response.json() && response.json().token;
+            if (token) {
+                // set token property
+                _this.token = token;
+                console.log({ useremail: username, token: token });
+                // store username and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem('currentUser', JSON.stringify({ useremail: username, token: token }));
+                // return true to indicate successful login
+                return true;
+            }
+            else {
+                // return false to indicate failed login
+                return false;
+            }
+        });
+    };
     AuthenticationService.prototype.logout = function () {
         // clear token remove user from local storage to log user out
         this.token = null;

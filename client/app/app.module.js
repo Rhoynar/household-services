@@ -45,12 +45,14 @@ var AppModule = (function () {
                 index_2.PackagesComponent, index_2.PackagessectionComponent, index_2.UserprofileComponent,
                 index_2.DashboardComponent, index_2.TokenComponent, index_2.StripesComponent,
                 index_2.EditprofileComponent, index_2.DealsComponent, index_2.PackagePurchaseComponent,
-                index_1.AlertComponent
+                index_1.AlertComponent, index_2.AdminLoginComponent, index_2.AdminDashboardComponent,
+                index_2.AdminTopnavComponent
             ],
             providers: [
                 index_3.AuthGuard, index_3.NotAuthGuard, index_4.CommunityServices,
                 index_4.UserServices, index_4.AuthenticationService, index_4.StripeServices,
-                index_4.GooglePlaceService, index_4.PackageServices, index_4.AlertService
+                index_4.GooglePlaceService, index_4.PackageServices, index_4.AlertService,
+                index_3.AuthAdminGuard
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

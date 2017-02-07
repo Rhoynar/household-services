@@ -19,4 +19,8 @@ __export(require('./stripe/stripe.component'));
 __export(require('./communityServices/services.component'));
 __export(require('./deals/deals.component'));
 __export(require('./packages/packagepurchase.component'));
+///admin components
+__export(require('./login/admin.login.component'));
+__export(require('./topNav/topnavadmin.component'));
+__export(require('./dashboard/admin.dashboard.component'));
 //# sourceMappingURL=index.js.map

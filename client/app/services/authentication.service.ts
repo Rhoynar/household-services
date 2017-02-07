@@ -37,6 +37,30 @@ export class AuthenticationService {
             });
     }
 
+    adminLogin(username: String, password: String): Observable<boolean> {
+       var headers=new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/admin/login', JSON.stringify({ useremail: username, userpass: password }),{headers:headers})
+        //return this.http.post('/login', JSON.stringify({ useremail: username, userpass: password }),{headers:headers})
+            .map((response: Response) => {
+                // login successful if there's a jwt token in the response
+                let token = response.json() && response.json().token;
+                if (token) {
+                    // set token property
+                    this.token = token;
+                    console.log({ useremail: username, token: token });
+                    // store username and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify({ useremail: username, token: token }));
+
+                    // return true to indicate successful login
+                    return true;
+                } else {
+                    // return false to indicate failed login
+                    return false;
+                }
+            });
+    }
+
     logout() {
         // clear token remove user from local storage to log user out
         this.token = null;

@@ -94,7 +94,7 @@ function isLoggedIn(req, res, next) {
 
 function isNotLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on 
+    // if user is not authenticated in the session, carry on 
     if (!req.isAuthenticated())
         return next();
 
@@ -150,8 +150,9 @@ router.get('/dashboard', isLoggedIn, getTemplate);
 
 router.get('/createtoken', isLoggedIn, getTemplate);
 
-router.get('/facebook', getTemplate);
-router.get('/services', getTemplate);
+//router.get('/facebook', getTemplate);
+//router.get('/dash', getTemplate);
+//router.get('/services', getTemplate);
 router.get('/stripes', isLoggedIn,getTemplate);
 router.get('/deals', isLoggedIn,getTemplate);
 router.get('/packages', isLoggedIn, getTemplate);
@@ -160,7 +161,7 @@ router.get('/profile', isLoggedIn, getTemplate);
 
 router.get('/editprofile', isLoggedIn, getTemplate);
 
-router.post('/login', login);
+//router.post('/login', login);
 
 router.get('/signup', isNotLoggedIn, getTemplate);
 
@@ -171,7 +172,7 @@ router.get('/logout', isLoggedIn, function (req, res) {
 router.get('/package/purchase/:id', isLoggedIn, getTemplate);
 
 // process the signup form
-router.post('/signup', signup);
+//router.post('/signup', signup);
 
 
 //list customers

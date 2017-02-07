@@ -76,7 +76,9 @@ app.use(passport.session());
 //routes
 app.use('/',require('./routes/index'));
 app.use('/api',require('./routes/apis'));
+app.use('/admin',require('./routes/admin'));
 
+app.get('*', (req, res) => { res.sendFile(path.join(__dirname, 'views/index.html')); });
 
 
 app.listen(port,function(){

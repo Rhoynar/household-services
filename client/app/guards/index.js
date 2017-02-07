@@ -4,4 +4,5 @@ function __export(m) {
 }
 __export(require('./auth.guard'));
 __export(require('./notauth.guard'));
+__export(require('./authadmin.guard'));
 //# sourceMappingURL=index.js.map

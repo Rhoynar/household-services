@@ -16,3 +16,8 @@ export * from './communityServices/services.component';
 export * from './deals/deals.component';
 export * from './packages/packagepurchase.component';
 
+///admin components
+export * from './login/admin.login.component';
+export * from './topNav/topnavadmin.component';
+export * from './dashboard/admin.dashboard.component';
+

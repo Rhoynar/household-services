@@ -15,14 +15,15 @@ import {
   UserprofileComponent, TokenComponent, PackagessectionComponent,
   footerSectionComponent, EditprofileComponent, StripesComponent,
   ServicesComponent, DealsComponent, LandingOneComponent,
-  TopnavOneComponent,PackagePurchaseComponent
+  TopnavOneComponent,PackagePurchaseComponent,AdminLoginComponent,
+  AdminDashboardComponent,AdminTopnavComponent
 } from './components/index';
 
 //installed modules
 import { ModalModule } from 'ng2-bootstrap';
 import { AgmCoreModule } from "angular2-google-maps/core";
 
-import { AuthGuard, NotAuthGuard } from './guards/index';
+import { AuthGuard, NotAuthGuard,AuthAdminGuard } from './guards/index';
 import {
   CommunityServices, UserServices, AuthenticationService,
   StripeServices, GooglePlaceService, PackageServices,
@@ -49,13 +50,15 @@ import {
     PackagesComponent,PackagessectionComponent,UserprofileComponent,
     DashboardComponent,TokenComponent,    StripesComponent,
     EditprofileComponent,DealsComponent,PackagePurchaseComponent,
-    AlertComponent
+    AlertComponent,AdminLoginComponent,AdminDashboardComponent,
+    AdminTopnavComponent
 
   ],
   providers: [
     AuthGuard,NotAuthGuard,CommunityServices,
     UserServices,AuthenticationService,StripeServices,
-    GooglePlaceService,PackageServices,AlertService
+    GooglePlaceService,PackageServices,AlertService,
+    AuthAdminGuard
   ],
   bootstrap: [AppComponent]
 })

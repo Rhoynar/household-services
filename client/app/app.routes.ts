@@ -4,14 +4,16 @@ import {
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, EditprofileComponent, 
   StripesComponent,ServicesComponent,DealsComponent,
-  LandingOneComponent,PackagePurchaseComponent
+  LandingOneComponent,PackagePurchaseComponent,AdminLoginComponent,
+  AdminDashboardComponent
 } from './components/index';
 
-import { AuthGuard, NotAuthGuard } from './guards/index';
+import { AuthGuard, NotAuthGuard,AuthAdminGuard } from './guards/index';
 
 const APP_ROUTES: Routes = [
-  //{ path: '', component: LandingComponent, canActivate: [NotAuthGuard] },
+  
   { path: '', component: LandingOneComponent },
+  { path: 'dash', component: LandingComponent, canActivate: [NotAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [NotAuthGuard] },
   { path: 'createtoken', component: TokenComponent },
@@ -24,7 +26,11 @@ const APP_ROUTES: Routes = [
   { path: 'package/purchase/:id', component: PackagePurchaseComponent, canActivate: [AuthGuard] },
   { path: 'services', component: ServicesComponent },
  // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
-  { path: 'editprofile', component: EditprofileComponent, canActivate: [AuthGuard] }
+  { path: 'editprofile', component: EditprofileComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminLoginComponent, canActivate: [NotAuthGuard] },
+  { path: 'admin/login', component: AdminLoginComponent, canActivate: [NotAuthGuard] },
+  { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AuthAdminGuard] },
+  { path: '**', component: LandingComponent, canActivate: [NotAuthGuard] }
 
 ];
 

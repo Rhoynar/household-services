@@ -1,0 +1,43 @@
+<topnav-admin></topnav-admin>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding dashboard_page">
+
+        <h2 class="inner-top-heading">Available Vendors</h2>
+        <button class="btn btn-primary" [routerLink]="['/admin/vendor/new']">New</button>
+        <div class="services_wrapper">
+
+          <div class="services_info_block clearfix" *ngFor='let eachVendor of availableVendors; let i = index;'>
+
+            <div class="col-md-8 ser-lf">
+              
+              <div class="services-rh">
+                <h3>{{eachVendor?.name}}</h3>
+
+                <p>{{eachVendor?.email}}</p>
+              </div>
+            </div>
+            
+
+
+
+          </div>
+          <div *ngIf="!availableVendors">No vendor available</div>
+
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--inner-mid-sec-->
+<!--fotter-section-->
+<footer-section></footer-section>

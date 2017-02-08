@@ -20,7 +20,13 @@ function isAdminLoggedIn(req, res, next) {
     
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()) {
-        return next();
+        if(req.user.role!='admin'){
+            res.redirect('/');
+            return false;    
+        }else{
+            return next();    
+        }
+        
     } else {
         // if they aren't redirect them to the home page
         res.redirect('/admin/login');
@@ -36,7 +42,13 @@ function isNotAdminLoggedIn(req, res, next) {
         return next();
     }else{
         // if they aren't redirect them to the home page
-        res.redirect('/admin/dashboard');    
+        if(req.user.role=='admin'){
+            res.redirect('/admin/dashboard');
+            
+        }else{
+            res.redirect('/dashboard');
+        }
+        
     }
 
     
@@ -81,10 +93,15 @@ var createtoken = function (req, res) {
 }
 
 
+//get requests
 router.get('/',isNotAdminLoggedIn,getTemplate);
 router.get('/login',isNotAdminLoggedIn,getTemplate);
-// router.post('/login',isNotLoggedIn,authenticateUser);
-// router.get('/dashboard',isLoggedIn, getTemplate);
-router.post('/login',authenticateUser);
 router.get('/dashboard',isAdminLoggedIn,getTemplate);
+router.get('/vendors',isAdminLoggedIn,getTemplate);
+router.get('/vendor/new',isAdminLoggedIn,getTemplate);
+router.get('/packages',isAdminLoggedIn,getTemplate);
+router.get('/package/new',isAdminLoggedIn,getTemplate);
+
+//post requests
+router.post('/login',authenticateUser);
 module.exports = router;

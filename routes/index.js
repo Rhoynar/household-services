@@ -62,6 +62,7 @@ var signup = function (req, res, next) {
             newUser.name = profile.username;
             newUser.password = newUser.generateHash(profile.userpass);
             newUser.provider = 'local';
+            newUser.role = 'user';
             newUser.created = Date.now();
 
             newUser.save(function (err) {
@@ -84,7 +85,12 @@ function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()) {
-        return next();
+        if(req.user.role!='user'){
+            res.redirect('/admin');
+            return false;    
+        }else{
+            return next();    
+        }
     } else {
         // if they aren't redirect them to the home page
         res.redirect('/');
@@ -95,11 +101,19 @@ function isLoggedIn(req, res, next) {
 function isNotLoggedIn(req, res, next) {
 
     // if user is not authenticated in the session, carry on 
-    if (!req.isAuthenticated())
+    if (!req.isAuthenticated()){
         return next();
+    }else{
+        if(req.user.role=='admin'){
+            res.redirect('/admin/dashboard');
+            
+        }else{
+            res.redirect('/dashboard');
+        }
+    }
 
     // if they aren't redirect them to the home page
-    res.redirect('/dashboard');
+    
 }
 
 router.get('/isloggedin', function (req, res) {
@@ -161,18 +175,20 @@ router.get('/profile', isLoggedIn, getTemplate);
 
 router.get('/editprofile', isLoggedIn, getTemplate);
 
-//router.post('/login', login);
+router.post('/login', login);
 
 router.get('/signup', isNotLoggedIn, getTemplate);
 
-router.get('/logout', isLoggedIn, function (req, res) {
+
+router.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
+
 router.get('/package/purchase/:id', isLoggedIn, getTemplate);
 
 // process the signup form
-//router.post('/signup', signup);
+router.post('/signup', signup);
 
 
 //list customers

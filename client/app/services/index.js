@@ -9,4 +9,5 @@ __export(require('./community.services'));
 __export(require('./google-place.services'));
 __export(require('./package.services'));
 __export(require('./alert.services'));
+__export(require('./vendor.services'));
 //# sourceMappingURL=index.js.map

@@ -1,45 +1,57 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers,Response} from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
-import { Observer, BehaviorSubject,Subject} from "rxjs/Rx";
+import { Injectable } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Observer, BehaviorSubject, Subject } from "rxjs/Rx";
 import { PackageModel } from '../models/package.model'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-@Injectable() 
-export class PackageServices{
-    constructor(private http:Http){
+@Injectable()
+export class PackageServices {
+    constructor(private http: Http) {
     }
 
-   API_ENDPOINT='http://beta.cisin.com:3004';
+    API_ENDPOINT = 'http://beta.cisin.com:3004';
 
-    getPackageByZipcode(postalCode:any){
+    getAllPackage() {
+        return this.http.get(this.API_ENDPOINT + '/api/getAllPackage')
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    addPackage(packageDetails:PackageModel){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
-
-        return this.http.post(this.API_ENDPOINT+'/api/getPackageByZipcode', JSON.stringify({'postalCode':postalCode,'frequency':'monthly'}),{headers:headers})
+        return this.http.post(this.API_ENDPOINT+'/api/addPackage',JSON.stringify(packageDetails),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 
-    getPackageByid(packageId:any){
-        var headers=new Headers();
+    getPackageByZipcode(postalCode: any) {
+        var headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
-        return this.http.post(this.API_ENDPOINT+'/api/getPackageByid', JSON.stringify({'packageId':packageId}),{headers:headers})
-        .map(this.extractData);//.catch(this.handleError);;
+        return this.http.post(this.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getPackageByid(packageId: any) {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.post(this.API_ENDPOINT + '/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
     }
 
 
-    
 
-    
 
-     private extractData(res: Response) {
+
+
+    private extractData(res: Response) {
         let body = res.json();
-        return body || { };
+        return body || {};
     }
 
-    private handleError (error: Response | any) {
+    private handleError(error: Response | any) {
         // In a real world app, we might use a remote logging infrastructure
         let errMsg: string;
         if (error instanceof Response) {

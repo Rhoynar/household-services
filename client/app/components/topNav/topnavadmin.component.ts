@@ -25,8 +25,8 @@ export class AdminTopnavComponent implements AfterViewInit {
 
     this.authenticationService.generatetoken()
       .subscribe(result => {
-
-        var currentUserStr = localStorage.getItem('currentUser')
+        console.log(localStorage.getItem('currentUser'));
+        var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) { //if user is there
             if (currentUser.token.role == "admin") {  //if current user is admin

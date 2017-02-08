@@ -20,4 +20,9 @@ export * from './packages/packagepurchase.component';
 export * from './login/admin.login.component';
 export * from './topNav/topnavadmin.component';
 export * from './dashboard/admin.dashboard.component';
+export * from './vendors/vendors.component';
+export * from './vendors/addvendor.component';
+export * from './packages/admin.package.component';
+export * from './packages/admin.add.package.component';
+
 

@@ -5,6 +5,7 @@ var passport = require('passport');
 var Users = require('../models/users');
 var Services = require('../models/services');
 var Packages = require('../models/packages');
+var Vendors = require('../models/vendors');
 var Communities = require('../models/communities');
 var Charges = require('../models/charges');
 var PackageDeals = require('../models/packageDeals');
@@ -56,6 +57,8 @@ var getProfile = function (req, res) {
     });
 
 }
+
+
 
 var updateProfile = function (req, res) {
 
@@ -758,6 +761,104 @@ var createStripeTokenandPay=function(err, userDoc,cardObject,selectedService,res
 }
 
 
+// pay with cards but dont save cards in user profile
+var getAllVendors = function (req, res) {
+
+    if (req.user) {
+        Vendors.find({}, function (err, vendorDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch vendors , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: vendorDoc });
+            }
+        });
+
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+
+
+var addVendor= function (req, res) {
+
+    
+    var vendorProfile = new Vendors();
+    //res.render('index.html');
+    //userModel.
+    
+    vendorProfile.name= req.body.vendorName;
+    vendorProfile.email= req.body.vendorEmail;
+    vendorProfile.phone= req.body.userphone;
+    vendorProfile.addresslineone= req.body.addresslineone;
+    vendorProfile.addresslinetwo= req.body.addresslinetwo;
+    vendorProfile.city= req.body.vendorcity;
+    vendorProfile.country= req.body.vendorcountry;
+    vendorProfile.zipcode= req.body.vendorzip;
+    vendorProfile.created = Date.now();
+
+    vendorProfile.save(function (err) {
+        if (err) {
+            return res.json({ status: 'error', error: err });
+        } else {
+            return res.json({ status: 'success', msg: 'Vendor added successfully' });
+        }
+    });
+
+    
+    //return res.json({});
+}
+
+
+var getAllPackage= function (req, res) {
+
+    if (req.user) {
+        Packages.find({}, function (err, vendorDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch packages , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: vendorDoc });
+            }
+        });
+
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+var addPackage= function (req, res) {
+
+    
+    var packageDetails = new Packages();
+    //res.render('index.html');
+    //userModel.
+    
+    packageDetails.title= req.body.title;
+    packageDetails.postcode= req.body.postcode;
+    packageDetails.price= req.body.price;
+    packageDetails.frequency= req.body.frequency;
+    packageDetails.created = Date.now();
+    packageDetails.features=[];
+    req.body.featureList.forEach(function(eachFeature) {
+        packageDetails.features.push(eachFeature.feature);
+    });
+
+    packageDetails.save(function (err) {
+        if (err) {
+            return res.json({ status: 'error', error: err });
+        } else {
+            return res.json({ status: 'success', msg: 'package added successfully' });
+        }
+    });
+
+    
+    //return res.json({});
+}
+
 router.post('/deleteCards', deleteStripeCards);
 
 router.post('/authenticate', authenticateUser);
@@ -776,4 +877,8 @@ router.post('/getPackageByZipcode', getPackageByZipcode);
 router.post('/getPackageByid', getPackageByid);
 router.post('/createPackageCharges',createPackageCharges);
 router.post('/payPackageWithToken',payPackageWithToken);
+router.get('/getAllVendors',getAllVendors);
+router.post('/addVendor',addVendor);
+router.get('/getAllPackage',getAllPackage);
+router.post('/addPackage',addPackage);
 module.exports = router;

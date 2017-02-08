@@ -21,6 +21,10 @@ var APP_ROUTES = [
     { path: 'admin', component: index_1.AdminLoginComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'admin/login', component: index_1.AdminLoginComponent, canActivate: [index_2.NotAuthGuard] },
     { path: 'admin/dashboard', component: index_1.AdminDashboardComponent, canActivate: [index_2.AuthAdminGuard] },
+    { path: 'admin/vendors', component: index_1.VendorComponent, canActivate: [index_2.AuthAdminGuard] },
+    { path: 'admin/vendor/new', component: index_1.AddVendorComponent, canActivate: [index_2.AuthAdminGuard] },
+    { path: 'admin/packages', component: index_1.AdminPackageComponent, canActivate: [index_2.AuthAdminGuard] },
+    { path: 'admin/package/new', component: index_1.AdminAddPackageComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: '**', component: index_1.LandingComponent, canActivate: [index_2.NotAuthGuard] }
 ];
 exports.routing = router_1.RouterModule.forRoot(APP_ROUTES);

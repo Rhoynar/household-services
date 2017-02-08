@@ -1,0 +1,101 @@
+<topnav-admin></topnav-admin>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 no-padding dashboard_page">
+
+                <div class="form_block">
+                    <h3>Add New Package</h3>
+
+                    <form [formGroup]="addPackageForm" (ngSubmit)="submitForm()">
+                        <div class="form-group" [ngClass]="{'has-error':!addPackageForm.controls['title'].valid && addPackageForm.controls['title'].touched}">
+                            <label class="input-heading">Name :</label>
+                            <div class="input-box">
+                                <input type="text" name="title" id="title" class="input-fill" [formControl]="addPackageForm.controls['title']" />
+
+                                <div *ngIf="addPackageForm.controls['title'].hasError('required') && addPackageForm.controls['title'].touched" class="alert alert-danger">You must include a title.</div>
+
+
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="input-heading">Price :</label>
+                            <div class="input-box">
+                                <input type="text" name="price" id="price" class="input-fill" [formControl]="addPackageForm.controls['price']" />
+
+                                <div *ngIf="addPackageForm.controls['price'].hasError('required') && addPackageForm.controls['price'].touched" class="alert alert-danger">You must include a price.</div>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-heading">Postcode :</label>
+                            <div class="input-box">
+                                <input type="text" name="postcode" id="postcode" class="input-fill" [formControl]="addPackageForm.controls['postcode']" />
+
+
+                                <div *ngIf="addPackageForm.controls['postcode'].hasError('required') && addPackageForm.controls['postcode'].touched" class="alert alert-danger">You must include a Postcode.</div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Frequency :</label>
+                            <div class="input-box">
+                                <select name="frequency" id="frequency" class="input-fill" [formControl]="addPackageForm.controls['frequency']">
+                                        <option value="">Please Select</option>
+                                        <option value="daily">daily</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                        
+                                </select>
+
+                                <div *ngIf="addPackageForm.controls['frequency'].hasError('required') && addPackageForm.controls['frequency'].touched" class="alert alert-danger">You must include a frequency.</div>
+
+                            </div>
+                        </div>
+
+                        <div *ngFor="let features of addPackageForm.controls['featureList'].controls; let i=index">
+                            <div class="form-group" [formGroup]="features">
+                                <label class="input-heading">Feature {{i + 1}}</label>
+                                <div class="input-box">
+                                    <input type="text" [formControl]="features.controls['feature']" class="input-fill">
+                                    <button type="button" class="bt btn-danger" (click)="removefeature(i);">Remove</button>    
+                                </div>
+                                <div *ngIf="features.controls['feature'].hasError('required') && features.controls['feature'].touched" class="alert alert-danger">You must include a feature.</div>
+                            </div>
+                        </div>
+                        <div class="margin-20">
+                            <a (click)="addFeature();">Add another feature +</a>
+                        </div>
+
+
+                        <div class="form-group btn-wrp">
+
+                            <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->
+                            <button type="submit" [disabled]="!addPackageForm.valid" class="sub-btn">Submit</button>
+                            <button class="sub-btn cancel-btn" (click)="packagePage();">Cancel</button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--inner-mid-sec-->
+<!--fotter-section-->
+<footer-section></footer-section>

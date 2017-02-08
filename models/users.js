@@ -13,6 +13,7 @@ var userSchema = new Schema({
     created:Date,
     profile: Array,
     phone: String,
+    role:String,
     addresslineone:String,
     addresslinetwo:String,
     city:String,

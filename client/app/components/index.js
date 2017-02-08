@@ -23,4 +23,8 @@ __export(require('./packages/packagepurchase.component'));
 __export(require('./login/admin.login.component'));
 __export(require('./topNav/topnavadmin.component'));
 __export(require('./dashboard/admin.dashboard.component'));
+__export(require('./vendors/vendors.component'));
+__export(require('./vendors/addvendor.component'));
+__export(require('./packages/admin.package.component'));
+__export(require('./packages/admin.add.package.component'));
 //# sourceMappingURL=index.js.map

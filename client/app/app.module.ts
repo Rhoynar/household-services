@@ -16,7 +16,8 @@ import {
   footerSectionComponent, EditprofileComponent, StripesComponent,
   ServicesComponent, DealsComponent, LandingOneComponent,
   TopnavOneComponent,PackagePurchaseComponent,AdminLoginComponent,
-  AdminDashboardComponent,AdminTopnavComponent
+  AdminDashboardComponent,AdminTopnavComponent,VendorComponent,
+  AddVendorComponent,AdminPackageComponent,AdminAddPackageComponent
 } from './components/index';
 
 //installed modules
@@ -27,7 +28,7 @@ import { AuthGuard, NotAuthGuard,AuthAdminGuard } from './guards/index';
 import {
   CommunityServices, UserServices, AuthenticationService,
   StripeServices, GooglePlaceService, PackageServices,
-  AlertService
+  AlertService,VendorServices
 } from './services/index';
 
 @NgModule({
@@ -48,17 +49,18 @@ import {
     TopnavOneComponent,footerSectionComponent,LandingComponent,
     LandingOneComponent,LoginComponent,SignupComponent,
     PackagesComponent,PackagessectionComponent,UserprofileComponent,
-    DashboardComponent,TokenComponent,    StripesComponent,
+    DashboardComponent,TokenComponent,StripesComponent,
     EditprofileComponent,DealsComponent,PackagePurchaseComponent,
     AlertComponent,AdminLoginComponent,AdminDashboardComponent,
-    AdminTopnavComponent
+    AdminTopnavComponent,VendorComponent,AddVendorComponent,
+    AdminPackageComponent,AdminAddPackageComponent
 
   ],
   providers: [
     AuthGuard,NotAuthGuard,CommunityServices,
     UserServices,AuthenticationService,StripeServices,
     GooglePlaceService,PackageServices,AlertService,
-    AuthAdminGuard
+    AuthAdminGuard,VendorServices
   ],
   bootstrap: [AppComponent]
 })

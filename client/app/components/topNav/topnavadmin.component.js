@@ -19,6 +19,7 @@ var AdminTopnavComponent = (function () {
         this.communityService = communityService;
         this.authenticationService.generatetoken()
             .subscribe(function (result) {
+            console.log(localStorage.getItem('currentUser'));
             var currentUserStr = localStorage.getItem('currentUser');
             var currentUser = JSON.parse(currentUserStr);
             if (currentUserStr) {

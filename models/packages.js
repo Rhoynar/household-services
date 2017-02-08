@@ -9,6 +9,7 @@ var packageSchema = new Schema({
     price:String,
     frequency:String,
     features:[],
+    created:Date
 });
 
 module.exports = mongoose.model('Packages', packageSchema);

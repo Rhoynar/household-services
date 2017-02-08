@@ -1,0 +1,46 @@
+<topnav-admin></topnav-admin>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding dashboard_page">
+
+        <h2 class="inner-top-heading">Available Packages</h2>
+        <button class="btn btn-primary" [routerLink]="['/admin/package/new']">New</button>
+        <div class="services_wrapper">
+
+
+          <div class="col-md-6" *ngFor="let package of availablePackages">
+            <h4>{{package.title}}</h4>
+            <p class="text-center" [ngSwitch]="package.frequency">
+              ${{package.price}}
+              <span *ngSwitchCase="'monthly'">Per Month</span>
+              <span *ngSwitchCase="'yearly'">Per Year</span>
+              <span *ngSwitchDefault></span>
+            </p>
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let feature of package.features">{{feature}}</li>
+            </ul>
+          </div>
+
+
+
+
+        </div>
+        <div *ngIf="!availablePackages">No package available</div>
+
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+</div>
+
+<!--inner-mid-sec-->
+<!--fotter-section-->
+<footer-section></footer-section>

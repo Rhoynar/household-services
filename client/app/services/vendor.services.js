@@ -13,38 +13,26 @@ var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
-var PackageServices = (function () {
-    function PackageServices(http) {
+var VendorServices = (function () {
+    function VendorServices(http) {
         this.http = http;
         this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
-    PackageServices.prototype.getAllPackage = function () {
-        return this.http.get(this.API_ENDPOINT + '/api/getAllPackage')
+    VendorServices.prototype.getAllVendors = function () {
+        return this.http.get(this.API_ENDPOINT + '/api/getAllVendors')
             .map(this.extractData); //.catch(this.handleError);;
     };
-    PackageServices.prototype.addPackage = function (packageDetails) {
+    VendorServices.prototype.addvendors = function (vendorProfile) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/addPackage', JSON.stringify(packageDetails), { headers: headers })
+        return this.http.post(this.API_ENDPOINT + '/api/addVendor', JSON.stringify(vendorProfile), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
-    PackageServices.prototype.getPackageByZipcode = function (postalCode) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
-            .map(this.extractData); //.catch(this.handleError);;
-    };
-    PackageServices.prototype.getPackageByid = function (packageId) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
-            .map(this.extractData); //.catch(this.handleError);;
-    };
-    PackageServices.prototype.extractData = function (res) {
+    VendorServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
-    PackageServices.prototype.handleError = function (error) {
+    VendorServices.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
         var errMsg;
         if (error instanceof http_1.Response) {
@@ -60,11 +48,11 @@ var PackageServices = (function () {
         //let body = error.json();
         //return Observable.throw(body || { });
     };
-    PackageServices = __decorate([
+    VendorServices = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], PackageServices);
-    return PackageServices;
+    ], VendorServices);
+    return VendorServices;
 }());
-exports.PackageServices = PackageServices;
-//# sourceMappingURL=package.services.js.map
+exports.VendorServices = VendorServices;
+//# sourceMappingURL=vendor.services.js.map

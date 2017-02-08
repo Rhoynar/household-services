@@ -68,6 +68,7 @@ module.exports = function (passport) {
                         providerId: profile.id,
                         email: profile.emails[0].value,
                         name: profile.displayName,
+                        role:"user",
                         provider: 'facebook',
                         created: Date.now(),
                         profile: profile
@@ -194,6 +195,7 @@ module.exports = function (passport) {
                             email: profile.emails[0].value,
                             name: profile.displayName,
                             provider: 'google',
+                            role:"user",
                             created: Date.now(),
                             profile: profile
                         });

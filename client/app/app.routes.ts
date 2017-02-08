@@ -5,7 +5,8 @@ import {
   UserprofileComponent, TokenComponent, EditprofileComponent, 
   StripesComponent,ServicesComponent,DealsComponent,
   LandingOneComponent,PackagePurchaseComponent,AdminLoginComponent,
-  AdminDashboardComponent
+  AdminDashboardComponent,VendorComponent,AddVendorComponent,
+  AdminPackageComponent,AdminAddPackageComponent
 } from './components/index';
 
 import { AuthGuard, NotAuthGuard,AuthAdminGuard } from './guards/index';
@@ -30,6 +31,10 @@ const APP_ROUTES: Routes = [
   { path: 'admin', component: AdminLoginComponent, canActivate: [NotAuthGuard] },
   { path: 'admin/login', component: AdminLoginComponent, canActivate: [NotAuthGuard] },
   { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/vendors', component: VendorComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/vendor/new', component: AddVendorComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/packages',component: AdminPackageComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/package/new', component: AdminAddPackageComponent, canActivate: [AuthAdminGuard] },
   { path: '**', component: LandingComponent, canActivate: [NotAuthGuard] }
 
 ];

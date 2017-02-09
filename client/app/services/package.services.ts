@@ -3,6 +3,7 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Observer, BehaviorSubject, Subject } from "rxjs/Rx";
 import { PackageModel } from '../models/package.model'
+import {AppSettings} from './appsettings';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -11,36 +12,41 @@ export class PackageServices {
     constructor(private http: Http) {
     }
 
-    API_ENDPOINT = 'http://beta.cisin.com:3004';
-
+    
+    getHeader(){
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return headers;
+    }
     getAllPackage() {
-        return this.http.get(this.API_ENDPOINT + '/api/getAllPackage')
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/getAllPackage')
             .map(this.extractData);//.catch(this.handleError);;
     }
 
     addPackage(packageDetails:PackageModel){
-        var headers=new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT+'/api/addPackage',JSON.stringify(packageDetails),{headers:headers})
+        var headers=this.getHeader();
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/addPackage',JSON.stringify(packageDetails),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 
     getPackageByZipcode(postalCode: any) {
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+        var headers=this.getHeader();
 
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
             .map(this.extractData);//.catch(this.handleError);;
     }
 
     getPackageByid(packageId: any) {
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
+        var headers=this.getHeader();
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
             .map(this.extractData);//.catch(this.handleError);;
     }
 
+    deletePackageByid(packageId: any) {
+        var headers=this.getHeader();
+        return this.http.delete(AppSettings.API_ENDPOINT+'/api/package/'+packageId,  { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
 
 
 

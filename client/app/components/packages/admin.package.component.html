@@ -12,9 +12,15 @@
 
 
           <div class="col-md-6" *ngFor="let package of availablePackages">
-            <h4>{{package.title}}</h4>
+            <div class="col-md-12">
+              <h4>{{package.title}}</h4>
+              <button type="button" class="btn btn-danger" (click)="deletePackage(package._id)">Delete</button>
+              <button type="button" class="btn btn-primary" [routerLink]="['/admin/package/edit/',package._id]">Edit</button>
+            </div>
+            
             <p class="text-center" [ngSwitch]="package.frequency">
               ${{package.price}}
+              <span *ngSwitchCase="'daily'">Daily</span>
               <span *ngSwitchCase="'monthly'">Per Month</span>
               <span *ngSwitchCase="'yearly'">Per Year</span>
               <span *ngSwitchDefault></span>

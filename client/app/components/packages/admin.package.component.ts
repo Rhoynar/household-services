@@ -42,6 +42,9 @@ export class AdminPackageComponent implements AfterViewInit {
       );
   }
 
+  deletePackage(packageId:any){
+    alert(packageId);
+  }
   ngAfterViewInit() {
     this.getAllPackage();
 

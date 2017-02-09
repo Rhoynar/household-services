@@ -117,13 +117,22 @@ function isNotLoggedIn(req, res, next) {
 }
 
 router.get('/isloggedin', function (req, res) {
+
     if (req.isAuthenticated()) {
-        res.status(200);
-        res.json({ msg: 'loggedIn' });
+        if(req.user.role!='user'){
+            res.redirect('/admin');
+            return false;    
+        }else{
+            return next();    
+        }
+        
     } else {
-        res.status(401);
-        res.json({ msg: 'no session' });
+        // if they aren't redirect them to the home page
+        res.redirect('/');
+        return false;
     }
+
+    
 })
 
 router.get('/facebooklogin',

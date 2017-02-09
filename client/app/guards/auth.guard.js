@@ -18,9 +18,16 @@ var AuthGuard = (function () {
         this.router = router;
     }
     AuthGuard.prototype.canActivate = function (route, state) {
-        if (localStorage.getItem('currentUser')) {
-            // logged in so return true
-            return true;
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        if (currentUserStr) {
+            if (currentUser.token.role == "user") {
+                return true;
+            }
+            else {
+                this.router.navigate(['/admin']);
+                return false;
+            }
         }
         // not logged in so redirect to login page
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });

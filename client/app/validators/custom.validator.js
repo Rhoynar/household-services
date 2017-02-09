@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var appsettings_1 = require('../services/appsettings');
 var CustomValidator = (function () {
     function CustomValidator(http) {
         this.http = http;
-        this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
     CustomValidator.prototype.validEmail = function (control) {
         var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
@@ -33,7 +33,7 @@ var CustomValidator = (function () {
                 //console.log(control.parent.value['id']);
                 userdata.id = control.parent.value['id'];
             }
-            _this.http.post(_this.API_ENDPOINT + '/api/checkUniqueEmail', JSON.stringify(userdata), { headers: headers })
+            _this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/checkUniqueEmail', JSON.stringify(userdata), { headers: headers })
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 if (data.msg == 'available') {

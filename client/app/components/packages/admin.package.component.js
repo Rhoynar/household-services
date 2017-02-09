@@ -32,6 +32,9 @@ var AdminPackageComponent = (function () {
             alert(errr.msg);
         });
     };
+    AdminPackageComponent.prototype.deletePackage = function (packageId) {
+        alert(packageId);
+    };
     AdminPackageComponent.prototype.ngAfterViewInit = function () {
         this.getAllPackage();
     };

@@ -11,21 +11,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
+var appsettings_1 = require('./appsettings');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var VendorServices = (function () {
     function VendorServices(http) {
         this.http = http;
-        this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
+    VendorServices.prototype.getHeader = function () {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return headers;
+    };
     VendorServices.prototype.getAllVendors = function () {
-        return this.http.get(this.API_ENDPOINT + '/api/getAllVendors')
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllVendors')
             .map(this.extractData); //.catch(this.handleError);;
     };
     VendorServices.prototype.addvendors = function (vendorProfile) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/addVendor', JSON.stringify(vendorProfile), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/addVendor', JSON.stringify(vendorProfile), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     VendorServices.prototype.extractData = function (res) {

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { FormControl, FormGroup } from '@angular/forms';
+import {AppSettings} from '../services/appsettings';
 import { Observable } from 'rxjs';
 interface ValidationResult {
   [key: string]: boolean;
 }
 @Injectable()
 export class CustomValidator {
-  API_ENDPOINT = 'http://beta.cisin.com:3004';
+  
 
 
   constructor(private http: Http) { }
@@ -35,7 +36,7 @@ export class CustomValidator {
         userdata.id = control.parent.value['id'];
       }
 
-      this.http.post(this.API_ENDPOINT + '/api/checkUniqueEmail', JSON.stringify(userdata), { headers: headers })
+      this.http.post(AppSettings.API_ENDPOINT+'/api/checkUniqueEmail', JSON.stringify(userdata), { headers: headers })
         .map((res: Response) => res.json())
         .subscribe((data: any) => {
           if (data.msg == 'available') {

@@ -11,33 +11,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
+var appsettings_1 = require('./appsettings');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var PackageServices = (function () {
     function PackageServices(http) {
         this.http = http;
-        this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
+    PackageServices.prototype.getHeader = function () {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return headers;
+    };
     PackageServices.prototype.getAllPackage = function () {
-        return this.http.get(this.API_ENDPOINT + '/api/getAllPackage')
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllPackage')
             .map(this.extractData); //.catch(this.handleError);;
     };
     PackageServices.prototype.addPackage = function (packageDetails) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/addPackage', JSON.stringify(packageDetails), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/addPackage', JSON.stringify(packageDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     PackageServices.prototype.getPackageByZipcode = function (postalCode) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     PackageServices.prototype.getPackageByid = function (packageId) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/getPackageByid', JSON.stringify({ 'packageId': packageId }), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    PackageServices.prototype.deletePackageByid = function (packageId) {
+        var headers = this.getHeader();
+        return this.http.delete(appsettings_1.AppSettings.API_ENDPOINT + '/api/package/' + packageId, { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     PackageServices.prototype.extractData = function (res) {

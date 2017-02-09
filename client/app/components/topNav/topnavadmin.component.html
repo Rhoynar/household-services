@@ -18,7 +18,7 @@
                       <li *ngIf="loggedIn" ><a [routerLink]="['/admin/vendors']">Vendors</a> </li>
                       <li *ngIf="loggedIn" ><a [routerLink]="['/admin/packages']">Packages</a> </li>
                       <li *ngIf="loggedIn" ><a [routerLink]="['/']">Deals</a> </li>
-                      <li *ngIf="!loggedIn"><a [routerLink]="['/admin/login']">Login</a> </li>
+                      <li *ngIf="!loggedIn"><a [routerLink]="['/']">User Site</a> </li>
                       <li *ngIf="loggedIn"><a (click)="logout();">Logout </a> </li>
                     </ul>
                   </div>

@@ -11,59 +11,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
+var appsettings_1 = require('./appsettings');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var StripeServices = (function () {
     function StripeServices(http) {
         this.http = http;
-        this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
-    StripeServices.prototype.postCardDetails = function (cardDetails) {
+    StripeServices.prototype.getHeader = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/createStripeCust', JSON.stringify(cardDetails), { headers: headers })
+        return headers;
+    };
+    StripeServices.prototype.postCardDetails = function (cardDetails) {
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/createStripeCust', JSON.stringify(cardDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.postCardAndServiceDetails = function (cardDetails, selectedService) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/addandcreateCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/addandcreateCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.getCards = function () {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT + '/api/getStripeCard', { headers: headers })
+        var headers = this.getHeader();
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getStripeCard', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.deleteCards = function (sourceJson) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/deleteCards', JSON.stringify(sourceJson), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/deleteCards', JSON.stringify(sourceJson), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.getUserProfile = function (profileId) {
         // var headers=new Headers();
         // headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT + '/api/getprofile/' + profileId)
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getprofile/' + profileId)
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.createServiceCharge = function (cardDetails, selectedService) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/createCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/createCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.payPackageWithCard = function (cardDetails, selectedService, isNewCard, doSave) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/createPackageCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService, isNewCard: isNewCard, doSave: doSave }), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/createPackageCharges', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService, isNewCard: isNewCard, doSave: doSave }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.payPackageWithToken = function (cardDetails, selectedService) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/payPackageWithToken', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/payPackageWithToken', JSON.stringify({ cardDetails: cardDetails, selectedService: selectedService }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     StripeServices.prototype.extractData = function (res) {

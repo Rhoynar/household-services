@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http, Headers,Response} from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import { Observer, BehaviorSubject,Subject} from "rxjs/Rx";
-import { VendorModel } from '../models/vendor.model'
+import { VendorModel } from '../models/vendor.model';
+import {AppSettings} from './appsettings';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -12,18 +13,22 @@ export class VendorServices{
 
     }
     authenticated:any;
-   API_ENDPOINT='http://beta.cisin.com:3004';
+   
+   getHeader(){
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return headers;
+    }
     
     getAllVendors(){
-        return this.http.get(this.API_ENDPOINT+'/api/getAllVendors')
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/getAllVendors')
         .map(this.extractData);//.catch(this.handleError);;
     }
 
     
     addvendors(vendorProfile:VendorModel){
-        var headers=new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT+'/api/addVendor',JSON.stringify(vendorProfile),{headers:headers})
+        var headers=this.getHeader();
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/addVendor',JSON.stringify(vendorProfile),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 

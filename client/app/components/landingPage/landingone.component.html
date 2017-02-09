@@ -63,7 +63,8 @@
                     <li class="list-group-item" *ngFor="let feature of package.features">{{feature}}</li>
                   </ul>
                   <p class="text-center" [ngSwitch]="package.frequency">
-                    ${{package.price}} 
+                    ${{package.price}}
+                    <span *ngSwitchCase="'daily'">Daily</span> 
                     <span *ngSwitchCase="'monthly'">Per Month</span>
                     <span *ngSwitchCase="'yearly'">Per Year</span>
                     <span *ngSwitchDefault></span>

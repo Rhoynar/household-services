@@ -9,7 +9,7 @@
         <h2 class="inner-top-heading">Available Packages</h2>
         <button class="btn btn-primary" [routerLink]="['/admin/package/new']">New</button>
         <div class="services_wrapper">
-
+            <alert [alertType]="'packageAlert'"></alert>
 
           <div class="col-md-6" *ngFor="let package of availablePackages">
             <div class="col-md-12">

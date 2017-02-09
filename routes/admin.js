@@ -101,6 +101,7 @@ router.get('/vendors',isAdminLoggedIn,getTemplate);
 router.get('/vendor/new',isAdminLoggedIn,getTemplate);
 router.get('/packages',isAdminLoggedIn,getTemplate);
 router.get('/package/new',isAdminLoggedIn,getTemplate);
+router.get('/package/edit/:id',isAdminLoggedIn,getTemplate);
 
 //post requests
 router.post('/login',authenticateUser);

@@ -45,7 +45,7 @@
             <div *ngIf="profileSignupForm.controls['userpass'].hasError('required') && profileSignupForm.controls['userpass'].touched"
               class="alert alert-danger">You must include a password.</div>
             <div *ngIf="profileSignupForm.controls['userpass'].hasError('minlength') && profileSignupForm.controls['userpass'].touched"
-              class="alert alert-danger">Your password must be at least 5 characters long.</div>
+              class="alert alert-danger">Your password must be at least 8 characters long.</div>
           </div>
           <div class="form-group text-center">
               <button type="submit" class="btn btn-primary" [disabled]="!profileSignupForm.valid">Register</button>

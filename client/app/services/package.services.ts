@@ -29,6 +29,12 @@ export class PackageServices {
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    updatePackage(packageDetails:PackageModel){
+        var headers=this.getHeader();
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/updatePackage',JSON.stringify(packageDetails),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
     getPackageByZipcode(postalCode: any) {
         var headers=this.getHeader();
 
@@ -67,7 +73,6 @@ export class PackageServices {
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
-        console.error(errMsg);
         return Observable.throw(errMsg);
         //let body = error.json();
         //return Observable.throw(body || { });

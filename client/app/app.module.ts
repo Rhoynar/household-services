@@ -17,7 +17,8 @@ import {
   ServicesComponent, DealsComponent, LandingOneComponent,
   TopnavOneComponent,PackagePurchaseComponent,AdminLoginComponent,
   AdminDashboardComponent,AdminTopnavComponent,VendorComponent,
-  AddVendorComponent,AdminPackageComponent,AdminAddPackageComponent
+  AddVendorComponent,AdminPackageComponent,AdminAddPackageComponent,
+  AdminEditPackageComponent
 } from './components/index';
 
 //installed modules
@@ -53,7 +54,7 @@ import {
     EditprofileComponent,DealsComponent,PackagePurchaseComponent,
     AlertComponent,AdminLoginComponent,AdminDashboardComponent,
     AdminTopnavComponent,VendorComponent,AddVendorComponent,
-    AdminPackageComponent,AdminAddPackageComponent
+    AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent
 
   ],
   providers: [

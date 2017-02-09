@@ -32,6 +32,11 @@ var PackageServices = (function () {
         return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/addPackage', JSON.stringify(packageDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    PackageServices.prototype.updatePackage = function (packageDetails) {
+        var headers = this.getHeader();
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/updatePackage', JSON.stringify(packageDetails), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     PackageServices.prototype.getPackageByZipcode = function (postalCode) {
         var headers = this.getHeader();
         return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/getPackageByZipcode', JSON.stringify({ 'postalCode': postalCode, 'frequency': 'monthly' }), { headers: headers })
@@ -62,7 +67,6 @@ var PackageServices = (function () {
         else {
             errMsg = error.message ? error.message : error.toString();
         }
-        console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
         //let body = error.json();
         //return Observable.throw(body || { });

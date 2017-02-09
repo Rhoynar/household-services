@@ -2,7 +2,8 @@
 var AppSettings = (function () {
     function AppSettings() {
     }
-    AppSettings.API_ENDPOINT = 'http://beta.cisin.com:3004';
+    //public static API_ENDPOINT = 'http://beta.cisin.com:3004';
+    AppSettings.API_ENDPOINT = '';
     return AppSettings;
 }());
 exports.AppSettings = AppSettings;

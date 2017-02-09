@@ -838,7 +838,7 @@ var addPackage= function (req, res) {
     //userModel.
     
     packageDetails.title= req.body.title;
-    packageDetails.postcode= req.body.postcode;
+    packageDetails.postalcode= req.body.postcode;
     packageDetails.price= req.body.price;
     packageDetails.frequency= req.body.frequency;
     packageDetails.created = Date.now();
@@ -854,6 +854,53 @@ var addPackage= function (req, res) {
             return res.json({ status: 'success', msg: 'package added successfully' });
         }
     });
+
+    
+    //return res.json({});
+}
+
+var deletePackage = function(req, res) {
+  var packageId = req.params.id;
+  Packages.remove({_id:packageId},function(err,removeBrand){
+    if (err) {
+            return res.json({ status: 'error', error: err,msg:"Some error occured please try later" });
+        } else {
+            return res.json({ status: 'success', msg: 'package Deleted successfully' });
+        }
+  });
+  
+}
+
+var updatePackage= function (req, res) {
+
+    
+    var packageDetails={};
+    //res.render('index.html');
+    //userModel.
+    
+    packageDetails.title= req.body.title;
+    packageDetails.postalcode= req.body.postcode;
+    packageDetails.price= req.body.price;
+    packageDetails.frequency= req.body.frequency;
+    packageDetails.created = Date.now();
+    packageDetails.features=[];
+    req.body.featureList.forEach(function(eachFeature) {
+        packageDetails.features.push(eachFeature.feature);
+    });
+
+    Packages.findByIdAndUpdate(req.body.id, packageDetails, function (err, updateRes) {
+
+        if (err) {
+
+            return res.json({ status: 'error', error: err });
+        }
+        else {
+
+            return res.json({ status: 'success', msg: 'User updated successfully' });
+        }
+    });
+
+    
 
     
     //return res.json({});
@@ -881,4 +928,8 @@ router.get('/getAllVendors',getAllVendors);
 router.post('/addVendor',addVendor);
 router.get('/getAllPackage',getAllPackage);
 router.post('/addPackage',addPackage);
+router.delete('/package/:id', deletePackage);
+router.post('/updatePackage',updatePackage);
+
+
 module.exports = router;

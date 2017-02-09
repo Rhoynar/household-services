@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { PackageServices } from '../../services/index';
+import { PackageServices,AlertService } from '../../services/index';
 
 
 
@@ -19,7 +19,8 @@ export class AdminPackageComponent implements AfterViewInit {
   //constructor start
   constructor(
     private router: Router,
-    private packageService: PackageServices
+    private packageService: PackageServices,
+    private alertService: AlertService
   ) {
 
 
@@ -44,6 +45,23 @@ export class AdminPackageComponent implements AfterViewInit {
 
   deletePackage(packageId:any){
     alert(packageId);
+    this.packageService.deletePackageByid(packageId)
+      .subscribe(data => {
+        if(data.status=='success'){
+          this.alertService.success(data.msg,'packageAlert');
+          this.getAllPackage();
+        }else{
+          this.alertService.error(data.msg,'packageAlert');
+        }
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        
+        this.alertService.error(errr.msg,'packageAlert');
+      }
+      );
   }
   ngAfterViewInit() {
     this.getAllPackage();

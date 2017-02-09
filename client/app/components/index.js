@@ -27,4 +27,5 @@ __export(require('./vendors/vendors.component'));
 __export(require('./vendors/addvendor.component'));
 __export(require('./packages/admin.package.component'));
 __export(require('./packages/admin.add.package.component'));
+__export(require('./packages/admin.edit.package.component'));
 //# sourceMappingURL=index.js.map

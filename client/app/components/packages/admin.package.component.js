@@ -13,9 +13,10 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var AdminPackageComponent = (function () {
     //constructor start
-    function AdminPackageComponent(router, packageService) {
+    function AdminPackageComponent(router, packageService, alertService) {
         this.router = router;
         this.packageService = packageService;
+        this.alertService = alertService;
         this.loggedIn = false;
     }
     //end of constructor
@@ -33,7 +34,23 @@ var AdminPackageComponent = (function () {
         });
     };
     AdminPackageComponent.prototype.deletePackage = function (packageId) {
+        var _this = this;
         alert(packageId);
+        this.packageService.deletePackageByid(packageId)
+            .subscribe(function (data) {
+            if (data.status == 'success') {
+                _this.alertService.success(data.msg, 'packageAlert');
+                _this.getAllPackage();
+            }
+            else {
+                _this.alertService.error(data.msg, 'packageAlert');
+            }
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            _this.alertService.error(errr.msg, 'packageAlert');
+        });
     };
     AdminPackageComponent.prototype.ngAfterViewInit = function () {
         this.getAllPackage();
@@ -52,7 +69,7 @@ var AdminPackageComponent = (function () {
             selector: 'admin-packages',
             templateUrl: './admin.package.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, index_1.AlertService])
     ], AdminPackageComponent);
     return AdminPackageComponent;
 }());

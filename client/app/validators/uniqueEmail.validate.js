@@ -3,7 +3,7 @@ var Observable_1 = require('rxjs/Observable');
 require('rxjs/Rx');
 function checkUser(control, source, http) {
     // Manually inject Http
-    var API_ENDPOINT = 'http://beta.cisin.com:3004';
+    var API_ENDPOINT = 'http://beta.cisin.com:4a6sd4a6sda';
     // Return an observable with null if the
     // username or email doesn't yet exist, or
     // an objet with the rejetion reason if they do

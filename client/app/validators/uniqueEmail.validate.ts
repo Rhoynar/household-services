@@ -13,7 +13,7 @@ function checkUser(control: FormControl, source: string,http:Http) : Observable<
 
   // Manually inject Http
   
- let API_ENDPOINT='http://beta.cisin.com:3004';
+ let API_ENDPOINT='http://ec2-54-165-12-165.compute-1.amazonaws.com:5000';
   // Return an observable with null if the
   // username or email doesn't yet exist, or
   // an objet with the rejetion reason if they do

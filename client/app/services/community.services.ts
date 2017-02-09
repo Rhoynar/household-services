@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http, Headers,Response} from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import { Observer, BehaviorSubject,Subject} from "rxjs/Rx";
-import { ProfileModel } from '../models/profile.model'
+import { ProfileModel } from '../models/profile.model';
+import {AppSettings} from './appsettings';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -11,12 +12,12 @@ export class CommunityServices{
     constructor(private http:Http){
     }
 
-   API_ENDPOINT='http://beta.cisin.com:3004';
+   
     
 
     getCommunities(){
         
-        return this.http.get(this.API_ENDPOINT+'/api/getAllCommunities')
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/getAllCommunities')
         .map(this.extractData);//.catch(this.handleError);;
     }
 
@@ -24,14 +25,14 @@ export class CommunityServices{
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
 
-        return this.http.post(this.API_ENDPOINT+'/api/getAllServices', JSON.stringify(communitySelection),{headers:headers})
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/getAllServices', JSON.stringify(communitySelection),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 
     getMyServices(){
         var headers=new Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT+'/api/getMyServices',{headers:headers})
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/getMyServices',{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 

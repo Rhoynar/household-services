@@ -11,27 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
+var appsettings_1 = require('./appsettings');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var CommunityServices = (function () {
     function CommunityServices(http) {
         this.http = http;
-        this.API_ENDPOINT = 'http://beta.cisin.com:3004';
     }
     CommunityServices.prototype.getCommunities = function () {
-        return this.http.get(this.API_ENDPOINT + '/api/getAllCommunities')
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllCommunities')
             .map(this.extractData); //.catch(this.handleError);;
     };
     CommunityServices.prototype.getAllServices = function (communitySelection) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(this.API_ENDPOINT + '/api/getAllServices', JSON.stringify(communitySelection), { headers: headers })
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllServices', JSON.stringify(communitySelection), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     CommunityServices.prototype.getMyServices = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this.http.get(this.API_ENDPOINT + '/api/getMyServices', { headers: headers })
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getMyServices', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     CommunityServices.prototype.extractData = function (res) {

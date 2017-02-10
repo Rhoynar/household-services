@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { VendorServices } from '../../services/index';
+import { VendorServices,AlertService } from '../../services/index';
 
 declare var $: any;
 
@@ -22,7 +22,8 @@ export class VendorComponent implements AfterViewInit, OnInit, OnDestroy {
   //constructor start
   constructor(
     private router: Router,
-    private vendorsService: VendorServices
+    private vendorsService: VendorServices,
+    private alertService: AlertService
   ) {
 
 
@@ -46,7 +47,30 @@ export class VendorComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
 
+deleteVendor(vendorId: any) {
+    var con = confirm("Are you sure!, You want to delete this vendor");
+    if (con) {
 
+
+      this.vendorsService.deleteVendorByid(vendorId)
+        .subscribe(data => {
+          if (data.status == 'success') {
+            this.alertService.success(data.msg, 'vendorAlert');
+            this.getAllVendors();
+          } else {
+            this.alertService.error(data.msg, 'vendorAlert');
+          }
+        },
+        error => {
+          const body = error.json() || '';
+          const err = body.error || JSON.stringify(body);
+          var errr = JSON.parse(err);
+
+          this.alertService.error(errr.msg, 'vendorAlert');
+        }
+        );
+    }
+  }
 
 
 

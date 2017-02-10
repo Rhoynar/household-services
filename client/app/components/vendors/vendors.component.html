@@ -9,15 +9,19 @@
         <h2 class="inner-top-heading">Available Vendors</h2>
         <button class="btn btn-primary" [routerLink]="['/admin/vendor/new']">New</button>
         <div class="services_wrapper">
-
+          <alert [alertType]="'vendorAlert'"></alert>
           <div class="services_info_block clearfix" *ngFor='let eachVendor of availableVendors; let i = index;'>
 
             <div class="col-md-8 ser-lf">
               
-              <div class="services-rh">
+              <div class="col-md-10">
                 <h3>{{eachVendor?.name}}</h3>
 
                 <p>{{eachVendor?.email}}</p>
+              </div>
+              <div col-md-2>
+                  <button type="button" class="btn btn-danger" (click)="deleteVendor(eachVendor._id)">Delete</button>
+                  <button type="button" class="btn btn-primary" [routerLink]="['/admin/vendor/edit/',eachVendor._id]">Edit</button>
               </div>
             </div>
             

@@ -18,7 +18,7 @@
                       <li class="active"><a [routerLink]="['/']">Services</a> </li>
                       <li><a>How It works</a> </li>
                       <li *ngIf="loggedIn"><a [routerLink]="['/deals']" >Deals</a> </li>
-                      <li *ngIf="!loggedIn"><a  [routerLink]="['/login']">Join</a></li>
+                      <li *ngIf="!loggedIn"><a  [routerLink]="['/admin/login']">Admin Login</a></li>
                       <li *ngIf="!loggedIn"><a [routerLink]="['/login']">Login</a> </li>
                       <li *ngIf="loggedIn"><a [routerLink]="['/profile']">Profile</a> </li>
                       <li *ngIf="loggedIn"><a href="javascript:void(0);" (click)="logout();">Logout </a> </li>

@@ -35,22 +35,24 @@ var AdminPackageComponent = (function () {
     };
     AdminPackageComponent.prototype.deletePackage = function (packageId) {
         var _this = this;
-        alert(packageId);
-        this.packageService.deletePackageByid(packageId)
-            .subscribe(function (data) {
-            if (data.status == 'success') {
-                _this.alertService.success(data.msg, 'packageAlert');
-                _this.getAllPackage();
-            }
-            else {
-                _this.alertService.error(data.msg, 'packageAlert');
-            }
-        }, function (error) {
-            var body = error.json() || '';
-            var err = body.error || JSON.stringify(body);
-            var errr = JSON.parse(err);
-            _this.alertService.error(errr.msg, 'packageAlert');
-        });
+        var con = confirm("Are you sure!, You want to delete this package");
+        if (con) {
+            this.packageService.deletePackageByid(packageId)
+                .subscribe(function (data) {
+                if (data.status == 'success') {
+                    _this.alertService.success(data.msg, 'packageAlert');
+                    _this.getAllPackage();
+                }
+                else {
+                    _this.alertService.error(data.msg, 'packageAlert');
+                }
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                _this.alertService.error(errr.msg, 'packageAlert');
+            });
+        }
     };
     AdminPackageComponent.prototype.ngAfterViewInit = function () {
         this.getAllPackage();

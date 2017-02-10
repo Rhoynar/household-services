@@ -29,7 +29,22 @@ var VendorServices = (function () {
     };
     VendorServices.prototype.addvendors = function (vendorProfile) {
         var headers = this.getHeader();
-        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/addVendor', JSON.stringify(vendorProfile), { headers: headers })
+        return this.http.post(appsettings_1.AppSettings.API_ENDPOINT + '/api/vendor', JSON.stringify(vendorProfile), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    VendorServices.prototype.updateVendors = function (vendorDetails) {
+        var headers = this.getHeader();
+        return this.http.put(appsettings_1.AppSettings.API_ENDPOINT + '/api/vendor', JSON.stringify(vendorDetails), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    VendorServices.prototype.getVendorByid = function (vendorId) {
+        var headers = this.getHeader();
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/vendor/' + vendorId, { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    VendorServices.prototype.deleteVendorByid = function (vendorId) {
+        var headers = this.getHeader();
+        return this.http.delete(appsettings_1.AppSettings.API_ENDPOINT + '/api/vendor/' + vendorId, { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     VendorServices.prototype.extractData = function (res) {

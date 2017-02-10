@@ -6,7 +6,9 @@ import {
   StripesComponent,ServicesComponent,DealsComponent,
   LandingOneComponent,PackagePurchaseComponent,AdminLoginComponent,
   AdminDashboardComponent,VendorComponent,AddVendorComponent,
-  AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent
+  AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent,
+  AdminEditVendorComponent
+
 } from './components/index';
 
 import { AuthGuard, NotAuthGuard,AuthAdminGuard } from './guards/index';
@@ -36,6 +38,7 @@ const APP_ROUTES: Routes = [
   { path: 'admin/packages',component: AdminPackageComponent, canActivate: [AuthAdminGuard] },
   { path: 'admin/package/new', component: AdminAddPackageComponent, canActivate: [AuthAdminGuard] },
   { path: 'admin/package/edit/:id', component: AdminEditPackageComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/vendor/edit/:id', component: AdminEditVendorComponent, canActivate: [AuthAdminGuard] },
   { path: '**', component: LandingComponent, canActivate: [NotAuthGuard] }
 
 ];

@@ -28,11 +28,27 @@ export class VendorServices{
     
     addvendors(vendorProfile:VendorModel){
         var headers=this.getHeader();
-        return this.http.post(AppSettings.API_ENDPOINT+'/api/addVendor',JSON.stringify(vendorProfile),{headers:headers})
+        return this.http.post(AppSettings.API_ENDPOINT+'/api/vendor',JSON.stringify(vendorProfile),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 
-    
+    updateVendors(vendorDetails:VendorModel){
+        var headers=this.getHeader();
+        return this.http.put(AppSettings.API_ENDPOINT+'/api/vendor',JSON.stringify(vendorDetails ),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getVendorByid(vendorId: any) {
+        var headers=this.getHeader();
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/vendor/'+vendorId, { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    deleteVendorByid(vendorId: any) {
+        var headers=this.getHeader();
+        return this.http.delete(AppSettings.API_ENDPOINT+'/api/vendor/'+vendorId,  { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
 
      private extractData(res: Response) {
         let body = res.json();

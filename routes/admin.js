@@ -97,11 +97,17 @@ var createtoken = function (req, res) {
 router.get('/',isNotAdminLoggedIn,getTemplate);
 router.get('/login',isNotAdminLoggedIn,getTemplate);
 router.get('/dashboard',isAdminLoggedIn,getTemplate);
+
+//vendor routes
 router.get('/vendors',isAdminLoggedIn,getTemplate);
 router.get('/vendor/new',isAdminLoggedIn,getTemplate);
+router.get('/vendor/edit/:id',isAdminLoggedIn,getTemplate);
+
+//package routes
 router.get('/packages',isAdminLoggedIn,getTemplate);
 router.get('/package/new',isAdminLoggedIn,getTemplate);
 router.get('/package/edit/:id',isAdminLoggedIn,getTemplate);
+
 
 //post requests
 router.post('/login',authenticateUser);

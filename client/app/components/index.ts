@@ -25,5 +25,6 @@ export * from './vendors/addvendor.component';
 export * from './packages/admin.package.component';
 export * from './packages/admin.add.package.component';
 export * from './packages/admin.edit.package.component';
+export * from './vendors/admin.edit.vendor.component';
 
 

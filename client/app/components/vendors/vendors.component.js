@@ -13,9 +13,10 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var VendorComponent = (function () {
     //constructor start
-    function VendorComponent(router, vendorsService) {
+    function VendorComponent(router, vendorsService, alertService) {
         this.router = router;
         this.vendorsService = vendorsService;
+        this.alertService = alertService;
         this.loggedIn = false;
     }
     //end of constructor
@@ -31,6 +32,27 @@ var VendorComponent = (function () {
             var errr = JSON.parse(err);
             alert(errr.msg);
         });
+    };
+    VendorComponent.prototype.deleteVendor = function (vendorId) {
+        var _this = this;
+        var con = confirm("Are you sure!, You want to delete this vendor");
+        if (con) {
+            this.vendorsService.deleteVendorByid(vendorId)
+                .subscribe(function (data) {
+                if (data.status == 'success') {
+                    _this.alertService.success(data.msg, 'vendorAlert');
+                    _this.getAllVendors();
+                }
+                else {
+                    _this.alertService.error(data.msg, 'vendorAlert');
+                }
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                _this.alertService.error(errr.msg, 'vendorAlert');
+            });
+        }
     };
     VendorComponent.prototype.ngAfterViewInit = function () {
         this.getAllVendors();
@@ -49,7 +71,7 @@ var VendorComponent = (function () {
             selector: 'vendors',
             templateUrl: './vendors.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.VendorServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.VendorServices, index_1.AlertService])
     ], VendorComponent);
     return VendorComponent;
 }());

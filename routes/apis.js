@@ -761,7 +761,7 @@ var createStripeTokenandPay=function(err, userDoc,cardObject,selectedService,res
 }
 
 
-// pay with cards but dont save cards in user profile
+
 var getAllVendors = function (req, res) {
 
     if (req.user) {
@@ -791,7 +791,7 @@ var addVendor= function (req, res) {
     
     vendorProfile.name= req.body.vendorName;
     vendorProfile.email= req.body.vendorEmail;
-    vendorProfile.phone= req.body.userphone;
+    vendorProfile.phone= req.body.vendorphone;
     vendorProfile.addresslineone= req.body.addresslineone;
     vendorProfile.addresslinetwo= req.body.addresslinetwo;
     vendorProfile.city= req.body.vendorcity;
@@ -817,7 +817,7 @@ var getAllPackage= function (req, res) {
     if (req.user) {
         Packages.find({}, function (err, vendorDoc) {
             if (err) {
-                res.send({ status: 'error', msg: 'unable to fetch packages , please try later', error: err });
+                res.send({ status: 'error', msg: 'Unable to fetch packages , please try later', error: err });
             } else {
                 res.send({ status: 'success', result: vendorDoc });
             }
@@ -851,7 +851,7 @@ var addPackage= function (req, res) {
         if (err) {
             return res.json({ status: 'error', error: err });
         } else {
-            return res.json({ status: 'success', msg: 'package added successfully' });
+            return res.json({ status: 'success', msg: 'Package added successfully' });
         }
     });
 
@@ -865,7 +865,7 @@ var deletePackage = function(req, res) {
     if (err) {
             return res.json({ status: 'error', error: err,msg:"Some error occured please try later" });
         } else {
-            return res.json({ status: 'success', msg: 'package Deleted successfully' });
+            return res.json({ status: 'success', msg: 'Package Deleted successfully' });
         }
   });
   
@@ -896,7 +896,7 @@ var updatePackage= function (req, res) {
         }
         else {
 
-            return res.json({ status: 'success', msg: 'User updated successfully' });
+            return res.json({ status: 'success', msg: 'Package updated successfully' });
         }
     });
 
@@ -904,6 +904,69 @@ var updatePackage= function (req, res) {
 
     
     //return res.json({});
+}
+
+deleteVendor = function(req, res) {
+  var vendorId = req.params.id;
+  Vendors.remove({_id:vendorId},function(err,removeBrand){
+    if (err) {
+            return res.json({ status: 'error', error: err,msg:"Some error occured please try later" });
+        } else {
+            return res.json({ status: 'success', msg: 'Vendor Deleted successfully' });
+        }
+  });
+}
+
+updateVendor= function (req, res) {
+
+    var vendorProfile={};
+    
+    vendorProfile.name= req.body.vendorName;
+    vendorProfile.email= req.body.vendorEmail;
+    vendorProfile.phone= req.body.vendorphone;
+    vendorProfile.addresslineone= req.body.addresslineone;
+    vendorProfile.addresslinetwo= req.body.addresslinetwo;
+    vendorProfile.city= req.body.vendorcity;
+    vendorProfile.country= req.body.vendorcountry;
+    vendorProfile.zipcode= req.body.vendorzip;
+    
+
+    Vendors.findByIdAndUpdate(req.body.id, vendorProfile, function (err, updateRes) {
+
+        if (err) {
+
+            return res.json({ status: 'error', error: err });
+        }
+        else {
+
+            return res.json({ status: 'success', msg: 'Vendor updated successfully' });
+        }
+    });
+
+    
+
+    
+    //return res.json({});
+}
+
+getVendorDetailById = function (req, res) {
+    var condition = {};
+    var vendorId = req.params.id;
+    if (vendorId != '') {
+        Vendors.findById(vendorId).lean().exec(function (err, vendorDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'Unable to fetch Vendor , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: vendorDoc });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+
 }
 
 router.post('/deleteCards', deleteStripeCards);
@@ -925,11 +988,16 @@ router.post('/getPackageByid', getPackageByid);
 router.post('/createPackageCharges',createPackageCharges);
 router.post('/payPackageWithToken',payPackageWithToken);
 router.get('/getAllVendors',getAllVendors);
-router.post('/addVendor',addVendor);
+
 router.get('/getAllPackage',getAllPackage);
 router.post('/addPackage',addPackage);
 router.delete('/package/:id', deletePackage);
 router.post('/updatePackage',updatePackage);
+
+router.post('/vendor',addVendor);
+router.put('/vendor',updateVendor);
+router.delete('/vendor/:id', deleteVendor);
+router.get('/vendor/:id', getVendorDetailById);
 
 
 module.exports = router;

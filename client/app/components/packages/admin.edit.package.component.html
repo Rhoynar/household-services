@@ -45,13 +45,19 @@
                         <div class="form-group">
                             <label class="input-heading">Frequency :</label>
                             <div class="input-box">
-                                <select name="frequency" id="frequency" class="input-fill" [formControl]="editPackageForm.controls['frequency']">
+                                <label class="radio-inline">
+                                    <input type="radio" [formControl]="editPackageForm.controls['frequency']" id="inlineRadio1" value="daily"> daily
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" [formControl]="editPackageForm.controls['frequency']" id="inlineRadio2" value="monthly"> Monthly
+                                </label>
+                                <!--<select name="frequency" id="frequency" class="input-fill" [formControl]="editPackageForm.controls['frequency']">
                                         <option value="">Please Select</option>
                                         <option value="daily">daily</option>
                                         <option value="monthly">Monthly</option>
                                         <option value="yearly">Yearly</option>
                                         
-                                </select>
+                                </select>-->
 
                                 <div *ngIf="editPackageForm.controls['frequency'].hasError('required') && editPackageForm.controls['frequency'].touched" class="alert alert-danger">You must include a frequency.</div>
 

@@ -26,6 +26,7 @@ var APP_ROUTES = [
     { path: 'admin/packages', component: index_1.AdminPackageComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: 'admin/package/new', component: index_1.AdminAddPackageComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: 'admin/package/edit/:id', component: index_1.AdminEditPackageComponent, canActivate: [index_2.AuthAdminGuard] },
+    { path: 'admin/vendor/edit/:id', component: index_1.AdminEditVendorComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: '**', component: index_1.LandingComponent, canActivate: [index_2.NotAuthGuard] }
 ];
 exports.routing = router_1.RouterModule.forRoot(APP_ROUTES);

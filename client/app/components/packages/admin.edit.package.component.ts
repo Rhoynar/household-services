@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { PackageServices, AlertService } from '../../services/index';
+import { PackageServices, AlertService,VendorServices } from '../../services/index';
 import { VendorModel } from '../../models/vendor.model';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
@@ -25,6 +25,7 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
   editPackageForm: FormGroup;
   customValidator = new CustomValidator(this.http);
   packageDetails: any = {};
+  availableVendors: any;
 
   //constructor start
   constructor(
@@ -33,7 +34,8 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
     private fb: FormBuilder,
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
-    private packageServices: PackageServices
+    private packageServices: PackageServices,
+    private vendorsService: VendorServices
   ) {
     let params: any = this.activatedRoute.snapshot.params;
     this.packageId = params.id;
@@ -43,6 +45,7 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
       postcode: ['', Validators.required],
       price: ['', Validators.required],
       frequency: ['', Validators.required],
+      vendorList: this.fb.array([]),
       featureList: this.fb.array([])
     });
 
@@ -59,9 +62,20 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
     });
   }
 
+  initVendor() {
+    return this.fb.group({
+      vendor: ['', Validators.required]
+    });
+  }
+
   addFeature() {
     var control: any = this.editPackageForm.controls['featureList'];
     control.push(this.initFeature());
+  }
+
+  addVendor() {
+    var control: any = this.editPackageForm.controls['vendorList'];
+    control.push(this.initVendor());
   }
 
   //get vendors
@@ -71,6 +85,11 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
 
   removefeature(index: any) {
     var arrayControl: any = this.editPackageForm.controls['featureList']
+    arrayControl.removeAt(index);
+  }
+
+  removeVendor(index: any) {
+    var arrayControl: any = this.editPackageForm.controls['vendorList']
     arrayControl.removeAt(index);
   }
 
@@ -132,6 +151,13 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
              control.push(newControl);
              newControl.controls['feature'].setValue(eachFeature);
           }
+
+          var vendorControl: any = this.editPackageForm.controls['vendorList'];
+          for (let eachVendor of this.packageDetails.vendors) {
+            var newControl=this.initVendor();
+             vendorControl.push(newControl);
+             newControl.controls['vendor'].setValue(eachVendor);
+          }
           
           
         } else {
@@ -150,6 +176,26 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
       );
 
 
+
+      this.getAllVendors();
+
+
+  }
+
+  //get vendors
+  getAllVendors() {
+    this.vendorsService.getAllVendors()
+      .subscribe(data => {
+        this.availableVendors = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
   }
 
   ngOnDestroy() {

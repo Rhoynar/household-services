@@ -1,141 +1,48 @@
-<topnav></topnav>
-<div class="inner-banner">
-  <div class="banner-img"><img src="images/inner-banner.jpg" alt="" />
-    <div class="inner-content">
-        <div class="container">
-            <div class="row">
-            <div class="col-md-12 no-padding">
-          <h1>Packages</h1>
-          </div>
-          </div>
-          </div>
-          
-        </div>
-     
-  </div>
-</div>
-<package-section></package-section>
-
-
-
+<topnav-one></topnav-one>
 
 <!--inner-mid-sec-->
 <div class="inner-mid-sec white-bg">
-    <div class="container">
-        <div class="row">
-            <div class="packages_page">
-                
-                <div class="premium_block clearfix">
-        <div class="col-sm-3 premium_inq">
-          <div class="main_bcx">
-            <div class="bro_top_sec">
-              <h2 class="Bronze_offers_top-head">Plan-1 </h2>
-              <div class="Bronze_offers">
-                <div class="banner-up">
-                  <div class="banner-in">
-                    <p>$25.00<sup>/yr</sup></p>
+  <div class="container">
+    <div class="row">
+      <div class="packages_page">
+
+        <div class="premium_block clearfix">
+          <div class="col-sm-3 premium_inq plan-four" *ngFor="let package of packages">
+            <div class="main_bcx">
+              <div class="bro_top_sec">
+                <h2 class="Bronze_offers_top-head">{{package.title}} </h2>
+                <div class="Bronze_offers">
+                  <div class="banner-up">
+                    <div class="banner-in">
+                      <p [ngSwitch]="package.frequency">${{package.price}}
+                        <sup *ngSwitchCase="'daily'">/Day</sup>
+                        <sup *ngSwitchCase="'monthly'">/Mn</sup>
+                        <sup *ngSwitchCase="'yearly'">yr</sup>
+                        <sup *ngSwitchDefault></sup>
+                        
+                        </p>
                     </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="bro_mid-sec">
-              <ul class="deatil_info">
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Consectetur adipiscing elit </li>
-                <li>Donec cursus ligula nec </li>
-                <li>Ornare congue sem enim </li>
-                <li>Feugiat tortor non laoreet </li>
-                <li>Justo dui vitae augue </li>
-                <li>Fusce aliquam id diam</li>
-              </ul>
-            </div>
-            <div class="buy_now bronze"><a href="#">Get Started</a></div>
-          </div>
-        </div>
-        <div class="col-sm-3 premium_inq plan-two">
-          <div class="main_bcx">
-            <div class="bro_top_sec">
-              <h2 class="Bronze_offers_top-head">Plan-2 </h2>
-              <div class="Bronze_offers">
-                <div class="banner-up">
-                  <div class="banner-in">
-                    <p>$28.00<sup>/yr</sup></p>
-                    </div>
-                </div>
+              <div class="bro_mid-sec">
+                <ul class="deatil_info">
+                  <li *ngFor="let feature of package.features">
+                    {{feature}}
+                  </li>
+                </ul>
+              </div>
+              <div class="buy_now bronze">
+                <a class="btn btn-success" [routerLink]="['/package/purchase',package._id]">Get Started</a>
               </div>
             </div>
-            <div class="bro_mid-sec">
-              <ul class="deatil_info">
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Consectetur adipiscing elit </li>
-                <li>Donec cursus ligula nec </li>
-                <li>Ornare congue sem enim </li>
-                <li>Feugiat tortor non laoreet </li>
-                <li>Justo dui vitae augue </li>
-                <li>Fusce aliquam id diam</li>
-              </ul>
-            </div>
-            <div class="buy_now bronze"><a href="#">Get Started</a></div>
           </div>
         </div>
-        <div class="col-sm-3 premium_inq plan-three">
-          <div class="main_bcx">
-            <div class="bro_top_sec">
-              <h2 class="Bronze_offers_top-head">Plan-3 </h2>
-              <div class="Bronze_offers">
-                <div class="banner-up">
-                  <div class="banner-in">
-                    <p>$30.00<sup>/yr</sup></p>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="bro_mid-sec">
-              <ul class="deatil_info">
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Consectetur adipiscing elit </li>
-                <li>Donec cursus ligula nec </li>
-                <li>Ornare congue sem enim </li>
-                <li>Feugiat tortor non laoreet </li>
-                <li>Justo dui vitae augue </li>
-                <li>Fusce aliquam id diam</li>
-              </ul>
-            </div>
-            <div class="buy_now bronze"><a href="#">Get Started</a></div>
-          </div>
-        </div>
-        <div class="col-sm-3 premium_inq plan-four">
-          <div class="main_bcx">
-            <div class="bro_top_sec">
-              <h2 class="Bronze_offers_top-head">Plan-4 </h2>
-              <div class="Bronze_offers">
-                <div class="banner-up">
-                  <div class="banner-in">
-                    <p>$35.00<sup>/yr</sup></p>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="bro_mid-sec">
-              <ul class="deatil_info">
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Consectetur adipiscing elit </li>
-                <li>Donec cursus ligula nec </li>
-                <li>Ornare congue sem enim </li>
-                <li>Feugiat tortor non laoreet </li>
-                <li>Justo dui vitae augue </li>
-                <li>Fusce aliquam id diam</li>
-              </ul>
-            </div>
-            <div class="buy_now bronze"><a href="#">Get Started</a></div>
-          </div>
-        </div>
+
+
       </div>
-                
-                
-            </div>
-        </div>
     </div>
+  </div>
 </div>
 
 <!--inner-mid-sec-->

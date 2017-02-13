@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, NgZone, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 declare var $: any;
 import { ModalDirective } from 'ng2-bootstrap';
 import { MapsAPILoader } from 'angular2-google-maps/core';
@@ -40,6 +41,7 @@ export class LandingOneComponent implements AfterViewInit, OnInit {
     private ngZone: NgZone,
     private googlePlace: GooglePlaceService,
     private packageService: PackageServices,
+    private router: Router,
     private authenticationService: AuthenticationService) {
 
       this.authenticationService.generatetoken()
@@ -48,6 +50,12 @@ export class LandingOneComponent implements AfterViewInit, OnInit {
           this.loggedIn=false;
         }else{
           this.loggedIn=true;
+          var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+          var token = currentUser && currentUser.token;
+          if(token.role=='admin'){
+            this.router.navigate(['/admin']);
+          }
+          
         }
       });
 

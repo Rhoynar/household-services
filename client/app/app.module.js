@@ -48,7 +48,7 @@ var AppModule = (function () {
                 index_1.AlertComponent, index_2.AdminLoginComponent, index_2.AdminDashboardComponent,
                 index_2.AdminTopnavComponent, index_2.VendorComponent, index_2.AddVendorComponent,
                 index_2.AdminPackageComponent, index_2.AdminAddPackageComponent, index_2.AdminEditPackageComponent,
-                index_2.AdminEditVendorComponent
+                index_2.AdminEditVendorComponent, index_2.AdminDealsComponent
             ],
             providers: [
                 index_3.AuthGuard, index_3.NotAuthGuard, index_4.CommunityServices,

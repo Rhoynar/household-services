@@ -18,7 +18,7 @@ import {
   TopnavOneComponent,PackagePurchaseComponent,AdminLoginComponent,
   AdminDashboardComponent,AdminTopnavComponent,VendorComponent,
   AddVendorComponent,AdminPackageComponent,AdminAddPackageComponent,
-  AdminEditPackageComponent,AdminEditVendorComponent
+  AdminEditPackageComponent,AdminEditVendorComponent,AdminDealsComponent
 } from './components/index';
 
 //installed modules
@@ -55,7 +55,7 @@ import {
     AlertComponent,AdminLoginComponent,AdminDashboardComponent,
     AdminTopnavComponent,VendorComponent,AddVendorComponent,
     AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent,
-    AdminEditVendorComponent
+    AdminEditVendorComponent,AdminDealsComponent
 
   ],
   providers: [

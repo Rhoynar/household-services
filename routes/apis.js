@@ -542,7 +542,7 @@ var getMyServices = function (req, res) {
 var getPackageByZipcode = function (req, res) {
     var condition = {};
     if (req.body.postalCode != '') {
-        condition = { postalcode: req.body.postalCode, frequency: req.body.frequency };
+        condition = { postalcode: req.body.postalCode };
     }
     Packages.find(condition, function (err, packageDoc) {
         if (err) {
@@ -843,8 +843,12 @@ var addPackage= function (req, res) {
     packageDetails.frequency= req.body.frequency;
     packageDetails.created = Date.now();
     packageDetails.features=[];
+    packageDetails.vendors=[];
     req.body.featureList.forEach(function(eachFeature) {
         packageDetails.features.push(eachFeature.feature);
+    });
+    req.body.vendorList.forEach(function(eachVendor) {
+        packageDetails.vendors.push(eachVendor.vendor);
     });
 
     packageDetails.save(function (err) {
@@ -884,9 +888,14 @@ var updatePackage= function (req, res) {
     packageDetails.frequency= req.body.frequency;
     packageDetails.created = Date.now();
     packageDetails.features=[];
+    packageDetails.vendors=[];
     req.body.featureList.forEach(function(eachFeature) {
         packageDetails.features.push(eachFeature.feature);
     });
+    req.body.vendorList.forEach(function(eachVendor) {
+        packageDetails.vendors.push(eachVendor.vendor);
+    });
+
 
     Packages.findByIdAndUpdate(req.body.id, packageDetails, function (err, updateRes) {
 
@@ -969,6 +978,32 @@ getVendorDetailById = function (req, res) {
 
 }
 
+
+var getAllPackageDeals= function (req, res) {
+
+    if (req.user) {
+
+        PackageDeals.find({}).populate('clientId').populate({
+  path: 'packageId',
+  model: 'Packages',
+  populate: {
+    path: 'vendors',
+    model: 'Vendors'
+  }}).exec(function (err, packageDealDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'Unable to fetch Package Deals , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: packageDealDoc });
+            }
+        });
+
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
 router.post('/deleteCards', deleteStripeCards);
 
 router.post('/authenticate', authenticateUser);
@@ -998,6 +1033,7 @@ router.post('/vendor',addVendor);
 router.put('/vendor',updateVendor);
 router.delete('/vendor/:id', deleteVendor);
 router.get('/vendor/:id', getVendorDetailById);
+router.get('/getAllPackageDeals',getAllPackageDeals);
 
 
 module.exports = router;

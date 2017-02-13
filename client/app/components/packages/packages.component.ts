@@ -1,29 +1,45 @@
-import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-declare var $:any;
+import { AuthenticationService, GooglePlaceService, PackageServices } from '../../services/index';
+declare var $: any;
 
 
 
 @Component({
-  moduleId:module.id,
+  moduleId: module.id,
   selector: 'packages',
-  templateUrl:'./packages.component.html'
+  templateUrl: './packages.component.html'
   //styles: [main]
 })
 export class PackagesComponent implements AfterViewInit {
-  // parties: Observable<any[]>;
- // parties: Observable<Party[]>;
+  packages: any;
+  loggedIn = false;
 
-  constructor() {
-   // this.parties = Parties.find({}).zone();
+  constructor(
+    private packageService: PackageServices,
+    private authenticationService: AuthenticationService
+  ) {
+    
 
   }
 
+  getAllPackage() {
+    this.packageService.getAllPackage()
+      .subscribe(data => {
+        this.packages = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+  }
   ngAfterViewInit() {
-      $(document).ready(function () {
-          	
-    		$(".s-box").selectbox();
-    	});
-    }
+    this.getAllPackage();
+
+  }
 
 }

@@ -5,4 +5,5 @@ export class PackageModel {
     price:string;
     frequency:string;
     features:any;
+    vendors:any;
 }

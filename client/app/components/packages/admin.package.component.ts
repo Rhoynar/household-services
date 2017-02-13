@@ -27,7 +27,7 @@ export class AdminPackageComponent implements AfterViewInit {
   }
   //end of constructor
 
-  //get vendors
+  //get packages
   getAllPackage() {
     this.packageService.getAllPackage()
       .subscribe(data => {

@@ -52,6 +52,10 @@ var PackageServices = (function () {
         return this.http.delete(appsettings_1.AppSettings.API_ENDPOINT + '/api/package/' + packageId, { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    PackageServices.prototype.getAllAdminPackageDeals = function () {
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllPackageDeals')
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     PackageServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};

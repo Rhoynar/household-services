@@ -15,12 +15,12 @@
                 <div class="collapse navbar-collapse js-navbar-collapse">
                   <div class="navi-menu1">
                     <ul class="nav navbar-nav">
-                      <li class="active"><a [routerLink]="['/']">Services</a> </li>
+                      <li [ngClass]="{active: router.url==='/packages'}"><a [routerLink]="['/packages']">Services</a> </li>
                       <li><a>How It works</a> </li>
-                      <li *ngIf="loggedIn"><a [routerLink]="['/deals']" >Deals</a> </li>
-                      <li *ngIf="!loggedIn"><a  [routerLink]="['/admin/login']">Admin Login</a></li>
-                      <li *ngIf="!loggedIn"><a [routerLink]="['/login']">Login</a> </li>
-                      <li *ngIf="loggedIn"><a [routerLink]="['/profile']">Profile</a> </li>
+                      <li [ngClass]="{active: router.url==='/deals'}" *ngIf="loggedIn"><a [routerLink]="['/deals']" >Deals</a> </li>
+                      <li [ngClass]="{active: router.url==='/admin/login'}" *ngIf="!loggedIn"><a  [routerLink]="['/admin/login']">Admin Login</a></li>
+                      <li [ngClass]="{active: router.url==='/login'}" *ngIf="!loggedIn"><a [routerLink]="['/login']">Login</a> </li>
+                      <li [ngClass]="{active: router.url==='/profile'}" *ngIf="loggedIn"><a [routerLink]="['/profile']">Profile</a> </li>
                       <li *ngIf="loggedIn"><a href="javascript:void(0);" (click)="logout();">Logout </a> </li>
                     </ul>
                   </div>

@@ -17,11 +17,12 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminAddPackageComponent = (function () {
     //constructor start
-    function AdminAddPackageComponent(http, fb, router, packageServices) {
+    function AdminAddPackageComponent(http, fb, router, packageServices, vendorsService) {
         this.http = http;
         this.fb = fb;
         this.router = router;
         this.packageServices = packageServices;
+        this.vendorsService = vendorsService;
         this.loggedIn = false;
         this.vendorModel = new vendor_model_1.VendorModel();
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
@@ -30,6 +31,7 @@ var AdminAddPackageComponent = (function () {
             postcode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],
             frequency: ['', forms_1.Validators.required],
+            vendorList: this.fb.array([this.initVendor()]),
             featureList: this.fb.array([this.initFeature()])
         });
         console.log(this.addPackageForm);
@@ -40,10 +42,19 @@ var AdminAddPackageComponent = (function () {
             feature: ['', forms_1.Validators.required]
         });
     };
+    AdminAddPackageComponent.prototype.initVendor = function () {
+        return this.fb.group({
+            vendor: ['', forms_1.Validators.required]
+        });
+    };
     AdminAddPackageComponent.prototype.addFeature = function () {
         var control = this.addPackageForm.controls['featureList'];
         control.push(this.initFeature());
         console.log(this.addPackageForm.controls['featureList']);
+    };
+    AdminAddPackageComponent.prototype.addVendor = function () {
+        var control = this.addPackageForm.controls['vendorList'];
+        control.push(this.initVendor());
     };
     //get vendors
     AdminAddPackageComponent.prototype.packagePage = function () {
@@ -52,6 +63,10 @@ var AdminAddPackageComponent = (function () {
     };
     AdminAddPackageComponent.prototype.removefeature = function (index) {
         var arrayControl = this.addPackageForm.controls['featureList'];
+        arrayControl.removeAt(index);
+    };
+    AdminAddPackageComponent.prototype.removeVendor = function (index) {
+        var arrayControl = this.addPackageForm.controls['vendorList'];
         arrayControl.removeAt(index);
     };
     AdminAddPackageComponent.prototype.submitForm = function () {
@@ -78,12 +93,26 @@ var AdminAddPackageComponent = (function () {
         });
     };
     AdminAddPackageComponent.prototype.ngAfterViewInit = function () {
+        this.getAllVendors();
     };
     AdminAddPackageComponent.prototype.ngOnInit = function () {
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
         }
+    };
+    //get vendors
+    AdminAddPackageComponent.prototype.getAllVendors = function () {
+        var _this = this;
+        this.vendorsService.getAllVendors()
+            .subscribe(function (data) {
+            _this.availableVendors = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     AdminAddPackageComponent.prototype.ngOnDestroy = function () {
     };
@@ -93,7 +122,7 @@ var AdminAddPackageComponent = (function () {
             selector: 'admin-add-package',
             templateUrl: './admin.add.package.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.PackageServices])
+        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.PackageServices, index_1.VendorServices])
     ], AdminAddPackageComponent);
     return AdminAddPackageComponent;
 }());

@@ -9,16 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var ng2_bootstrap_1 = require('ng2-bootstrap');
 var core_2 = require('angular2-google-maps/core');
 var index_1 = require('../../services/index');
 var LandingOneComponent = (function () {
-    function LandingOneComponent(mapsAPILoader, ngZone, googlePlace, packageService, authenticationService) {
+    function LandingOneComponent(mapsAPILoader, ngZone, googlePlace, packageService, router, authenticationService) {
         var _this = this;
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
         this.googlePlace = googlePlace;
         this.packageService = packageService;
+        this.router = router;
         this.authenticationService = authenticationService;
         this.postal_code = '';
         this.searched = false;
@@ -44,6 +46,11 @@ var LandingOneComponent = (function () {
             }
             else {
                 _this.loggedIn = true;
+                var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                var token = currentUser && currentUser.token;
+                if (token.role == 'admin') {
+                    _this.router.navigate(['/admin']);
+                }
             }
         });
     }
@@ -120,7 +127,7 @@ var LandingOneComponent = (function () {
             selector: 'landing-one',
             templateUrl: './landingone.component.html'
         }), 
-        __metadata('design:paramtypes', [core_2.MapsAPILoader, core_1.NgZone, index_1.GooglePlaceService, index_1.PackageServices, index_1.AuthenticationService])
+        __metadata('design:paramtypes', [core_2.MapsAPILoader, core_1.NgZone, index_1.GooglePlaceService, index_1.PackageServices, router_1.Router, index_1.AuthenticationService])
     ], LandingOneComponent);
     return LandingOneComponent;
 }());

@@ -20,7 +20,7 @@ var AdminPackageComponent = (function () {
         this.loggedIn = false;
     }
     //end of constructor
-    //get vendors
+    //get packages
     AdminPackageComponent.prototype.getAllPackage = function () {
         var _this = this;
         this.packageService.getAllPackage()

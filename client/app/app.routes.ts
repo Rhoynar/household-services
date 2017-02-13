@@ -7,7 +7,7 @@ import {
   LandingOneComponent,PackagePurchaseComponent,AdminLoginComponent,
   AdminDashboardComponent,VendorComponent,AddVendorComponent,
   AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent,
-  AdminEditVendorComponent
+  AdminEditVendorComponent,AdminDealsComponent
 
 } from './components/index';
 
@@ -39,6 +39,7 @@ const APP_ROUTES: Routes = [
   { path: 'admin/package/new', component: AdminAddPackageComponent, canActivate: [AuthAdminGuard] },
   { path: 'admin/package/edit/:id', component: AdminEditPackageComponent, canActivate: [AuthAdminGuard] },
   { path: 'admin/vendor/edit/:id', component: AdminEditVendorComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/deals',component: AdminDealsComponent, canActivate: [AuthAdminGuard] },
   { path: '**', component: LandingComponent, canActivate: [NotAuthGuard] }
 
 ];

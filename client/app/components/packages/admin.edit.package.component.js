@@ -17,13 +17,14 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminEditPackageComponent = (function () {
     //constructor start
-    function AdminEditPackageComponent(http, router, fb, alertService, activatedRoute, packageServices) {
+    function AdminEditPackageComponent(http, router, fb, alertService, activatedRoute, packageServices, vendorsService) {
         this.http = http;
         this.router = router;
         this.fb = fb;
         this.alertService = alertService;
         this.activatedRoute = activatedRoute;
         this.packageServices = packageServices;
+        this.vendorsService = vendorsService;
         this.loggedIn = false;
         this.packageId = '';
         this.vendorModel = new vendor_model_1.VendorModel();
@@ -37,6 +38,7 @@ var AdminEditPackageComponent = (function () {
             postcode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],
             frequency: ['', forms_1.Validators.required],
+            vendorList: this.fb.array([]),
             featureList: this.fb.array([])
         });
     }
@@ -46,9 +48,18 @@ var AdminEditPackageComponent = (function () {
             feature: ['', forms_1.Validators.required]
         });
     };
+    AdminEditPackageComponent.prototype.initVendor = function () {
+        return this.fb.group({
+            vendor: ['', forms_1.Validators.required]
+        });
+    };
     AdminEditPackageComponent.prototype.addFeature = function () {
         var control = this.editPackageForm.controls['featureList'];
         control.push(this.initFeature());
+    };
+    AdminEditPackageComponent.prototype.addVendor = function () {
+        var control = this.editPackageForm.controls['vendorList'];
+        control.push(this.initVendor());
     };
     //get vendors
     AdminEditPackageComponent.prototype.packagePage = function () {
@@ -56,6 +67,10 @@ var AdminEditPackageComponent = (function () {
     };
     AdminEditPackageComponent.prototype.removefeature = function (index) {
         var arrayControl = this.editPackageForm.controls['featureList'];
+        arrayControl.removeAt(index);
+    };
+    AdminEditPackageComponent.prototype.removeVendor = function (index) {
+        var arrayControl = this.editPackageForm.controls['vendorList'];
         arrayControl.removeAt(index);
     };
     AdminEditPackageComponent.prototype.submitForm = function () {
@@ -104,6 +119,13 @@ var AdminEditPackageComponent = (function () {
                     control.push(newControl);
                     newControl.controls['feature'].setValue(eachFeature);
                 }
+                var vendorControl = _this.editPackageForm.controls['vendorList'];
+                for (var _b = 0, _c = _this.packageDetails.vendors; _b < _c.length; _b++) {
+                    var eachVendor = _c[_b];
+                    var newControl = _this.initVendor();
+                    vendorControl.push(newControl);
+                    newControl.controls['vendor'].setValue(eachVendor);
+                }
             }
             else {
                 alert(data.msg);
@@ -115,6 +137,20 @@ var AdminEditPackageComponent = (function () {
             //alert(errr.msg);
             _this.alertService.error(errr.msg, 'package-error');
         });
+        this.getAllVendors();
+    };
+    //get vendors
+    AdminEditPackageComponent.prototype.getAllVendors = function () {
+        var _this = this;
+        this.vendorsService.getAllVendors()
+            .subscribe(function (data) {
+            _this.availableVendors = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     AdminEditPackageComponent.prototype.ngOnDestroy = function () {
     };
@@ -124,7 +160,7 @@ var AdminEditPackageComponent = (function () {
             selector: 'admin-edit-package',
             templateUrl: './admin.edit.package.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.PackageServices])
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.PackageServices, index_1.VendorServices])
     ], AdminEditPackageComponent);
     return AdminEditPackageComponent;
 }());

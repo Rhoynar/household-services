@@ -55,6 +55,12 @@ export class PackageServices {
     }
 
 
+    getAllAdminPackageDeals() {
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/getAllPackageDeals')
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+
 
 
 

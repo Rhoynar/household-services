@@ -13,7 +13,7 @@ var APP_ROUTES = [
     { path: 'stripes', component: index_1.StripesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'packages', component: index_1.PackagesComponent, canActivate: [index_2.AuthGuard] },
     { path: 'profile', component: index_1.UserprofileComponent, canActivate: [index_2.AuthGuard] },
-    { path: 'deals', component: index_1.DealsComponent, canActivate: [index_2.AuthGuard] },
+    { path: 'orders', component: index_1.OrdersComponent, canActivate: [index_2.AuthGuard] },
     { path: 'package/purchase/:id', component: index_1.PackagePurchaseComponent, canActivate: [index_2.AuthGuard] },
     { path: 'services', component: index_1.ServicesComponent },
     // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
@@ -27,7 +27,7 @@ var APP_ROUTES = [
     { path: 'admin/package/new', component: index_1.AdminAddPackageComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: 'admin/package/edit/:id', component: index_1.AdminEditPackageComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: 'admin/vendor/edit/:id', component: index_1.AdminEditVendorComponent, canActivate: [index_2.AuthAdminGuard] },
-    { path: 'admin/deals', component: index_1.AdminDealsComponent, canActivate: [index_2.AuthAdminGuard] },
+    { path: 'admin/orders', component: index_1.AdminOrdersComponent, canActivate: [index_2.AuthAdminGuard] },
     { path: '**', component: index_1.LandingComponent, canActivate: [index_2.NotAuthGuard] }
 ];
 exports.routing = router_1.RouterModule.forRoot(APP_ROUTES);

@@ -17,7 +17,7 @@
                     <ul class="nav navbar-nav">
                       <li [ngClass]="{active: router.url==='/admin/vendors'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/vendors']">Vendors</a> </li>
                       <li [ngClass]="{active: router.url==='/admin/packages'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/packages']">Packages</a> </li>
-                      <li [ngClass]="{active: router.url==='/admin/deals'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/deals']">Deals</a> </li>
+                      <li [ngClass]="{active: router.url==='/admin/orders'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/orders']">Orders</a> </li>
                       <li *ngIf="!loggedIn"><a [routerLink]="['/']">User Site</a> </li>
                       <li *ngIf="loggedIn"><a (click)="logout();">Logout </a> </li>
                     </ul>

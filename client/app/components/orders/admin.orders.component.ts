@@ -8,23 +8,23 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'deals',
-  templateUrl: './admin.deals.component.html'
+  selector: 'orders',
+  templateUrl: './admin.orders.component.html'
   //styles: [main]
 })
-export class AdminDealsComponent implements AfterViewInit {
-  allDeals: any = [];
+export class AdminOrdersComponent implements AfterViewInit {
+  allOrders: any = [];
 
   constructor(
     private router: Router,
     private packageService: PackageServices) {
-    this.getAllDeals();
+    this.getAllOrders();
   }
 
-  getAllDeals() {
-    this.packageService.getAllAdminPackageDeals()
+  getAllOrders() {
+    this.packageService.getAllAdminPackageOrders()
       .subscribe(data => {
-        this.allDeals = data.result;
+        this.allOrders = data.result;
       },
       error => {
         //console.log(error);
@@ -43,3 +43,4 @@ export class AdminDealsComponent implements AfterViewInit {
   }
 
 }
+

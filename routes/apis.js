@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-
+const async = require('async');
+var mongoose = require('mongoose');
 var Users = require('../models/users');
 var Services = require('../models/services');
 var Packages = require('../models/packages');
@@ -226,7 +227,7 @@ var getStripeCard = function (req, res) {
                         if (cards) {
                             res.send({ status: 'success', stripe_cus_id: userDoc.stripeCustomerId, result: cards.data });
                         } else {
-                            res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [] ,msg:err});
+                            res.send({ status: 'error', stripe_cus_id: userDoc.stripeCustomerId, result: [], msg: err });
                         }
 
 
@@ -419,13 +420,13 @@ var addandcreateCharges = function (req, res) {
                         userDoc.stripeCustomer.sources.total_count++;
 
                         userDoc.stripeCustomer.sources.data.push(card);
-                        updateDetails ={stripeCustomer: userDoc.stripeCustomer};
+                        updateDetails = { stripeCustomer: userDoc.stripeCustomer };
 
                         Users.findByIdAndUpdate(userDoc.id, updateDetails, function (err, updateRes) {
 
                             if (err) {
                                 return res.json({ status: 'error', error: err });
-                            }else {
+                            } else {
                                 _internalCreateCharge(userDoc, selectedService, card, res);
                             }
                         });
@@ -481,21 +482,21 @@ var getMyServices = function (req, res) {
             .then(undefined, function (err) {
                 //Handle error
             })*/
-            /*Charges.find({ clientId: req.user.id }).lean().exec(function (err, chargeDoc) {
-            if (err) {
-                res.status(401);
-                res.json({ status: 'error', msg: 'some error occured' });
-                return res.send();
-            } else {
-                var i = -1;
-                var next = function () {
+        /*Charges.find({ clientId: req.user.id }).lean().exec(function (err, chargeDoc) {
+        if (err) {
+            res.status(401);
+            res.json({ status: 'error', msg: 'some error occured' });
+            return res.send();
+        } else {
+            var i = -1;
+            var next = function () {
 
-                    i++;
+                i++;
 
-                    if (i < chargeDoc.length) {
+                if (i < chargeDoc.length) {
 
-                        Services.findById(chargeDoc[i].serviceId).lean().exec(function (err, serviceDoc) {
-                            */
+                    Services.findById(chargeDoc[i].serviceId).lean().exec(function (err, serviceDoc) {
+                        */
         PackageDeals.find({ clientId: req.user.id }).lean().exec(function (err, chargeDoc) {
             if (err) {
                 res.status(401);
@@ -511,7 +512,7 @@ var getMyServices = function (req, res) {
 
                         Packages.findById(chargeDoc[i].packageId).lean().exec(function (err, serviceDoc) {
 
-        
+
                             if (err) {
                                 res.status(401);
                                 res.json({ status: 'error', msg: 'some error occured' });
@@ -573,55 +574,196 @@ var getPackageByid = function (req, res) {
 
 }
 
+/*var test = function () {
+    var vendorArr=[];
+    var needdedVendor={id:'',serviceCount:0};
+    //async.eachSeries(cartRes, function (CproductRes, callback) {
+        async.parallel(
+            [
+                funtion(callback){
+                    
+                    ///loop through vendors of services , and create initial service count with 0
+                    for(var i=0; i < selectedService.vendors.length; i++){
+                        vendorArr[selectedService.vendors[i]]=0;
+                        
+                        if(i==0){
+                            needdedVendor.id=selectedService.vendors[i];
+                            needdedVendor.serviceCount=0;
+                        }
+                        
 
-var _internalPackageCreateCharge = function (userDoc, selectedService, cardDetails, res,sourceType) {
+                        if((i+1)==selectedService.vendors.length){
+                            callback(err) 
+                        }
+                    }
 
-    var stripeReqObject={
-        amount: selectedService.price*100,
-        currency: "usd",
-        receipt_email: userDoc.email,
-        source: cardDetails.id, // obtained with Stripe.js
-        description: "Charge for package " + selectedService._id
-    };
+                    
+                },
+                funtion(callback){
 
-    if(sourceType!='token'){
-        stripeReqObject.customer=userDoc.stripeCustomerId;
-    }
-    ///create charges
-    stripe.charges.create(stripeReqObject, function (err, charge) {
-        // asynchronously called
+                    PackageDeals.aggregate([
+                        { $match: { packageId: selectedService._id, "vendorId": { "$in": selectedService.vendors } } },
+                        { $group: { _id: "$vendorId", total: { $sum: 1 } } }
+                    ]).exec(function(err,serviceCountByVendor){
+                        for(var i=0; i<serviceCountByVendor.length; i++){
+                            vendorArr[serviceCountByVendor[i]._id]=serviceCountByVendor[i].total;
+                            if((i+1)==serviceCountByVendor.length){
+                                callback(err) 
+                            }
+                        }
+                    });
 
-        ////save returned charge into database
-        if (charge) {
-            var newPackageCharge = new PackageDeals();
-            newPackageCharge.packageId = selectedService._id;
-            newPackageCharge.amount = selectedService.price*100;
-            newPackageCharge.clientId = userDoc._id;
-            newPackageCharge.stripeChargeId = charge.id;
-            newPackageCharge.chargeDetail = charge;
-            if(sourceType=='token'){
-                newPackageCharge.tokenDetail = cardDetails;
-            }
-            newPackageCharge.created = Date.now();
-            return newPackageCharge.save(function (err) {
-                if (err) {
-                    //return { statuscode: 400, msg: err };  // handle errors!
-                    res.status(400);
-                    res.send({ statuscode: 400, msg: err });
+                    
+                },
+                funtion(callback){
+                    var vendorProcessed=0;
+                    vendorArr.forEach(function(vendorTotal, vendorId) {
+                        vendorProcessed++;
+                        if((vendorTotal<needdedVendor.serviceCount) || (needdedVendor.id=='')){
+                            needdedVendor.id=vendorId;
+                            needdedVendor.serviceCount=vendorTotal;
+                        }
+                        if((vendorProcessed+1)==vendorArr.length){
+                            callback(err) 
+                        }
+                    });
+
+
+                    
+                },
+            ],
+            funtion(){
+                console.log(needdedVendor);
+            });
+    /*},
+        function (err) {
+
+        })*/
+//}
+var _internalPackageCreateCharge = function (userDoc, selectedService, cardDetails, res, sourceType) {
+        
+        
+        var vendorArr=[];
+        var vendorAbjectId=[];
+        var needdedVendor={id:'',serviceCount:0};
+        async.series(
+            [
+                function(callback){
+                    ///loop through vendors of services , and create initial service count with 0
+                    //Object.keys(selectedService.vendors)
+                    async.forEach(selectedService.vendors, function(eachVendorId, callback) {
+                        vendorArr[eachVendorId]=0;
+                        vendorAbjectId.push(mongoose.Types.ObjectId(eachVendorId));
+                        callback();
+                    }, callback);
+                    
+                },
+                function(callback){
+
+                    PackageDeals.aggregate([
+                        { $match: { packageId: mongoose.Types.ObjectId(selectedService._id), "vendorId": { "$in": vendorAbjectId } } },
+                        { $group: { _id: "$vendorId", total: { $sum: 1 } } }
+                    ]).exec(function(err,serviceCountByVendor){
+                        if(err){
+                            console.log(err);    
+                        }
+                        console.log(serviceCountByVendor);
+
+                        async.forEach(serviceCountByVendor, function(eachRecord, callback) {
+                            vendorArr[eachRecord._id]=eachRecord.total;
+                            callback();
+                        }, callback);
+
+                        
+                        
+
+
+                    });
+
+                    
+                },
+                function(callback){
+                    
+                    console.log(vendorArr);
+                    //Object.keys(selectedService.vendors)
+                    async.forEach(Object.keys(vendorArr), function(eachVendorId, callback) {
+                        //vendorArr[eachVendorId]=0;
+                        if(''==needdedVendor.id || vendorArr[eachVendorId]<needdedVendor.serviceCount){
+                            needdedVendor.id=eachVendorId;
+                            needdedVendor.serviceCount=vendorArr[eachVendorId];
+                        }
+                        callback();
+                    }, callback);
+                    
+                },
+            ],
+            function(error,result){
+                console.log(needdedVendor);
+                if (error) {
+                    res.status(200);
+                    res.send({ statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later", error: err });
                 } else {
 
-                    //return { statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" };
-                    res.status(200);
-                    res.send({ statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" });
+                    var stripeReqObject = {
+                        amount: selectedService.price * 100,
+                        currency: "usd",
+                        receipt_email: userDoc.email,
+                        source: cardDetails.id, // obtained with Stripe.js
+                        description: "Charge for package " + selectedService._id
+                    };
+
+                    if (sourceType != 'token') {
+                        stripeReqObject.customer = userDoc.stripeCustomerId;
+                    }
+                    ///create charges
+                    stripe.charges.create(stripeReqObject, function (err, charge) {
+                        // asynchronously called
+
+                        ////save returned charge into database
+                        if (charge) {
+                            var newPackageCharge = new PackageDeals();
+                            newPackageCharge.packageId = selectedService._id;
+                            newPackageCharge.amount = selectedService.price * 100;
+                            newPackageCharge.clientId = userDoc._id;
+                            newPackageCharge.stripeChargeId = charge.id;
+                            newPackageCharge.chargeDetail = charge;
+                            newPackageCharge.vendorId=needdedVendor.id;
+                            if (sourceType == 'token') {
+                                newPackageCharge.tokenDetail = cardDetails;
+                            }
+                            newPackageCharge.created = Date.now();
+                            return newPackageCharge.save(function (err) {
+                                if (err) {
+                                    //return { statuscode: 400, msg: err };  // handle errors!
+                                    res.status(400);
+                                    res.send({ statuscode: 400, msg: err });
+                                } else {
+
+                                    //return { statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" };
+                                    res.status(200);
+                                    res.send({ statuscode: 200, status: 'success', stripe_charge_id: charge.id, result: charge, msg: "Charge created successfuly" });
+                                }
+                            });
+
+                        } else {
+                            res.status(200);
+                            res.send({ statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later", error: err });
+                        }
+
+                    });
+
+
                 }
             });
+    /*db.packagedeals.aggregate([
+    {$match:{packageId:ObjectId("5891c1ee8a0916127f99fa40"),"vendorId":{"$in":[ObjectId("589af3c42395914bb696b19d"),ObjectId("589c0966f52fef0c51ae9864")]}}},
+    {$group:{_id:"$vendorId",total:{$sum:1}}} 
+    ]);*/
 
-        } else {
-            res.status(200);
-            res.send({ statuscode: 200, status: 'error', result: [], msg: "Some error occured please try later",error:err });
-        }
 
-    });
+    
+
+
 }
 
 
@@ -635,45 +777,45 @@ var createPackageCharges = function (req, res) {
         var doSave = req.body.doSave;
 
         Users.findById(req.user.id, function (err, userDoc) {
-            if(err){
+            if (err) {
                 res.status(200);
-                res.send({ status: 'error', msg: "Some error occured please try later", result: [] ,error:err});
-            }else if(userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') { //if stripecustomerid is there in database
-                if(isNewCard=='no'){
-                    _internalPackageCreateCharge(userDoc, selectedService, cardDetails, res,'source');    
-                }else{
-                    cardDetails.object='card';
+                res.send({ status: 'error', msg: "Some error occured please try later", result: [], error: err });
+            } else if (userDoc.stripeCustomerId && userDoc.stripeCustomerId != '') { //if stripecustomerid is there in database
+                if (isNewCard == 'no') {
+                    _internalPackageCreateCharge(userDoc, selectedService, cardDetails, res, 'source');
+                } else {
+                    cardDetails.object = 'card';
                     stripe.customers.createSource(
-                                userDoc.stripeCustomerId,
+                        userDoc.stripeCustomerId,
+                        {
+                            source: cardDetails
+                        },
+                        function (err, card) {
+                            userDoc.stripeCustomer.sources.total_count++;
+
+                            userDoc.stripeCustomer.sources.data.push(card);
+                            updateDetails =
                                 {
-                                    source: cardDetails
-                                },
-                                function (err, card) {
-                                    userDoc.stripeCustomer.sources.total_count++;
-
-                                    userDoc.stripeCustomer.sources.data.push(card);
-                                    updateDetails =
-                                        {
-                                            stripeCustomer: userDoc.stripeCustomer
-                                        }
-
-                                    Users.findByIdAndUpdate(userDoc.id, updateDetails, function (err, updateRes) {
-
-                                        if (err) {
-
-                                            return res.json({ status: 'error', error: err });
-                                        }
-                                        else {
-                                            _internalPackageCreateCharge(userDoc, selectedService, card, res,'source');    
-                                            //return res.json({ status: 'success', msg: 'Card added succesfully' });
-                                        }
-                                    });
+                                    stripeCustomer: userDoc.stripeCustomer
                                 }
-                            );
-                    
+
+                            Users.findByIdAndUpdate(userDoc.id, updateDetails, function (err, updateRes) {
+
+                                if (err) {
+
+                                    return res.json({ status: 'error', error: err });
+                                }
+                                else {
+                                    _internalPackageCreateCharge(userDoc, selectedService, card, res, 'source');
+                                    //return res.json({ status: 'success', msg: 'Card added succesfully' });
+                                }
+                            });
+                        }
+                    );
+
                 }
             } else {
-                cardDetails.object='card';
+                cardDetails.object = 'card';
                 stripe.customers.create({
                     description: 'Customer ' + userDoc.email,
                     email: userDoc.email,
@@ -698,7 +840,7 @@ var createPackageCharges = function (req, res) {
                         }
                         else {
 
-                            _internalPackageCreateCharge(userDoc, selectedService, customer.sources.data[0], res,'source');    
+                            _internalPackageCreateCharge(userDoc, selectedService, customer.sources.data[0], res, 'source');
 
                             //return res.json({ status: 'success', msg: 'Customer and Card added succesfully' });
                         }
@@ -707,7 +849,7 @@ var createPackageCharges = function (req, res) {
                 });
 
                 //as there was no stripecustomer in database , this will card type
-                _internalPackageCreateCharge(userDoc, selectedService, cardDetails, res,'card');    
+                _internalPackageCreateCharge(userDoc, selectedService, cardDetails, res, 'card');
             }
 
         });
@@ -726,7 +868,7 @@ var payPackageWithToken = function (req, res) {
         var cardObject = req.body.cardDetails;
         var selectedService = req.body.selectedService;
         Users.findById(req.user.id, function (err, userDoc) {
-            createStripeTokenandPay(err, userDoc,cardObject,selectedService,res)
+            createStripeTokenandPay(err, userDoc, cardObject, selectedService, res)
         });
 
     } else {
@@ -736,11 +878,11 @@ var payPackageWithToken = function (req, res) {
     }
 }
 
-var createStripeTokenandPay=function(err, userDoc,cardObject,selectedService,res){
-    if(err){
-        res.json({ status: 'error', msg: 'some error occured',error:err });
+var createStripeTokenandPay = function (err, userDoc, cardObject, selectedService, res) {
+    if (err) {
+        res.json({ status: 'error', msg: 'some error occured', error: err });
         return res.send();
-    }else{
+    } else {
         stripe.tokens.create({
             card: {
                 number: cardObject.number,
@@ -754,7 +896,7 @@ var createStripeTokenandPay=function(err, userDoc,cardObject,selectedService,res
             if (err) {
                 res.json({ status: 'error', msg: err.message });
             } else {
-                _internalPackageCreateCharge(userDoc, selectedService, tokenObject, res,'token');
+                _internalPackageCreateCharge(userDoc, selectedService, tokenObject, res, 'token');
             }
         });
     }
@@ -782,21 +924,21 @@ var getAllVendors = function (req, res) {
 
 
 
-var addVendor= function (req, res) {
+var addVendor = function (req, res) {
 
-    
+
     var vendorProfile = new Vendors();
     //res.render('index.html');
     //userModel.
-    
-    vendorProfile.name= req.body.vendorName;
-    vendorProfile.email= req.body.vendorEmail;
-    vendorProfile.phone= req.body.vendorphone;
-    vendorProfile.addresslineone= req.body.addresslineone;
-    vendorProfile.addresslinetwo= req.body.addresslinetwo;
-    vendorProfile.city= req.body.vendorcity;
-    vendorProfile.country= req.body.vendorcountry;
-    vendorProfile.zipcode= req.body.vendorzip;
+
+    vendorProfile.name = req.body.vendorName;
+    vendorProfile.email = req.body.vendorEmail;
+    vendorProfile.phone = req.body.vendorphone;
+    vendorProfile.addresslineone = req.body.addresslineone;
+    vendorProfile.addresslinetwo = req.body.addresslinetwo;
+    vendorProfile.city = req.body.vendorcity;
+    vendorProfile.country = req.body.vendorcountry;
+    vendorProfile.zipcode = req.body.vendorzip;
     vendorProfile.created = Date.now();
 
     vendorProfile.save(function (err) {
@@ -807,12 +949,12 @@ var addVendor= function (req, res) {
         }
     });
 
-    
+
     //return res.json({});
 }
 
 
-var getAllPackage= function (req, res) {
+var getAllPackage = function (req, res) {
 
     if (req.user) {
         Packages.find({}, function (err, vendorDoc) {
@@ -830,24 +972,24 @@ var getAllPackage= function (req, res) {
     }
 }
 
-var addPackage= function (req, res) {
+var addPackage = function (req, res) {
 
-    
+
     var packageDetails = new Packages();
     //res.render('index.html');
     //userModel.
-    
-    packageDetails.title= req.body.title;
-    packageDetails.postalcode= req.body.postcode;
-    packageDetails.price= req.body.price;
-    packageDetails.frequency= req.body.frequency;
+
+    packageDetails.title = req.body.title;
+    packageDetails.postalcode = req.body.postcode;
+    packageDetails.price = req.body.price;
+    packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
-    packageDetails.features=[];
-    packageDetails.vendors=[];
-    req.body.featureList.forEach(function(eachFeature) {
+    packageDetails.features = [];
+    packageDetails.vendors = [];
+    req.body.featureList.forEach(function (eachFeature) {
         packageDetails.features.push(eachFeature.feature);
     });
-    req.body.vendorList.forEach(function(eachVendor) {
+    req.body.vendorList.forEach(function (eachVendor) {
         packageDetails.vendors.push(eachVendor.vendor);
     });
 
@@ -859,40 +1001,40 @@ var addPackage= function (req, res) {
         }
     });
 
-    
+
     //return res.json({});
 }
 
-var deletePackage = function(req, res) {
-  var packageId = req.params.id;
-  Packages.remove({_id:packageId},function(err,removeBrand){
-    if (err) {
-            return res.json({ status: 'error', error: err,msg:"Some error occured please try later" });
+var deletePackage = function (req, res) {
+    var packageId = req.params.id;
+    Packages.remove({ _id: packageId }, function (err, removeBrand) {
+        if (err) {
+            return res.json({ status: 'error', error: err, msg: "Some error occured please try later" });
         } else {
             return res.json({ status: 'success', msg: 'Package Deleted successfully' });
         }
-  });
-  
+    });
+
 }
 
-var updatePackage= function (req, res) {
+var updatePackage = function (req, res) {
 
-    
-    var packageDetails={};
+
+    var packageDetails = {};
     //res.render('index.html');
     //userModel.
-    
-    packageDetails.title= req.body.title;
-    packageDetails.postalcode= req.body.postcode;
-    packageDetails.price= req.body.price;
-    packageDetails.frequency= req.body.frequency;
+
+    packageDetails.title = req.body.title;
+    packageDetails.postalcode = req.body.postcode;
+    packageDetails.price = req.body.price;
+    packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
-    packageDetails.features=[];
-    packageDetails.vendors=[];
-    req.body.featureList.forEach(function(eachFeature) {
+    packageDetails.features = [];
+    packageDetails.vendors = [];
+    req.body.featureList.forEach(function (eachFeature) {
         packageDetails.features.push(eachFeature.feature);
     });
-    req.body.vendorList.forEach(function(eachVendor) {
+    req.body.vendorList.forEach(function (eachVendor) {
         packageDetails.vendors.push(eachVendor.vendor);
     });
 
@@ -909,36 +1051,36 @@ var updatePackage= function (req, res) {
         }
     });
 
-    
 
-    
+
+
     //return res.json({});
 }
 
-deleteVendor = function(req, res) {
-  var vendorId = req.params.id;
-  Vendors.remove({_id:vendorId},function(err,removeBrand){
-    if (err) {
-            return res.json({ status: 'error', error: err,msg:"Some error occured please try later" });
+deleteVendor = function (req, res) {
+    var vendorId = req.params.id;
+    Vendors.remove({ _id: vendorId }, function (err, removeBrand) {
+        if (err) {
+            return res.json({ status: 'error', error: err, msg: "Some error occured please try later" });
         } else {
             return res.json({ status: 'success', msg: 'Vendor Deleted successfully' });
         }
-  });
+    });
 }
 
-updateVendor= function (req, res) {
+updateVendor = function (req, res) {
 
-    var vendorProfile={};
-    
-    vendorProfile.name= req.body.vendorName;
-    vendorProfile.email= req.body.vendorEmail;
-    vendorProfile.phone= req.body.vendorphone;
-    vendorProfile.addresslineone= req.body.addresslineone;
-    vendorProfile.addresslinetwo= req.body.addresslinetwo;
-    vendorProfile.city= req.body.vendorcity;
-    vendorProfile.country= req.body.vendorcountry;
-    vendorProfile.zipcode= req.body.vendorzip;
-    
+    var vendorProfile = {};
+
+    vendorProfile.name = req.body.vendorName;
+    vendorProfile.email = req.body.vendorEmail;
+    vendorProfile.phone = req.body.vendorphone;
+    vendorProfile.addresslineone = req.body.addresslineone;
+    vendorProfile.addresslinetwo = req.body.addresslinetwo;
+    vendorProfile.city = req.body.vendorcity;
+    vendorProfile.country = req.body.vendorcountry;
+    vendorProfile.zipcode = req.body.vendorzip;
+
 
     Vendors.findByIdAndUpdate(req.body.id, vendorProfile, function (err, updateRes) {
 
@@ -952,9 +1094,9 @@ updateVendor= function (req, res) {
         }
     });
 
-    
 
-    
+
+
     //return res.json({});
 }
 
@@ -979,19 +1121,20 @@ getVendorDetailById = function (req, res) {
 }
 
 
-var getAllPackageDeals= function (req, res) {
+var getAllPackageOrders = function (req, res) {
 
     if (req.user) {
 
         PackageDeals.find({}).populate('clientId').populate({
-  path: 'packageId',
-  model: 'Packages',
-  populate: {
-    path: 'vendors',
-    model: 'Vendors'
-  }}).exec(function (err, packageDealDoc) {
+            path: 'packageId',
+            model: 'Packages',
+            populate: {
+                path: 'vendors',
+                model: 'Vendors'
+            }
+        }).exec(function (err, packageDealDoc) {
             if (err) {
-                res.send({ status: 'error', msg: 'Unable to fetch Package Deals , please try later', error: err });
+                res.send({ status: 'error', msg: 'Unable to fetch Package Orders , please try later', error: err });
             } else {
                 res.send({ status: 'success', result: packageDealDoc });
             }
@@ -1020,20 +1163,20 @@ router.post('/addandcreateCharges', addandcreateCharges);
 router.get('/getMyServices', getMyServices);
 router.post('/getPackageByZipcode', getPackageByZipcode);
 router.post('/getPackageByid', getPackageByid);
-router.post('/createPackageCharges',createPackageCharges);
-router.post('/payPackageWithToken',payPackageWithToken);
-router.get('/getAllVendors',getAllVendors);
+router.post('/createPackageCharges', createPackageCharges);
+router.post('/payPackageWithToken', payPackageWithToken);
+router.get('/getAllVendors', getAllVendors);
 
-router.get('/getAllPackage',getAllPackage);
-router.post('/addPackage',addPackage);
+router.get('/getAllPackage', getAllPackage);
+router.post('/addPackage', addPackage);
 router.delete('/package/:id', deletePackage);
-router.post('/updatePackage',updatePackage);
+router.post('/updatePackage', updatePackage);
 
-router.post('/vendor',addVendor);
-router.put('/vendor',updateVendor);
+router.post('/vendor', addVendor);
+router.put('/vendor', updateVendor);
 router.delete('/vendor/:id', deleteVendor);
 router.get('/vendor/:id', getVendorDetailById);
-router.get('/getAllPackageDeals',getAllPackageDeals);
+router.get('/getAllPackageOrders', getAllPackageOrders);
 
 
 module.exports = router;

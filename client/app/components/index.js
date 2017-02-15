@@ -17,7 +17,7 @@ __export(require('./packages/packages-section.component'));
 __export(require('./footer-section/footer-section.component'));
 __export(require('./stripe/stripe.component'));
 __export(require('./communityServices/services.component'));
-__export(require('./deals/deals.component'));
+__export(require('./orders/orders.component'));
 __export(require('./packages/packagepurchase.component'));
 ///admin components
 __export(require('./login/admin.login.component'));
@@ -29,5 +29,5 @@ __export(require('./packages/admin.package.component'));
 __export(require('./packages/admin.add.package.component'));
 __export(require('./packages/admin.edit.package.component'));
 __export(require('./vendors/admin.edit.vendor.component'));
-__export(require('./deals/admin.deals.component'));
+__export(require('./orders/admin.orders.component'));
 //# sourceMappingURL=index.js.map

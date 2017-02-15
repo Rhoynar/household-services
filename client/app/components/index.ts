@@ -13,7 +13,7 @@ export * from './packages/packages-section.component';
 export * from './footer-section/footer-section.component';
 export * from './stripe/stripe.component';
 export * from './communityServices/services.component';
-export * from './deals/deals.component';
+export * from './orders/orders.component';
 export * from './packages/packagepurchase.component';
 
 ///admin components
@@ -26,6 +26,6 @@ export * from './packages/admin.package.component';
 export * from './packages/admin.add.package.component';
 export * from './packages/admin.edit.package.component';
 export * from './vendors/admin.edit.vendor.component';
-export * from './deals/admin.deals.component';
+export * from './orders/admin.orders.component';
 
 

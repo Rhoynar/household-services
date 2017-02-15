@@ -8,11 +8,11 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'deals',
-  templateUrl: './deals.component.html'
+  selector: 'orders',
+  templateUrl: './orders.component.html'
   //styles: [main]
 })
-export class DealsComponent implements AfterViewInit {
+export class OrdersComponent implements AfterViewInit {
   myDeals:any=[];
 
   constructor(

@@ -63,7 +63,7 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
 
 
   makePayment(cardDetails: any) {
-
+    console.log(this.packageDetails);
     var con = confirm('Are you Sure, you wanna make this payment?');
     if (con) {
       this.processingCard=true;
@@ -73,7 +73,7 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
         .subscribe(data => {
           alert(data.msg);
           this.processingCard=false;
-          this.router.navigate(['/deals']);
+          this.router.navigate(['/orders']);
         },
         error => {
           const body = error.json() || '';
@@ -102,7 +102,7 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
           this.getCards();
         } else {
           alert(data.msg);
-          this.router.navigate(['/deals']);
+          this.router.navigate(['/orders']);
         }
         //
         
@@ -133,7 +133,7 @@ export class PackagePurchaseComponent implements OnInit, AfterViewInit {
           this.getCards();
         } else {
           alert(data.msg);
-          this.router.navigate(['/deals']);
+          this.router.navigate(['/orders']);
         }
         //this.getCards();
         

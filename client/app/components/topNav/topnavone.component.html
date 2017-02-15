@@ -17,7 +17,7 @@
                     <ul class="nav navbar-nav">
                       <li [ngClass]="{active: router.url==='/packages'}"><a [routerLink]="['/packages']">Services</a> </li>
                       <li><a>How It works</a> </li>
-                      <li [ngClass]="{active: router.url==='/deals'}" *ngIf="loggedIn"><a [routerLink]="['/deals']" >Deals</a> </li>
+                      <li [ngClass]="{active: router.url==='/orders'}" *ngIf="loggedIn"><a [routerLink]="['/orders']" >Orders</a> </li>
                       <li [ngClass]="{active: router.url==='/admin/login'}" *ngIf="!loggedIn"><a  [routerLink]="['/admin/login']">Admin Login</a></li>
                       <li [ngClass]="{active: router.url==='/login'}" *ngIf="!loggedIn"><a [routerLink]="['/login']">Login</a> </li>
                       <li [ngClass]="{active: router.url==='/profile'}" *ngIf="loggedIn"><a [routerLink]="['/profile']">Profile</a> </li>

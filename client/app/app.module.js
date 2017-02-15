@@ -44,11 +44,11 @@ var AppModule = (function () {
                 index_2.LandingOneComponent, index_2.LoginComponent, index_2.SignupComponent,
                 index_2.PackagesComponent, index_2.PackagessectionComponent, index_2.UserprofileComponent,
                 index_2.DashboardComponent, index_2.TokenComponent, index_2.StripesComponent,
-                index_2.EditprofileComponent, index_2.DealsComponent, index_2.PackagePurchaseComponent,
+                index_2.EditprofileComponent, index_2.OrdersComponent, index_2.PackagePurchaseComponent,
                 index_1.AlertComponent, index_2.AdminLoginComponent, index_2.AdminDashboardComponent,
                 index_2.AdminTopnavComponent, index_2.VendorComponent, index_2.AddVendorComponent,
                 index_2.AdminPackageComponent, index_2.AdminAddPackageComponent, index_2.AdminEditPackageComponent,
-                index_2.AdminEditVendorComponent, index_2.AdminDealsComponent
+                index_2.AdminEditVendorComponent, index_2.AdminOrdersComponent
             ],
             providers: [
                 index_3.AuthGuard, index_3.NotAuthGuard, index_4.CommunityServices,

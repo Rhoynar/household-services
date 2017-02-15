@@ -54,7 +54,7 @@ var ServicesComponent = (function () {
             this.stripeServices.createServiceCharge(cardDetails, this.selectedService)
                 .subscribe(function (data) {
                 alert(data.msg);
-                _this.router.navigate(['/deals']);
+                _this.router.navigate(['/orders']);
             }, function (error) {
                 var body = error.json() || '';
                 var err = body.error || JSON.stringify(body);
@@ -79,7 +79,7 @@ var ServicesComponent = (function () {
                 alert(data.msg);
             }
             _this.getCards();
-            _this.router.navigate(['/deals']);
+            _this.router.navigate(['/orders']);
             //return false;
         }, function (error) {
             var body = error.json() || '';

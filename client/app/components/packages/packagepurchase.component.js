@@ -47,6 +47,7 @@ var PackagePurchaseComponent = (function () {
     }
     PackagePurchaseComponent.prototype.makePayment = function (cardDetails) {
         var _this = this;
+        console.log(this.packageDetails);
         var con = confirm('Are you Sure, you wanna make this payment?');
         if (con) {
             this.processingCard = true;
@@ -56,7 +57,7 @@ var PackagePurchaseComponent = (function () {
                 .subscribe(function (data) {
                 alert(data.msg);
                 _this.processingCard = false;
-                _this.router.navigate(['/deals']);
+                _this.router.navigate(['/orders']);
             }, function (error) {
                 var body = error.json() || '';
                 var err = body.error || JSON.stringify(body);
@@ -83,7 +84,7 @@ var PackagePurchaseComponent = (function () {
             }
             else {
                 alert(data.msg);
-                _this.router.navigate(['/deals']);
+                _this.router.navigate(['/orders']);
             }
             //
             //return false;
@@ -112,7 +113,7 @@ var PackagePurchaseComponent = (function () {
             }
             else {
                 alert(data.msg);
-                _this.router.navigate(['/deals']);
+                _this.router.navigate(['/orders']);
             }
             //this.getCards();
             //return false;

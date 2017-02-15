@@ -55,8 +55,8 @@ export class PackageServices {
     }
 
 
-    getAllAdminPackageDeals() {
-        return this.http.get(AppSettings.API_ENDPOINT+'/api/getAllPackageDeals')
+    getAllAdminPackageOrders() {
+        return this.http.get(AppSettings.API_ENDPOINT+'/api/getAllPackageOrders')
             .map(this.extractData);//.catch(this.handleError);;
     }
 

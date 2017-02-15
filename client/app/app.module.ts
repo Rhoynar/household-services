@@ -14,11 +14,11 @@ import {
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, PackagessectionComponent,
   footerSectionComponent, EditprofileComponent, StripesComponent,
-  ServicesComponent, DealsComponent, LandingOneComponent,
+  ServicesComponent, OrdersComponent, LandingOneComponent,
   TopnavOneComponent,PackagePurchaseComponent,AdminLoginComponent,
   AdminDashboardComponent,AdminTopnavComponent,VendorComponent,
   AddVendorComponent,AdminPackageComponent,AdminAddPackageComponent,
-  AdminEditPackageComponent,AdminEditVendorComponent,AdminDealsComponent
+  AdminEditPackageComponent,AdminEditVendorComponent,AdminOrdersComponent
 } from './components/index';
 
 //installed modules
@@ -51,11 +51,11 @@ import {
     LandingOneComponent,LoginComponent,SignupComponent,
     PackagesComponent,PackagessectionComponent,UserprofileComponent,
     DashboardComponent,TokenComponent,StripesComponent,
-    EditprofileComponent,DealsComponent,PackagePurchaseComponent,
+    EditprofileComponent,OrdersComponent,PackagePurchaseComponent,
     AlertComponent,AdminLoginComponent,AdminDashboardComponent,
     AdminTopnavComponent,VendorComponent,AddVendorComponent,
     AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent,
-    AdminEditVendorComponent,AdminDealsComponent
+    AdminEditVendorComponent,AdminOrdersComponent
 
   ],
   providers: [

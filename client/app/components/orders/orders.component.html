@@ -1,25 +1,39 @@
-<topnav-admin></topnav-admin>
+<topnav></topnav>
+<div class="inner-banner">
+  <div class="banner-img"><img src="images/inner-banner.jpg" alt="" />
+    <div class="inner-content">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 no-padding">
+            <h1>Orders</h1>
+          </div>
 
 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<package-section></package-section>
 <!--inner-mid-sec-->
 <div class="inner-mid-sec white-bg">
   <div class="container">
     <div class="row">
       <div class="col-md-12 no-padding dashboard_page">
 
-        <h2 class="inner-top-heading">All Deals</h2>
+        <h2 class="inner-top-heading">My Orders</h2>
         <div class="services_wrapper">
-          <div class="services_info_block clearfix" *ngFor='let eachDeal of allDeals; let i = index;'>
+          <div class="services_info_block clearfix" *ngFor='let eachDeal of myDeals; let i = index;'>
 
             <div class="col-md-8 ser-lf">
               <div class="services-lf">
                 <div class="user-img"><img src="images/pic-1.jpg" alt="" /></div>
               </div>
               <div class="services-rh">
-                <h3>{{eachDeal._id}}</h3>
+                <h3>{{eachDeal.serviceDetails.serviceName}}</h3>
                 <h4>Order No. {{eachDeal.stripeChargeId}}</h4>
-                <p>Package Title: {{eachDeal.packageId.title}}</p>
-                <p>Client Name: {{eachDeal.clientId.Name}}</p>
+                <p>{{eachDeal.serviceDetails?.title}}</p>
                 <!--<p>{{eachDeal|json}}</p>-->
               </div>
             </div>

@@ -52,8 +52,8 @@ var PackageServices = (function () {
         return this.http.delete(appsettings_1.AppSettings.API_ENDPOINT + '/api/package/' + packageId, { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
-    PackageServices.prototype.getAllAdminPackageDeals = function () {
-        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllPackageDeals')
+    PackageServices.prototype.getAllAdminPackageOrders = function () {
+        return this.http.get(appsettings_1.AppSettings.API_ENDPOINT + '/api/getAllPackageOrders')
             .map(this.extractData); //.catch(this.handleError);;
     };
     PackageServices.prototype.extractData = function (res) {

@@ -177,7 +177,7 @@ router.get('/createtoken', isLoggedIn, getTemplate);
 //router.get('/dash', getTemplate);
 //router.get('/services', getTemplate);
 router.get('/stripes', isLoggedIn,getTemplate);
-router.get('/deals', isLoggedIn,getTemplate);
+router.get('/orders', isLoggedIn,getTemplate);
 router.get('/packages', isLoggedIn, getTemplate);
 
 router.get('/profile', isLoggedIn, getTemplate);

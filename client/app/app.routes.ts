@@ -3,11 +3,11 @@ import {
   TopnavComponent, LandingComponent, LoginComponent,
   SignupComponent, DashboardComponent, PackagesComponent,
   UserprofileComponent, TokenComponent, EditprofileComponent, 
-  StripesComponent,ServicesComponent,DealsComponent,
+  StripesComponent,ServicesComponent,OrdersComponent,
   LandingOneComponent,PackagePurchaseComponent,AdminLoginComponent,
   AdminDashboardComponent,VendorComponent,AddVendorComponent,
   AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent,
-  AdminEditVendorComponent,AdminDealsComponent
+  AdminEditVendorComponent,AdminOrdersComponent
 
 } from './components/index';
 
@@ -25,7 +25,7 @@ const APP_ROUTES: Routes = [
   { path: 'stripes', component: StripesComponent, canActivate: [AuthGuard] },
   { path: 'packages', component: PackagesComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: UserprofileComponent, canActivate: [AuthGuard] },
-  { path: 'deals', component: DealsComponent, canActivate: [AuthGuard] },
+  { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard] },
   { path: 'package/purchase/:id', component: PackagePurchaseComponent, canActivate: [AuthGuard] },
   { path: 'services', component: ServicesComponent },
  // { path: 'buyservice:id', component: ServicesComponent, canActivate: [AuthGuard] },
@@ -39,7 +39,7 @@ const APP_ROUTES: Routes = [
   { path: 'admin/package/new', component: AdminAddPackageComponent, canActivate: [AuthAdminGuard] },
   { path: 'admin/package/edit/:id', component: AdminEditPackageComponent, canActivate: [AuthAdminGuard] },
   { path: 'admin/vendor/edit/:id', component: AdminEditVendorComponent, canActivate: [AuthAdminGuard] },
-  { path: 'admin/deals',component: AdminDealsComponent, canActivate: [AuthAdminGuard] },
+  { path: 'admin/orders',component: AdminOrdersComponent, canActivate: [AuthAdminGuard] },
   { path: '**', component: LandingComponent, canActivate: [NotAuthGuard] }
 
 ];

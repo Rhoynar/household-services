@@ -11,41 +11,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
-var DealsComponent = (function () {
-    function DealsComponent(router, communityService) {
+var AdminOrdersComponent = (function () {
+    function AdminOrdersComponent(router, packageService) {
         this.router = router;
-        this.communityService = communityService;
-        this.myDeals = [];
-        this.getMyDeals();
+        this.packageService = packageService;
+        this.allOrders = [];
+        this.getAllOrders();
     }
-    DealsComponent.prototype.getMyDeals = function () {
+    AdminOrdersComponent.prototype.getAllOrders = function () {
         var _this = this;
-        this.communityService.getMyServices()
+        this.packageService.getAllAdminPackageOrders()
             .subscribe(function (data) {
-            _this.myDeals = data.result;
-            //this.router.navigate(['/login']);
-            //return false;
+            _this.allOrders = data.result;
         }, function (error) {
+            //console.log(error);
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
             alert(errr.msg);
         });
     };
-    DealsComponent.prototype.ngAfterViewInit = function () {
-        $(document).ready(function () {
-            //$(".s-box").selectbox();
-        });
+    AdminOrdersComponent.prototype.ngAfterViewInit = function () {
     };
-    DealsComponent = __decorate([
+    AdminOrdersComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'deals',
-            templateUrl: './deals.component.html'
+            selector: 'orders',
+            templateUrl: './admin.orders.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.CommunityServices])
-    ], DealsComponent);
-    return DealsComponent;
+        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices])
+    ], AdminOrdersComponent);
+    return AdminOrdersComponent;
 }());
-exports.DealsComponent = DealsComponent;
-//# sourceMappingURL=deals.component.js.map
+exports.AdminOrdersComponent = AdminOrdersComponent;
+//# sourceMappingURL=admin.orders.component.js.map

@@ -8,6 +8,7 @@ var chargeSchema = new Schema({
     packageId: { type: Schema.Types.ObjectId, ref: 'Packages' },
     amount: String,
     clientId: { type: Schema.Types.ObjectId, ref: 'Users' },
+    vendorId: { type: Schema.Types.ObjectId, ref: 'Vendors' },
     stripeChargeId: String,
     chargeDetail: {},
     tokenDetail: {},

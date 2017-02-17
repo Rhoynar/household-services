@@ -14,13 +14,12 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var app_routes_1 = require('./app.routes');
+var componentlist_1 = require('./components/componentlist');
+var servicelist_1 = require('./services/servicelist');
 var index_1 = require('./directives/index');
-var index_2 = require('./components/index');
 //installed modules
 var ng2_bootstrap_1 = require('ng2-bootstrap');
 var core_2 = require("angular2-google-maps/core");
-var index_3 = require('./guards/index');
-var index_4 = require('./services/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -39,23 +38,11 @@ var AppModule = (function () {
                 }),
             ],
             declarations: [
-                app_component_1.AppComponent, index_2.ServicesComponent, index_2.TopnavComponent,
-                index_2.TopnavOneComponent, index_2.footerSectionComponent, index_2.LandingComponent,
-                index_2.LandingOneComponent, index_2.LoginComponent, index_2.SignupComponent,
-                index_2.PackagesComponent, index_2.PackagessectionComponent, index_2.UserprofileComponent,
-                index_2.DashboardComponent, index_2.TokenComponent, index_2.StripesComponent,
-                index_2.EditprofileComponent, index_2.OrdersComponent, index_2.PackagePurchaseComponent,
-                index_1.AlertComponent, index_2.AdminLoginComponent, index_2.AdminDashboardComponent,
-                index_2.AdminTopnavComponent, index_2.VendorComponent, index_2.AddVendorComponent,
-                index_2.AdminPackageComponent, index_2.AdminAddPackageComponent, index_2.AdminEditPackageComponent,
-                index_2.AdminEditVendorComponent, index_2.AdminOrdersComponent
-            ],
-            providers: [
-                index_3.AuthGuard, index_3.NotAuthGuard, index_4.CommunityServices,
-                index_4.UserServices, index_4.AuthenticationService, index_4.StripeServices,
-                index_4.GooglePlaceService, index_4.PackageServices, index_4.AlertService,
-                index_3.AuthAdminGuard, index_4.VendorServices
-            ],
+                app_component_1.AppComponent
+            ].concat(componentlist_1.COMPONENT_DECLARATIONS, [
+                index_1.AlertComponent
+            ]),
+            providers: servicelist_1.SERVICE_DECLARATIONS.slice(),
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

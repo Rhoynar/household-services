@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 var flash    = require('connect-flash');
 var session      = require('express-session');
 
-
 var Zoho = require('zoho');
 var configDB = require('./config/database.js');
 
@@ -16,10 +15,6 @@ mongoose.connect(configDB.url, function (error) {
         console.log(error);
     }
 }); // connect to our database
-
-
-var Users = require('./models/users');
-var Clients = require('./models/clients');
 
 var crm = new Zoho.CRM({
   authtoken: 'bad18eba1ff45jk7858b8ae88a77fa30'
@@ -75,8 +70,9 @@ app.use(passport.session());
 
 //routes
 app.use('/',require('./routes/index'));
-app.use('/api',require('./routes/apis'));
-app.use('/admin',require('./routes/admin'));
+//app.use('/api',require('./routes/apis'));
+//app.use('/admin',require('./routes/admin'));
+//app.use('/vendor',require('./routes/vendor'));
 
 app.get('*', (req, res) => { res.sendFile(path.join(__dirname, 'views/index.html')); });
 

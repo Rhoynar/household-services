@@ -1,0 +1,481 @@
+<top-header></top-header>
+<div class="slider-section">
+  <div class="banner-img"><img src="images/slider1.jpg" alt="" />
+    <div class="banner-content">
+      <div class="container">
+        <div class="row">
+          <div class="mid-up">
+            <div class="mid-in">
+              <div class="banner_content_block">
+                <div class="col-sm-7 banner_content_block_lf">
+                  <div class="video_block">
+                    <div class="video-inner-img"> 
+                      <!--video-->
+                      <div id="videocenter">
+                        <video preload="auto" autoplay loop>
+                          <source type="video/mp4" src="video/Bigstock_81197432.mp4"/>
+                          <source type="video/webm" src="video/Bigstock_81197432.webm"/>
+                          <source type="video/ogg" src="video/Bigstock_81197432.ogv"/>
+                        </video>
+                      </div>
+                      <!--End-video--> 
+                      
+                    </div>
+                    <div class="socila_links">
+                      <ul>
+                        <li><a href="javascript:void(0);"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="javascript:void(0);"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="javascript:void(0);"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-5 banner_content_block_rh text-left">
+                  <h1>DONE RIGHT FIRST TIME</h1>
+                  <p>We Guarantee our work, or the Service is Free.</p>
+                  
+                    <div class="block_one clearfix">
+                      <div class="more_sec"> <a href="javascript:void(0);" class="rh_btn">Learn More</a> </div>
+                      <div class="more_sec"> <a href="javascript:void(0);" class="rh_btn">Get Started</a> </div>
+                    </div>
+                    <div class="search_block">
+                      
+                      <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="rh_btn"
+                        #search [(ngModel)]="searchControl">
+                      <input type="hidden" [(ngModel)]="postal_code" id="userZipcode" name="userZipcode" />
+
+                      <span class="marker_block"><i class="fa fa-map-marker" aria-hidden="true"></i></span> </div>
+                    <div class="search_btn-wrp">
+                      
+                      <button type="button" class="rh_btn" (click)="searchPackages();">Submit</button>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="affordable_community gray-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding text-center mid_txt">
+        <h2>Affordable community optimized services <span>by Trusted Professionals</span></h2>
+        <a [routerLink]="['/signup']" class="join">Join Now</a>
+        <ul class="social">
+          <li class="facebook-block"><a href="/facebooklogin"><span><i class="fa fa-facebook"></i></span>Facebook</a></li>
+          <li class="google-block"><a href="/googlelogin"><span><i class="fa fa-google" aria-hidden="true"></i></span>Google</a></li>
+          <li class="email-block"><a [routerLink]="['/login']"><span><i class="fa fa-envelope" aria-hidden="true"></i></span>Email</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--community-calendar-->
+<div class="community-calendar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding">
+        <h2 class="main-heading"><span>Vista Ridge Community Calendar</span></h2>
+        <div class="community_tab_block">
+          <div class="tab_info"> 
+            
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Lawn Care</a></li>
+              <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Cleaning Service</a></li>
+              <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Service-2</a></li>
+              <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Service-3</a></li>
+              <li class="more-link"><a href="javascript:void(0);"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
+            </ul>
+            
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="home">
+                <div class="community-table">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Timing</th>
+                      <th align="center">09:00 am</th>
+                      <th align="center">12:00 pm</th>
+                      <th align="center">03:00 pm</th>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Monday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Tueday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Wednesday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Thursday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Friday</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Saturday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Sunday</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="profile">
+                <div class="community-table">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Timing</th>
+                      <th align="center">09:00 am</th>
+                      <th align="center">12:00 pm</th>
+                      <th align="center">03:00 pm</th>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Monday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Tueday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Wednesday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Thursday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Friday</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Saturday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Sunday</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="messages">
+                <div class="community-table">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Timing</th>
+                      <th align="center">09:00 am</th>
+                      <th align="center">12:00 pm</th>
+                      <th align="center">03:00 pm</th>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Monday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Tueday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Wednesday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Thursday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Friday</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Saturday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Sunday</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="settings">
+                <div class="community-table">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Timing</th>
+                      <th align="center">09:00 am</th>
+                      <th align="center">12:00 pm</th>
+                      <th align="center">03:00 pm</th>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Monday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Tueday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Wednesday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Thursday</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                      <td align="center">$25</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Friday</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                      <td align="center">$30</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Saturday</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                      <td align="center">$28</td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Sunday</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                      <td align="center">$35</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--community-calendar--> 
+
+<!--how-its-works-->
+<div class="how-its-works">
+  <div class="container">
+    <div class="row how-its-works-page">
+      <div class="col-md-12 no-padding work-head">
+        <h2 class="main-heading"><span>How Its Works</span></h2>
+      </div>
+      <div class="mobile-space">
+        <div class="row">
+          <div class="col-sm-4 work_block">
+            <div class="work_block_sec">
+              <div class="icon-block">
+                <div class="online"></div>
+              </div>
+              <h3 class="work_heading"><a href="#">oNLINE sCHEDULE</a></h3>
+              <div class="work-content">
+                <p>Lorem ipsum dolor sit amet, consectetur 
+                  adipiscing elit. Donec vel ligula id nisl ultrices 
+                  convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 work_block">
+            <div class="work_block_sec">
+              <div class="icon-block">
+                <div class="quality"></div>
+              </div>
+              <h3 class="work_heading"><a href="#">qUALITY WORK by trusted Pros</a></h3>
+              <div class="work-content">
+                <p>Lorem ipsum dolor sit amet, consectetur 
+                  adipiscing elit. Donec vel ligula id nisl ultrices 
+                  convallis. Etiam commodo velit ac condimentum </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 work_block">
+            <div class="work_block_sec">
+              <div class="icon-block">
+                <div class="relax"></div>
+              </div>
+              <h3 class="work_heading"><a href="#">Relax</a></h3>
+              <div class="work-content">
+                <p>Lorem ipsum dolor sit amet, consectetur 
+                  adipiscing elit. Donec vel ligula id nisl ultrices 
+                  convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--how-its-works--> 
+
+<!--why-community-services-->
+<div class="our-services">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding gray-heading">
+        <h2 class="main-heading"><span>Our services</span></h2>
+      </div>
+      <div class="ser_block clearfix">
+        <div class="row">
+          <div class="col-sm-4 services_block text-center">
+            <div class="ser-img"><img src="images/ser-1.png" alt="" /></div>
+            <h3>Plumbing</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur 
+              adipiscing elit. Donec vel ligula id nisl ultrices 
+              convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+          </div>
+          <div class="col-sm-4 services_block text-center">
+            <div class="ser-img"><img src="images/ser2.png" alt="" /></div>
+            <h3>Plumbing</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur 
+              adipiscing elit. Donec vel ligula id nisl ultrices 
+              convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+          </div>
+          <div class="col-sm-4 services_block text-center">
+            <div class="ser-img"><img src="images/ser3.png" alt="" /></div>
+            <h3>Plumbing</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur 
+              adipiscing elit. Donec vel ligula id nisl ultrices 
+              convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+          </div>
+        </div>
+        <div class="col-md-12 text-center"><a href="javascript:void(0);" class=" more-btn">Load More</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End-why-community-services--> 
+
+<!--why-community-services-->
+<div class="why-community-services">
+  <div class="container">
+    <div class="row">
+      <div class="community_txt_block">
+        <div class="col-md-12 no-padding gray-heading">
+          <h2 class="main-heading"><span>Why Community Services ?</span></h2>
+        </div>
+        <div class="col-md-12 no-padding">
+          <div id="owl-demo">
+            <div class="item">
+              <div class="">
+                <div class="services_head">
+                  <ul class="services_info">
+                    <li>
+                      <div class="services-one"><img src="images/icon1.png" alt="" /></div>
+                    </li>
+                    <li>
+                      <div class="services-one icon-two"><img src="images/icon2.png" alt="" /></div>
+                    </li>
+                    <li>
+                      <div class="services-one"><img src="images/icon3.png" alt="" /></div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="services_block_info">
+                  <p>Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue. Nunc vitae augue tortor. </p>
+                  <p>Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue. Nunc vitae augue tortor. Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. </p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="">
+                <div class="services_head">
+                  <ul class="services_info">
+                    <li>
+                      <div class="services-one"><img src="images/icon1.png" alt="" /></div>
+                    </li>
+                    <li>
+                      <div class="services-one icon-two"><img src="images/icon2.png" alt="" /></div>
+                    </li>
+                    <li>
+                      <div class="services-one"><img src="images/icon3.png" alt="" /></div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="services_block_info">
+                  <p>Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue. Nunc vitae augue tortor. </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End-why-community-services--> 
+
+<!--about-section-->
+<about-us></about-us>
+<!--about-section--> 
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

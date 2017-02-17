@@ -7,30 +7,17 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { routing } from './app.routes';
 
-import { AlertComponent } from './directives/index';
+import { COMPONENT_DECLARATIONS } from './components/componentlist';
+import { SERVICE_DECLARATIONS } from './services/servicelist';
 
-import {
-  TopnavComponent, LandingComponent, LoginComponent,
-  SignupComponent, DashboardComponent, PackagesComponent,
-  UserprofileComponent, TokenComponent, PackagessectionComponent,
-  footerSectionComponent, EditprofileComponent, StripesComponent,
-  ServicesComponent, OrdersComponent, LandingOneComponent,
-  TopnavOneComponent,PackagePurchaseComponent,AdminLoginComponent,
-  AdminDashboardComponent,AdminTopnavComponent,VendorComponent,
-  AddVendorComponent,AdminPackageComponent,AdminAddPackageComponent,
-  AdminEditPackageComponent,AdminEditVendorComponent,AdminOrdersComponent
-} from './components/index';
+import { AlertComponent } from './directives/index';
 
 //installed modules
 import { ModalModule } from 'ng2-bootstrap';
 import { AgmCoreModule } from "angular2-google-maps/core";
 
-import { AuthGuard, NotAuthGuard,AuthAdminGuard } from './guards/index';
-import {
-  CommunityServices, UserServices, AuthenticationService,
-  StripeServices, GooglePlaceService, PackageServices,
-  AlertService,VendorServices
-} from './services/index';
+
+
 
 @NgModule({
   imports: [
@@ -46,23 +33,13 @@ import {
     }),
   ],
   declarations: [
-    AppComponent,ServicesComponent,TopnavComponent,
-    TopnavOneComponent,footerSectionComponent,LandingComponent,
-    LandingOneComponent,LoginComponent,SignupComponent,
-    PackagesComponent,PackagessectionComponent,UserprofileComponent,
-    DashboardComponent,TokenComponent,StripesComponent,
-    EditprofileComponent,OrdersComponent,PackagePurchaseComponent,
-    AlertComponent,AdminLoginComponent,AdminDashboardComponent,
-    AdminTopnavComponent,VendorComponent,AddVendorComponent,
-    AdminPackageComponent,AdminAddPackageComponent,AdminEditPackageComponent,
-    AdminEditVendorComponent,AdminOrdersComponent
+    AppComponent,
+    ...COMPONENT_DECLARATIONS,
+    AlertComponent
 
   ],
   providers: [
-    AuthGuard,NotAuthGuard,CommunityServices,
-    UserServices,AuthenticationService,StripeServices,
-    GooglePlaceService,PackageServices,AlertService,
-    AuthAdminGuard,VendorServices
+    ...SERVICE_DECLARATIONS
   ],
   bootstrap: [AppComponent]
 })

@@ -9,17 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var users_services_1 = require('./services/users.services');
 var AppComponent = (function () {
     function AppComponent() {
-        this.name = 'Angular';
     }
     AppComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'app',
             templateUrl: 'app.component.html',
-            providers: [users_services_1.UserServices]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

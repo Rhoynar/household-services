@@ -35,12 +35,12 @@ var UserLoginComponent = (function () {
             loginuserpass: ['', forms_1.Validators.compose([forms_1.Validators.required])],
         });
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
     };
     UserLoginComponent.prototype.loginUser = function () {
         var _this = this;
         this.loading = true;
-        this.authenticationService.login(this.loginuseremail, this.loginuserpass)
+        this.authenticationService.login(this.loginForm.value.loginuseremail, this.loginForm.value.loginuserpass)
             .subscribe(function (result) {
             if (result === true) {
                 _this.router.navigate([_this.returnUrl]);

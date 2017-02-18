@@ -6,4 +6,5 @@ function __export(m) {
 __export(require('./google-place.services'));
 __export(require('./alert.services'));
 __export(require('./authentication.service'));
+__export(require('./users.services'));
 //# sourceMappingURL=index.js.map

@@ -1,0 +1,67 @@
+<top-header></top-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+<mid-header></mid-header>
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="user-profile-page">
+        <div class="col-md-12 no-padding">
+          <div class="grey_block">
+            <div class="user_img_block">
+              <div class="user_img"><img src="images/user-pic.jpg" alt="">
+                <div class="join-date">
+                  <div class="mid-up">
+                    <div class="mid-in"> Joined on {{userProfile?.created | date:"dd-MM-yyyy"}} </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user_deatil_info">
+              <h2>{{userProfile.name}}</h2>
+              <ul class="user-info">
+                
+                <li><i class="fa fa-map-marker" aria-hidden="true"></i>{{userProfile?.city}}, {{userProfile?.country}}</li>
+              </ul>
+
+              <div class="profile-information clearfix">
+                <div class="profile-info-lf pull-left">
+                  <h2>Profile Information</h2>
+                </div>
+                <div class="profile-info-lf pull-right"> <a [routerLink]="['/updateprofile']" class="subscribe-btn edit"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a> </div>
+              </div>
+
+              <div class="information-deatil-lf">
+                <h4 class="information-heading">Contact Information</h4>
+                <div class="txt-box">
+                  <label>Phone:</label>
+                  <p><span class="blue-txt">{{userProfile?.phone}}</span></p>
+                </div>
+                <div class="txt-box add-inq">
+                  <label>Address:</label>
+                  <p>{{userProfile?.addresslineone}} <span>{{userProfile?.addresslinetwo}}</span></p>
+                </div>
+                <div class="txt-box">
+                  <label>Email:</label>
+                  <p><span><a href="mailto:{{userProfile?.email}}" class="blue-txt">{{userProfile?.email}}</a></span></p>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

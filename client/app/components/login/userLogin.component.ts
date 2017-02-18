@@ -17,8 +17,7 @@ export class UserLoginComponent {
 
   pagetitle = "Login";
 
-  loginuseremail: String;
-  loginuserpass: String;
+  
   loading = false;
   error = '';
 
@@ -47,13 +46,14 @@ export class UserLoginComponent {
     });
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
 
   loginUser() {
     this.loading = true;
-        this.authenticationService.login(this.loginuseremail, this.loginuserpass)
+    
+        this.authenticationService.login(this.loginForm.value.loginuseremail, this.loginForm.value.loginuserpass)
             .subscribe(
                 result => {
                 if (result === true) {

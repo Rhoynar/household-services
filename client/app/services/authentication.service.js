@@ -18,10 +18,14 @@ var AuthenticationService = (function () {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
     }
-    AuthenticationService.prototype.login = function (username, password) {
-        var _this = this;
+    AuthenticationService.prototype.getHeader = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
+        return headers;
+    };
+    AuthenticationService.prototype.login = function (username, password) {
+        var _this = this;
+        var headers = this.getHeader();
         return this.http.post('/api/authenticate', JSON.stringify({ useremail: username, userpass: password }), { headers: headers })
             .map(function (response) {
             // login successful if there's a jwt token in the response
@@ -42,8 +46,7 @@ var AuthenticationService = (function () {
     };
     AuthenticationService.prototype.adminLogin = function (username, password) {
         var _this = this;
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
+        var headers = this.getHeader();
         return this.http.post('/admin/login', JSON.stringify({ useremail: username, userpass: password }), { headers: headers })
             .map(function (response) {
             // login successful if there's a jwt token in the response
@@ -67,15 +70,13 @@ var AuthenticationService = (function () {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
+        var headers = this.getHeader();
         return this.http.get('/logout', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthenticationService.prototype.generatetoken = function () {
         var _this = this;
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
+        var headers = this.getHeader();
         return this.http.get('/api/createtoken')
             .map(function (response) {
             // login successful if there's a jwt token in the response

@@ -1,0 +1,98 @@
+<top-header></top-header>
+
+<!--(emitCommunityChange)="myCrazyCallback($event)"-->
+<page-title [pagetitle]="pagetitle"></page-title>
+
+
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <div class="sign-in-box">
+          <div class="user_block"><img src="images/user-pic2.jpg" alt="" /></div>
+
+          <h3 class="user-heding">new users</h3>
+          <alert [alertType]="'signup'"></alert>
+          <form [formGroup]="profileSignupForm" (ngSubmit)="registerUser()">
+            <div class="login_info_block">
+              <h4>Please Signup to continue</h4>
+
+              <div class="input-block">
+                <span class="input-icon">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  </span>
+                <input class="input-fill2" placeholder="Name" type="text" name="username" id="username" [formControl]="profileSignupForm.controls['username']">
+              </div>
+              <div *ngIf="profileSignupForm.controls['username'].hasError('required') && profileSignupForm.controls['username'].touched"
+                class="alert alert-danger">
+                You must include a name.
+              </div>
+              <div *ngIf="profileSignupForm.controls['username'].hasError('minlength') && profileSignupForm.controls['username'].touched"
+                class="alert alert-danger">
+                Your name must be at least 5 characters long.
+              </div>
+
+              <div class="input-block"> <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                <input class="input-fill2" placeholder="Email" type="text" [formControl]="profileSignupForm.controls['useremail']">
+              </div>
+              <div *ngIf="profileSignupForm.controls['useremail'].hasError('required') && profileSignupForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                You must include a email.
+              </div>
+              <div *ngIf="profileSignupForm.controls['useremail'].hasError('validateEmail') && profileSignupForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                Please insert valid email address
+              </div>
+              <div *ngIf="profileSignupForm.controls['useremail'].hasError('emailTaken') && profileSignupForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                Email already taken.
+              </div>
+              <div *ngIf="profileSignupForm.controls['useremail'].pending">
+                Fetching data from the server...
+              </div>
+
+              <div class="input-block"> <span class="input-icon"><i class="fa fa-lock"></i></span>
+                <input class="input-fill2" placeholder="Password" type="password" [formControl]="profileSignupForm.controls['userpass']">
+              </div>
+              <div *ngIf="profileSignupForm.controls['userpass'].hasError('required') && profileSignupForm.controls['userpass'].touched"
+                class="alert alert-danger">
+                You must include a password.
+              </div>
+              <div *ngIf="profileSignupForm.controls['userpass'].hasError('minlength') && profileSignupForm.controls['userpass'].touched"
+                class="alert alert-danger">
+                Your password must be at least 8 characters long.
+              </div>
+              <div class="text-center login_wrp">
+                <button type="submit" class="rh_btn login_btn" [disabled]="!profileSignupForm.valid">Register</button>
+              </div>
+            </div>
+            <div class="or-box"><span>or</span></div>
+            <div class="social_login_detail">
+              <ul class="social">
+                <li class="facebook-block"><a href="/facebooklogin"><span><i class="fa fa-facebook"></i></span>
+                  <p>Login with </p>
+                  Facebook </a></li>
+                <li class="google-block"><a href="/googlelogin"><span><i class="fa fa-google" aria-hidden="true"></i></span>
+                  <p>Login with </p>
+                  Google</a></li>
+              </ul>
+            </div>
+
+            <p class="account-txt">Already a member? <a [routerLink]="['/login']">Sign in here.</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

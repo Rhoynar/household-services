@@ -17,6 +17,10 @@ import { ModalModule } from 'ng2-bootstrap';
 import { AgmCoreModule } from "angular2-google-maps/core";
 
 
+import {
+  UserLoginGuard, GuestGuard,
+  AdminLoginGuard, VendorLoginGuard
+} from './guards/index';
 
 
 @NgModule({
@@ -39,7 +43,9 @@ import { AgmCoreModule } from "angular2-google-maps/core";
 
   ],
   providers: [
-    ...SERVICE_DECLARATIONS
+    ...SERVICE_DECLARATIONS,
+    UserLoginGuard, GuestGuard,AdminLoginGuard,
+    VendorLoginGuard
   ],
   bootstrap: [AppComponent]
 })

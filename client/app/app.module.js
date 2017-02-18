@@ -20,6 +20,7 @@ var index_1 = require('./directives/index');
 //installed modules
 var ng2_bootstrap_1 = require('ng2-bootstrap');
 var core_2 = require("angular2-google-maps/core");
+var index_2 = require('./guards/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -42,7 +43,12 @@ var AppModule = (function () {
             ].concat(componentlist_1.COMPONENT_DECLARATIONS, [
                 index_1.AlertComponent
             ]),
-            providers: servicelist_1.SERVICE_DECLARATIONS.slice(),
+            providers: servicelist_1.SERVICE_DECLARATIONS.concat([
+                index_2.UserLoginGuard,
+                index_2.GuestGuard,
+                index_2.AdminLoginGuard,
+                index_2.VendorLoginGuard
+            ]),
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

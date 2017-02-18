@@ -60,6 +60,11 @@ var isUserLoggedIn=function(req, res, next) {
 
 }
 
+var logout=function (req, res) {
+    req.logout();
+    res.redirect('/');
+}
+
 // =====================================
 // GOOGLE ROUTES =======================
 // =====================================
@@ -107,6 +112,8 @@ router.get('/facebookloginreturn',
 
 router.get('/', forGuestOnly, getTemplate);
 router.get('/login', forGuestOnly, getTemplate);
+router.get('/logout', logout);
 router.get('/dashboard', isUserLoggedIn, getTemplate);
+router.get('/profile', isUserLoggedIn, getTemplate);
 router.get('/createtoken', isUserLoggedIn, getTemplate);
 module.exports = router;

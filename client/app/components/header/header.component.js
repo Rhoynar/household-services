@@ -10,17 +10,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var index_1 = require('../../services/index');
 var HeaderComponent = (function () {
-    function HeaderComponent(router) {
+    function HeaderComponent(router, authenticationService) {
+        var _this = this;
         this.router = router;
+        this.authenticationService = authenticationService;
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            var currentUserStr = localStorage.getItem('currentUser');
+            var currentUser = JSON.parse(currentUserStr);
+            if (currentUserStr) {
+                if (currentUser.token.role == "user") {
+                    _this.loggedIn = true;
+                }
+            }
+            else {
+                _this.loggedIn = false;
+            }
+        });
     }
+    HeaderComponent.prototype.logout = function () {
+        var _this = this;
+        // reset login status
+        this.authenticationService.logout()
+            .subscribe(function (data) {
+            _this.router.navigate(['/login']);
+            //return false;
+        }, function (error) {
+            _this.router.navigate(['/login']);
+        });
+    };
     HeaderComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'top-header',
             templateUrl: './header.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
     ], HeaderComponent);
     return HeaderComponent;
 }());

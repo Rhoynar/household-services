@@ -1,6 +1,8 @@
-import { GooglePlaceService,AlertService,AuthenticationService } from './index';
+import { GooglePlaceService,AlertService,AuthenticationService,
+	UserServices } from './index';
 
 export const SERVICE_DECLARATIONS = [
-  GooglePlaceService,AlertService,AuthenticationService
+  GooglePlaceService,AlertService,AuthenticationService,
+  UserServices
 ];
 

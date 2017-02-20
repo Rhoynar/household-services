@@ -23,7 +23,13 @@ export class UserServices{
     registerUser(newUser:any){
         // AppSettings.API_ENDPOINT+
         var headers=this.getHeader();
-        return this.http.post('/api/userregister',JSON.stringify(newUser),{headers:headers})
+        return this.http.put('/api/user',JSON.stringify(newUser),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    registerVendor(newVendor:any){
+        var headers=this.getHeader();
+        return this.http.put('/api/vendor',JSON.stringify(newVendor),{headers:headers})
         .map(this.extractData);//.catch(this.handleError);;
     }
 
@@ -42,6 +48,16 @@ export class UserServices{
 
     getUserProfile(profileId:any){
         return this.http.get('/api/profile/'+profileId)
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getUserByRole(roleType:any){
+        return this.http.get('/api/userbyrole/'+roleType)
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    deleteUser(userId:any){
+        return this.http.delete('/api/deleteuser/'+userId)
         .map(this.extractData);//.catch(this.handleError);;
     }
 

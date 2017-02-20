@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
-
+import { AuthenticationService } from '../../services/index'
 
 @Component({
   moduleId: module.id,
@@ -10,6 +10,24 @@ import { Router } from '@angular/router';
   //styles: [main]
 })
 export class FooterComponent {
-  constructor() {
+  public loggedIn: any;
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {
+    this.authenticationService.generatetoken()
+      .subscribe(
+      result => {
+
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        if (currentUserStr) { //if user is there
+            this.loggedIn = true;
+        } else {
+          this.loggedIn = false;
+        }
+
+      }
+      );
   }
 }

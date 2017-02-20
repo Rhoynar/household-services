@@ -19,7 +19,8 @@ var userSchema = new Schema({
     city:String,
     country:String,
     stripeCustomerId:String,
-    stripeCustomer:{}
+    stripeCustomer:{},
+    services:[{ type: Schema.Types.ObjectId, ref: 'Services' }]
 });
 
 

@@ -34,6 +34,7 @@ export class AdminHeaderComponent implements AfterViewInit {
           }
         } else {
           this.loggedIn = false;
+          this.router.navigate(['/login']);
         }
 
       });

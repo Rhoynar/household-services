@@ -43,6 +43,10 @@ var isAdminLoggedIn=function(req, res, next) {
 
 router.get('/', isAdminLoggedIn, getTemplate);
 router.get('/dashboard', isAdminLoggedIn, getTemplate);
+router.get('/vendors', isAdminLoggedIn, getTemplate);
+router.get('/packages', isAdminLoggedIn, getTemplate);
+router.get('/packages/new', isAdminLoggedIn, getTemplate);
+router.get('/package/edit/:id',isAdminLoggedIn,getTemplate);
 
 
 

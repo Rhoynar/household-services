@@ -14,6 +14,13 @@ exports.COMPONENT_DECLARATIONS = [
     index_1.UserProfileComponent,
     index_1.EditUserProfileComponent,
     index_1.AdminDashboardComponent,
-    index_1.AdminHeaderComponent
+    index_1.AdminHeaderComponent,
+    index_1.VendorSignupComponent,
+    index_1.VendorDashboardComponent,
+    index_1.VendorHeaderComponent,
+    index_1.ListVendorComponent,
+    index_1.AdminPackageListComponent,
+    index_1.AdminAddPackageComponent,
+    index_1.AdminEditPackageComponent
 ];
 //# sourceMappingURL=componentlist.js.map

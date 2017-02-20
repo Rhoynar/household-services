@@ -26,7 +26,12 @@ var UserServices = (function () {
     UserServices.prototype.registerUser = function (newUser) {
         // AppSettings.API_ENDPOINT+
         var headers = this.getHeader();
-        return this.http.post('/api/userregister', JSON.stringify(newUser), { headers: headers })
+        return this.http.put('/api/user', JSON.stringify(newUser), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.registerVendor = function (newVendor) {
+        var headers = this.getHeader();
+        return this.http.put('/api/vendor', JSON.stringify(newVendor), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     UserServices.prototype.updateProfile = function (userProfile) {
@@ -41,6 +46,14 @@ var UserServices = (function () {
     };
     UserServices.prototype.getUserProfile = function (profileId) {
         return this.http.get('/api/profile/' + profileId)
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.getUserByRole = function (roleType) {
+        return this.http.get('/api/userbyrole/' + roleType)
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.deleteUser = function (userId) {
+        return this.http.delete('/api/deleteuser/' + userId)
             .map(this.extractData); //.catch(this.handleError);;
     };
     UserServices.prototype.extractData = function (res) {

@@ -12,7 +12,14 @@ import {
 	UserProfileComponent,
 	EditUserProfileComponent,
 	AdminDashboardComponent,
-	AdminHeaderComponent
+	AdminHeaderComponent,
+	VendorSignupComponent,
+	VendorDashboardComponent,
+	VendorHeaderComponent,
+	ListVendorComponent,
+	AdminPackageListComponent,
+	AdminAddPackageComponent,
+	AdminEditPackageComponent
 } from './index';
 
 export const COMPONENT_DECLARATIONS = [
@@ -29,6 +36,13 @@ export const COMPONENT_DECLARATIONS = [
   UserProfileComponent,
   EditUserProfileComponent,
   AdminDashboardComponent,
-  AdminHeaderComponent
+  AdminHeaderComponent,
+  VendorSignupComponent,
+  VendorDashboardComponent,
+  VendorHeaderComponent,
+  ListVendorComponent,
+  AdminPackageListComponent,
+  AdminAddPackageComponent,
+  AdminEditPackageComponent
 ];
 

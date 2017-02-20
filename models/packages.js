@@ -9,7 +9,8 @@ var packageSchema = new Schema({
     price:String,
     frequency:String,
     features:[],
-    vendors:[{type: Schema.Types.ObjectId, ref: 'Vendors'}],
+    serviceId:{type: Schema.Types.ObjectId, ref: 'Services'},
+    vendors:[{type: Schema.Types.ObjectId, ref: 'Users'}],
     created:Date
 });
 

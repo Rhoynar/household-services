@@ -3,9 +3,7 @@ var Schema = mongoose.Schema;
 
 
 var serviceSchema = new Schema({
-    communityId : String,
-    serviceName : String,
-    description : String
+    title : String,
 });
 
 module.exports = mongoose.model('Services', serviceSchema);

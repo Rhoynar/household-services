@@ -12,6 +12,13 @@ var APP_ROUTES = [
     { path: 'updateprofile', component: index_1.EditUserProfileComponent, canActivate: [index_2.UserLoginGuard] },
     { path: 'admin', component: index_1.AdminDashboardComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/dashboard', component: index_1.AdminDashboardComponent, canActivate: [index_2.AdminLoginGuard] },
+    { path: 'admin/vendors', component: index_1.ListVendorComponent, canActivate: [index_2.AdminLoginGuard] },
+    { path: 'admin/packages', component: index_1.AdminPackageListComponent, canActivate: [index_2.AdminLoginGuard] },
+    { path: 'admin/package/new', component: index_1.AdminAddPackageComponent, canActivate: [index_2.AdminLoginGuard] },
+    { path: 'admin/package/edit/:id', component: index_1.AdminEditPackageComponent, canActivate: [index_2.AdminLoginGuard] },
+    { path: 'vendor/signup', component: index_1.VendorSignupComponent, canActivate: [index_2.GuestGuard] },
+    { path: 'vendor', component: index_1.VendorDashboardComponent, canActivate: [index_2.VendorLoginGuard] },
+    { path: 'vendor/dashboard', component: index_1.VendorDashboardComponent, canActivate: [index_2.VendorLoginGuard] },
     { path: '**', component: index_1.GuestHomeComponent, canActivate: [index_2.GuestGuard] },
 ];
 exports.routing = router_1.RouterModule.forRoot(APP_ROUTES);

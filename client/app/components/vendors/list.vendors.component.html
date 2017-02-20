@@ -1,0 +1,44 @@
+<top-admin-header></top-admin-header>
+
+<page-title [pagetitle]="pagetitle"></page-title>
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding dashboard_page">
+        
+        <div class="services_wrapper">
+          <alert [alertType]="'vendorAlert'"></alert>
+          <div class="services_info_block clearfix" *ngFor='let eachVendor of availableVendors; let i = index;'>
+
+            <div class="col-md-8 ser-lf">
+              
+              <div class="col-md-10">
+                <h3>{{eachVendor?.name}}</h3>
+
+                <p>{{eachVendor?.email}}</p>
+              </div>
+              <div col-md-2>
+                  <button type="button" class="btn btn-danger" (click)="deleteVendor(eachVendor._id)">Delete</button>
+                  <!--<button type="button" class="btn btn-primary" [routerLink]="['/admin/vendor/edit/',eachVendor._id]">Edit</button>-->
+              </div>
+            </div>
+            
+
+
+
+          </div>
+          <div *ngIf="!availableVendors">No vendor available</div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--inner-mid-sec-->
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

@@ -27,6 +27,7 @@ var AdminHeaderComponent = (function () {
             }
             else {
                 _this.loggedIn = false;
+                _this.router.navigate(['/login']);
             }
         });
     }

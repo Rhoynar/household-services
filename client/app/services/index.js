@@ -7,4 +7,6 @@ __export(require('./google-place.services'));
 __export(require('./alert.services'));
 __export(require('./authentication.service'));
 __export(require('./users.services'));
+__export(require('./service.services'));
+__export(require('./package.services'));
 //# sourceMappingURL=index.js.map

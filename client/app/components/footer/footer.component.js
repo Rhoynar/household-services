@@ -9,8 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var index_1 = require('../../services/index');
 var FooterComponent = (function () {
-    function FooterComponent() {
+    function FooterComponent(router, authenticationService) {
+        var _this = this;
+        this.router = router;
+        this.authenticationService = authenticationService;
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            var currentUserStr = localStorage.getItem('currentUser');
+            var currentUser = JSON.parse(currentUserStr);
+            if (currentUserStr) {
+                _this.loggedIn = true;
+            }
+            else {
+                _this.loggedIn = false;
+            }
+        });
     }
     FooterComponent = __decorate([
         core_1.Component({
@@ -18,7 +34,7 @@ var FooterComponent = (function () {
             selector: 'footer',
             templateUrl: './footer.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
     ], FooterComponent);
     return FooterComponent;
 }());

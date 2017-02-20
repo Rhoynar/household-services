@@ -1,0 +1,116 @@
+<top-header></top-header>
+
+<!--(emitCommunityChange)="myCrazyCallback($event)"-->
+<page-title [pagetitle]="pagetitle"></page-title>
+
+
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <div class="sign-in-box">
+          <div class="user_block"><img src="images/user-pic2.jpg" alt="" /></div>
+
+          <h3 class="user-heding">New Vendor</h3>
+          <alert [alertType]="'signup'"></alert>
+          <form [formGroup]="vendorSignupForm" (ngSubmit)="registerVendor()">
+            <div class="login_info_block">
+              <h4>Please Signup to continue</h4>
+
+              <div class="input-block">
+                <span class="input-icon">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  </span>
+                <input class="input-fill2" placeholder="Name" type="text" name="username" id="username" [formControl]="vendorSignupForm.controls['username']">
+              </div>
+              <div *ngIf="vendorSignupForm.controls['username'].hasError('required') && vendorSignupForm.controls['username'].touched"
+                class="alert alert-danger">
+                You must include a name.
+              </div>
+              <div *ngIf="vendorSignupForm.controls['username'].hasError('minlength') && vendorSignupForm.controls['username'].touched"
+                class="alert alert-danger">
+                Your name must be at least 5 characters long.
+              </div>
+
+              <div class="input-block"> <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                <input class="input-fill2" placeholder="Email" type="text" [formControl]="vendorSignupForm.controls['useremail']">
+              </div>
+              <div *ngIf="vendorSignupForm.controls['useremail'].hasError('required') && vendorSignupForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                You must include a email.
+              </div>
+              <div *ngIf="vendorSignupForm.controls['useremail'].hasError('validateEmail') && vendorSignupForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                Please insert valid email address
+              </div>
+              <div *ngIf="vendorSignupForm.controls['useremail'].hasError('emailTaken') && vendorSignupForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                Email already taken.
+              </div>
+              <div *ngIf="vendorSignupForm.controls['useremail'].pending">
+                Fetching data from the server...
+              </div>
+
+
+              <div class="input-block"> <span class="input-icon"><i class="fa fa-lock"></i></span>
+                <input class="input-fill2" placeholder="Password" type="password" [formControl]="vendorSignupForm.controls['userpass']">
+              </div>
+              <div *ngIf="vendorSignupForm.controls['userpass'].hasError('required') && vendorSignupForm.controls['userpass'].touched"
+                class="alert alert-danger">
+                You must include a password.
+              </div>
+              <div *ngIf="vendorSignupForm.controls['userpass'].hasError('minlength') && vendorSignupForm.controls['userpass'].touched"
+                class="alert alert-danger">
+                Your password must be at least 8 characters long.
+              </div>
+
+
+              <div class="form-group clearfix">
+                <div class="col-sm-12">
+                  <div class="check_one clearfix">
+                    <div class="left_block">
+                      <label class="filed-heading">
+                        Services Interested In  :
+                        </label>
+                    </div>
+
+                    <div class="right_block">
+                      <label *ngFor="let service of vendorSignupForm.controls['serviceList'].controls; let i=index">
+                         <input [formControl]="service.controls['service']" type="checkbox"> 
+                         {{serviceData[i].title}}
+                         </label>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+
+
+              <div class="text-center login_wrp">
+                <button type="submit" class="rh_btn login_btn" [disabled]="!vendorSignupForm.valid">Register</button>
+              </div>
+            </div>
+            <div class="or-box"><span>or</span></div>
+
+            <p class="account-txt">Already a member? <a [routerLink]="['/login']">Sign in here.</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

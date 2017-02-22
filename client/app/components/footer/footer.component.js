@@ -13,20 +13,28 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var FooterComponent = (function () {
     function FooterComponent(router, authenticationService) {
-        var _this = this;
         this.router = router;
         this.authenticationService = authenticationService;
-        this.authenticationService.generatetoken()
-            .subscribe(function (result) {
-            var currentUserStr = localStorage.getItem('currentUser');
-            var currentUser = JSON.parse(currentUserStr);
-            if (currentUserStr) {
-                _this.loggedIn = true;
-            }
-            else {
-                _this.loggedIn = false;
-            }
-        });
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        if (currentUserStr) {
+            this.loggedIn = true;
+        }
+        else {
+            this.loggedIn = false;
+        }
+        // this.authenticationService.generatetoken()
+        //   .subscribe(
+        //   result => {
+        //     var currentUserStr = localStorage.getItem('currentUser');
+        //     var currentUser = JSON.parse(currentUserStr);
+        //     if (currentUserStr) { //if user is there
+        //         this.loggedIn = true;
+        //     } else {
+        //       this.loggedIn = false;
+        //     }
+        //   }
+        //   );
     }
     FooterComponent = __decorate([
         core_1.Component({

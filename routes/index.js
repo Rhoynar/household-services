@@ -7,8 +7,9 @@ var getTemplate = function (req, res) {
 }
 
 var forGuestOnly = function (req, res, next) {
+    console.log("rakesh++++++++++++++++++++++++++++"+req.user)
     // if no user seesion is there, show page
-    if (!req.isAuthenticated()) {
+    if (typeof(req.user)=="undefined" || !req.isAuthenticated()   ) {
         return next();
     } else { //else redirect them to respective url
         switch (req.user.role) {
@@ -22,7 +23,7 @@ var forGuestOnly = function (req, res, next) {
                 res.redirect('/dashboard');
                 break;
             default:
-                res.redirect('/dashboard');
+                res.redirect('/logout');
         }
     }
     // if they aren't redirect them to the home page
@@ -116,4 +117,7 @@ router.get('/logout', logout);
 router.get('/dashboard', isUserLoggedIn, getTemplate);
 router.get('/profile', isUserLoggedIn, getTemplate);
 router.get('/createtoken', isUserLoggedIn, getTemplate);
+router.get('/package/search',isUserLoggedIn, getTemplate);
+router.get('/package',isUserLoggedIn, getTemplate);
+router.get('/order',isUserLoggedIn, getTemplate);
 module.exports = router;

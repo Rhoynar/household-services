@@ -20,6 +20,7 @@ var UserLoginGuard = (function () {
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) {
+            console.log("from login auth gaurd:-" + currentUser.token.role);
             if (currentUser.token.role == "user") {
                 return true;
             }
@@ -35,7 +36,7 @@ var UserLoginGuard = (function () {
                         this.router.navigate(['/dashboard']);
                         break;
                     default:
-                        this.router.navigate(['/dashboard']);
+                        this.router.navigate(['/']);
                         break;
                 }
                 return false;

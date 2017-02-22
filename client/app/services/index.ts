@@ -5,3 +5,4 @@ export * from './authentication.service';
 export * from './users.services';
 export * from './service.services';
 export * from './package.services';
+export * from './order.services';

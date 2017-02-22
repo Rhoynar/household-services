@@ -1,0 +1,66 @@
+<top-header></top-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+<mid-header></mid-header>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding dashboard_page">
+
+        <h2 class="inner-top-heading">Your Orders</h2>
+        <div class="services_wrapper">
+          <div class="services_info_block clearfix" *ngFor="let eachorder of userOrders">
+
+            <div class="col-md-8 ser-lf">
+              <div class="services-lf">
+                <div class="user-img"><img src="images/pic-1.jpg" alt="" /></div>
+              </div>
+              <div class="services-rh">
+                <h3>{{eachorder.packageId.title}}</h3>
+                <h4>Order No. {{eachorder._id}}</h4>
+                <p>Vendor <b>{{eachorder.vendorId?.name}}</b></p>
+                
+              </div>
+            </div>
+            <div class="col-md-4 ser-rh">
+              <ul class="time-info">
+                <li>{{eachorder.created | date: 'jm'}} </li>
+                <li>{{eachorder.created | date: 'EEEE , dd-MM-y'}} </li>
+                <li>Paid $ {{eachorder.amount}} </li>
+              </ul>
+              <div class="">
+                <!--<button class="dash-btn blue">Reschedule</button>
+                <button class="dash-btn red">Cancel</button>
+                <button class="dash-btn purple">Paid</button>-->
+              </div>
+            </div>
+
+          </div>
+          
+          
+          
+
+          <!--<div class="more-info clearfix">
+            <a href="javascript:void(0);" class="pull-left ser-btn"><i class="fa fa-calendar" aria-hidden="true"></i> Past Services</a>
+            <a href="javascript:void(0);" class="pull-right ser-btn load-more">Load More <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
+
+          </div>-->
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

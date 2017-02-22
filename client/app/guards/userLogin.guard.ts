@@ -17,6 +17,7 @@ export class UserLoginGuard implements CanActivate {
     var currentUserStr = localStorage.getItem('currentUser');
     var currentUser = JSON.parse(currentUserStr);
     if (currentUserStr) { //if user is there
+      console.log("from login auth gaurd:-"+currentUser.token.role )
       if (currentUser.token.role == "user") {  //if current user is admin
         return true;
       } else { //if user is there , but not admin redirect to landing page
@@ -31,7 +32,7 @@ export class UserLoginGuard implements CanActivate {
                 this.router.navigate(['/dashboard']);
                 break;
             default:
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/']);
                 break;
         }
         return false;

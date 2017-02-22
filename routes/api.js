@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var Users = require('../models/users');
 var Services = require('../models/services');
 var Packages= require('../models/packages');
+var Orders= require('../models/orders');
 
 var authenticateUser = function (req, res, next) {
     
@@ -393,7 +394,7 @@ var deletePackage = function (req, res) {
 var getPackageByid = function (req, res) {
     var condition = {};
     if (req.body.packageId != '') {
-        Packages.findById(req.body.packageId).lean().exec(function (err, packageDoc) {
+        Packages.findById(req.body.packageId).populate('serviceId').exec(function (err, packageDoc) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch package , please try later', error: err });
             } else {
@@ -405,25 +406,131 @@ var getPackageByid = function (req, res) {
         res.json({ status: 'error', msg: 'some error occured' });
         return res.send();
     }
+}
 
+var getPackageByZipcode = function (req, res) {
+    var condition = {};
+    if (req.body.postalCode != '') {
+        condition = { postalcode: req.body.postalCode };
+    }
+    Packages.find(condition).populate('serviceId').exec(function (err, packageDoc) {
+        if (err) {
+            res.send({ status: 'error', msg: 'unable to fetch packages , please try later', error: err });
+        } else {
+            res.send({ status: 'success', result: packageDoc });
+        }
+    });
+
+}
+
+function randomIntInc(low, high) {
+    return Math.floor(Math.random() * (high - low + 1) + low);
+}
+
+var createOrder=function(req,res){
+    if (req.user) {
+        now = new Date(req.body.serviceDate.year, req.body.serviceDate.month-1,req.body.serviceDate.day+1);
+        
+        var order = new Orders();
+        order.packageId=req.body.packageId;
+        order.amount='';
+        order.clientId=req.user.id;
+        order.vendorId='';
+        //order.stripeChargeId='';
+        //order.chargeDetail='';
+        //order.tokenDetail='';
+        order.serviceDate=new Date(req.body.serviceDate.year, req.body.serviceDate.month-1,req.body.serviceDate.day+1);
+        order.instruction=req.body.instruction;
+        order.serviceType=req.body.serviceType;
+        order.created= Date.now();
+        async.series(
+        [
+            function (callback) {
+                Packages.findById(order.packageId).lean().exec(function (err, packageDoc) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        order.amount=packageDoc.price;
+                        
+                        var vendorIndex = randomIntInc(0, packageDoc.vendors.length - 1);
+                        order.vendorId = packageDoc.vendors[vendorIndex];
+                        callback(null,packageDoc);
+                    }
+                });
+
+            }
+        ],
+        function (error, result) {
+            order.save(function (err) {
+                if (err) {
+                    return res.json({ status: 'error', error: err });
+                } else {
+                    return res.json({ status: 'success', msg: 'Order added successfully' });
+                }
+            });
+
+        });
+
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+var userOrder= function (req, res) {
+    if (req.user) {
+        var condition = {};
+        if (req.body.postalCode != '') {
+            condition = { clientId: req.user.id };
+        }
+        Orders.find(condition).populate('vendorId').populate('packageId').populate({
+            path: 'packageId',
+            model: 'Packages',
+            populate: {
+                path: 'serviceId',
+                model: 'Services'
+            }
+        }).exec(function (err, orderDocs) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: orderDocs });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
 
 }
 
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);
+
 router.put('/user',userRegister);
-router.post('/checkUniqueEmail', checkUniqueEmail);
-router.get('/profile/:id', getProfile);
-router.put('/profile',updateProfile);
-router.get('/service',getAllService);
-router.put('/vendor',addVendor);
 router.get('/userbyrole/:roleType',getUsersByRole);
 router.delete('/deleteuser/:id', deleteUser);
+
+router.post('/checkUniqueEmail', checkUniqueEmail);
+
+router.get('/profile/:id', getProfile);
+router.put('/profile',updateProfile);
+
+router.get('/service',getAllService);
+
+router.put('/vendor',addVendor);
+
 
 router.get('/getAllPackage', getAllPackage);
 router.post('/addPackage', addPackage);
 router.delete('/package/:id', deletePackage);
 router.post('/updatePackage', updatePackage);
 router.post('/getPackageByid', getPackageByid);
+router.post('/getPackageByZipcode', getPackageByZipcode);
 
+router.post('/createOrder',createOrder);
+router.get('/userOrder',userOrder);
+//https://github.com/kekeh/mydatepicker
 module.exports = router;

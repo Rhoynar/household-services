@@ -19,8 +19,19 @@ var GuestHomeComponent = (function () {
         this.googlePlace = googlePlace;
         this.router = router;
         this.postal_code = '';
-        this.searchControl = '';
+        this.searchControl = true;
+        this.searchValue = '';
     }
+    GuestHomeComponent.prototype.searchPackages = function () {
+        if ('' == this.searchValue || '' == this.postal_code) {
+            alert("Please enter any address");
+            return false;
+        }
+        else {
+            //this.router.navigate(['/package/search']);
+            this.router.navigate(['/package/search'], { queryParams: { zip: this.postal_code } });
+        }
+    };
     GuestHomeComponent.prototype.ngAfterViewInit = function () {
         $(document).ready(function () {
             $("#owl-demo").owlCarousel({
@@ -41,8 +52,6 @@ var GuestHomeComponent = (function () {
     };
     GuestHomeComponent.prototype.ngOnInit = function () {
         var _this = this;
-        //create search FormControl
-        this.searchControl = '';
         //load Places Autocomplete
         this.mapsAPILoader.load().then(function () {
             var autocomplete = new google.maps.places.Autocomplete(_this.searchElementRef.nativeElement, {

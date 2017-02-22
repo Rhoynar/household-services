@@ -23,4 +23,7 @@ __export(require('./vendors/list.vendors.component'));
 __export(require('./packages/admin.package.list.component'));
 __export(require('./packages/admin.add.package.component'));
 __export(require('./packages/admin.edit.package.component'));
+__export(require('./packages/user.package.search.component'));
+__export(require('./packages/user.package.list.component'));
+__export(require('./orders/user.order.list.component'));
 //# sourceMappingURL=index.js.map

@@ -1,1 +1,1 @@
-{"version":3,"file":"servicelist.js","sourceRoot":"","sources":["servicelist.ts"],"names":[],"mappings":";AAAA,sBACqD,SAAS,CAAC,CAAA;AAElD,4BAAoB,GAAG;IAClC,0BAAkB,EAAC,oBAAY,EAAC,6BAAqB;IACrD,oBAAY,EAAC,uBAAe,EAAC,uBAAe;CAC7C,CAAC"}
+{"version":3,"file":"servicelist.js","sourceRoot":"","sources":["servicelist.ts"],"names":[],"mappings":";AAAA,sBACmE,SAAS,CAAC,CAAA;AAEhE,4BAAoB,GAAG;IAClC,0BAAkB,EAAC,oBAAY,EAAC,6BAAqB;IACrD,oBAAY,EAAC,uBAAe,EAAC,uBAAe,EAAC,qBAAa;CAC3D,CAAC"}

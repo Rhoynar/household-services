@@ -1,0 +1,112 @@
+<top-header></top-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+<mid-header></mid-header>
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+
+
+      <div class="choose-the-package">
+        <h3 class="bdr-heading">Choose the package</h3>
+
+        <span *ngFor="let package of availablePackages">
+          <div class="col-sm-4" *ngIf="selectedPackage=='' || selectedPackage==package._id">
+            <div class="package_deatil">
+              <h3>
+                {{package.title}}
+                <span>${{package.price}} / Service</span>
+              </h3>
+              <ul class="rules_info">
+                
+                <li *ngFor="let feature of package.features">{{feature}}</li>
+              </ul>
+              <div class="Select_package">
+                <div class="radio-block">
+                  <input type="radio" name="selectedPackage" [(ngModel)]="selectedPackage" value="{{package._id}}" id="package_{{package._id}}"
+                    class="css-checkbox" />
+                  <label for="package_{{package._id}}">Select the package</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </span>
+
+
+        <div class="col-sm-6" *ngIf="selectedPackage!=''">
+
+
+          <div class="form_block">
+            <h3>Additional</h3>
+            <form novalidate #form="ngForm" name="packagePrefrence" id="packagePrefrence" (ngSubmit)="submitForm(form.value)">
+              <alert [alertType]="'additional-form'"></alert>
+              <div class="form-group">
+                <label class="input-heading">Prefered Date :</label>
+                <div class="input-box">
+                  
+                  <my-date-picker [selDate]="selDate"  [options]="myDatePickerOptions"
+                (dateChanged)="onDateChanged($event)" name="preferedDate" [(ngModel)]="preferedDate" required></my-date-picker>
+                    <!--<div style="position: absolute; z-index:10; min-height:290px;">
+                      <datepicker name="bhata" [(ngModel)]="preferedDate" [minDate]="minDate" [showWeeks]="true" [dateDisabled]="dateDisabled"></datepicker>
+                    </div>-->
+
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="input-heading">Service :</label>
+                <div class="input-box">
+                  <div class="radio-block">
+                    <input type="radio" required id="service_once" [(ngModel)]="preferedType" name="frequency" value="once" class="css-checkbox" />
+                    <label for="service_once">Only Once</label>
+                  </div>
+                  <div class="radio-block">
+                    <input type="radio" required id="service_reccur" [(ngModel)]="preferedType" name="frequency" value="reoccur" class="css-checkbox" />
+                    <label for="service_reccur">Reccuring</label>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="input-heading">Additional Instruction :</label>
+                <div class="input-box">
+                  <textarea required class="input-fill msg" [(ngModel)]="additionalInstruction" name="additionalInstruction"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group btn-wrp">
+                <button class="sub-btn">Continue</button>
+                <button type="button" (click)="cancelSelection();" class="sub-btn cancel-btn">Cancel</button>
+              </div>
+
+
+            </form>
+          </div>
+
+
+
+
+        </div>
+
+
+
+        <div class="clearfix"></div>
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+</div>
+
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

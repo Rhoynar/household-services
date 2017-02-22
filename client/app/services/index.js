@@ -9,4 +9,5 @@ __export(require('./authentication.service'));
 __export(require('./users.services'));
 __export(require('./service.services'));
 __export(require('./package.services'));
+__export(require('./order.services'));
 //# sourceMappingURL=index.js.map

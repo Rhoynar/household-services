@@ -4,7 +4,8 @@ import {
   UserSignupComponent, TokenComponent, UserProfileComponent,
   EditUserProfileComponent,AdminDashboardComponent,VendorSignupComponent,
   VendorDashboardComponent,ListVendorComponent,AdminPackageListComponent,
-  AdminAddPackageComponent,AdminEditPackageComponent
+  AdminAddPackageComponent,AdminEditPackageComponent,UserPackageSearchComponent,
+  UserPackageListComponent,UserOrderListComponent
 } from './components/index';
 
 import {
@@ -21,7 +22,10 @@ const APP_ROUTES: Routes = [
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [UserLoginGuard] },
   { path: 'profile', component: UserProfileComponent, canActivate: [UserLoginGuard] },
   { path: 'updateprofile', component: EditUserProfileComponent, canActivate: [UserLoginGuard] },
-  
+  { path: 'package/search', component: UserPackageSearchComponent, canActivate: [UserLoginGuard] },
+  { path: 'package', component: UserPackageListComponent, canActivate: [UserLoginGuard] },
+  { path: 'order', component: UserOrderListComponent, canActivate: [UserLoginGuard] },
+
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/vendors', component: ListVendorComponent, canActivate: [AdminLoginGuard] },

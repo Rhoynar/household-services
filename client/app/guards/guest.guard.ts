@@ -26,7 +26,8 @@ export class GuestGuard implements CanActivate {
                 this.router.navigate(['/vendor']);
                 break;
             case 'user':
-                this.router.navigate(['/']);
+            console.log("guest loging ts")
+                this.router.navigate(['/dashboard']);
                 break;
             default:
                 this.router.navigate(['/']);

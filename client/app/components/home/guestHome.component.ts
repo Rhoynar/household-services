@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ng2-bootstrap';
 import { MapsAPILoader } from 'angular2-google-maps/core';
-import { GooglePlaceService} from '../../services/index';
+import { GooglePlaceService } from '../../services/index';
 declare var $: any;
 
 @Component({
@@ -12,12 +12,13 @@ declare var $: any;
   templateUrl: './guestHome.component.html'
   //styles: [main]
 })
-export class GuestHomeComponent implements AfterViewInit,OnInit {
+export class GuestHomeComponent implements AfterViewInit, OnInit {
 
   @ViewChild("search") public searchElementRef: ElementRef;
 
   postal_code: any = '';
-  searchControl: any = '';
+  public searchControl: any = true;
+  public searchValue: any = '';
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
@@ -25,6 +26,25 @@ export class GuestHomeComponent implements AfterViewInit,OnInit {
     private router: Router
   ) {
   }
+
+
+
+
+  searchPackages() {
+    if ('' == this.searchValue || '' == this.postal_code) {
+      alert("Please enter any address");
+      return false;
+    }else{
+      //this.router.navigate(['/package/search']);
+      this.router.navigate(['/package/search'], { queryParams: {zip:this.postal_code} });
+    }
+
+
+  }
+
+  
+
+
 
   ngAfterViewInit() {
 
@@ -49,8 +69,7 @@ export class GuestHomeComponent implements AfterViewInit,OnInit {
 
 
   ngOnInit() {
-    //create search FormControl
-    this.searchControl = '';
+
 
 
 
@@ -64,7 +83,7 @@ export class GuestHomeComponent implements AfterViewInit,OnInit {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
           //alert(place);
-          
+
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;

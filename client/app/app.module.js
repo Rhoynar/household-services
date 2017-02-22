@@ -20,6 +20,7 @@ var index_1 = require('./directives/index');
 //installed modules
 var ng2_bootstrap_1 = require('ng2-bootstrap');
 var core_2 = require("angular2-google-maps/core");
+var mydatepicker_1 = require('mydatepicker');
 var index_2 = require('./guards/index');
 var AppModule = (function () {
     function AppModule() {
@@ -33,6 +34,8 @@ var AppModule = (function () {
                 http_1.HttpModule,
                 app_routes_1.routing,
                 ng2_bootstrap_1.ModalModule.forRoot(),
+                ng2_bootstrap_1.DatepickerModule.forRoot(),
+                mydatepicker_1.MyDatePickerModule,
                 core_2.AgmCoreModule.forRoot({
                     apiKey: "AIzaSyD7UAWwbYiO3Xjdp8nES-xp8h7s3YY7jjc",
                     libraries: ["places"]

@@ -104,8 +104,9 @@ export class VendorSignupComponent {
 
 
         var checkedServices: any = [];
-        for (let db in this.vendorSignupForm.controls['serviceList'].controls) {
-            if (this.vendorSignupForm.controls['serviceList'].controls[db].value.service == true) {
+        var serviceListControls=this.vendorSignupForm.controls['serviceList'];
+        for (let db in this.vendorSignupForm.controls['serviceList']['controls']) {
+            if (this.vendorSignupForm.controls['serviceList']['controls'][db].value.service == true) {
                 checkedServices.push(this.serviceData[db]._id)
             }
         }

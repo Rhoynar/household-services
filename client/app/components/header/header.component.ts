@@ -30,6 +30,7 @@ export class HeaderComponent {
           }
         } else {
           this.loggedIn = false;
+          
         }
       });
 

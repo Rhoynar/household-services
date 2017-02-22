@@ -19,3 +19,6 @@ export * from './vendors/list.vendors.component';
 export * from './packages/admin.package.list.component';
 export * from './packages/admin.add.package.component';
 export * from './packages/admin.edit.package.component';
+export * from './packages/user.package.search.component';
+export * from './packages/user.package.list.component';
+export * from './orders/user.order.list.component';

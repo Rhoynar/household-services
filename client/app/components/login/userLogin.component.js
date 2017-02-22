@@ -37,13 +37,30 @@ var UserLoginComponent = (function () {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
     };
+    UserLoginComponent.prototype.QueryStringToJSON = function (querystring) {
+        var pairs = querystring.split('&');
+        var result = {};
+        pairs.forEach(function (pair) {
+            pair = pair.split('=');
+            result[pair[0]] = decodeURIComponent(pair[1] || '');
+        });
+        return JSON.parse(JSON.stringify(result));
+    };
     UserLoginComponent.prototype.loginUser = function () {
         var _this = this;
         this.loading = true;
         this.authenticationService.login(this.loginForm.value.loginuseremail, this.loginForm.value.loginuserpass)
             .subscribe(function (result) {
             if (result === true) {
-                _this.router.navigate([_this.returnUrl]);
+                var urlBlocks = _this.returnUrl.split('?');
+                if (urlBlocks.length > 1) {
+                    var params = _this.QueryStringToJSON(urlBlocks[1]);
+                    console.log(params);
+                    _this.router.navigate([urlBlocks[0]], { queryParams: params });
+                }
+                else {
+                    _this.router.navigate([_this.returnUrl]);
+                }
             }
             else {
                 _this.error = 'Username or password is incorrect';

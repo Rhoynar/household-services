@@ -49,6 +49,17 @@ export class UserLoginComponent {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
+QueryStringToJSON(querystring:any) {            
+    var pairs = querystring.split('&');
+    
+    var result = {};
+    pairs.forEach(function(pair:any) {
+        pair = pair.split('=');
+        result[pair[0]] = decodeURIComponent(pair[1] || '');
+    });
+
+    return JSON.parse(JSON.stringify(result));
+}
 
   loginUser() {
     this.loading = true;
@@ -57,7 +68,16 @@ export class UserLoginComponent {
             .subscribe(
                 result => {
                 if (result === true) {
-                    this.router.navigate([this.returnUrl]);
+                    var urlBlocks=this.returnUrl.split('?');
+                    if(urlBlocks.length>1){
+                        var params=this.QueryStringToJSON(urlBlocks[1]);
+                        console.log(params);
+                        this.router.navigate([urlBlocks[0]],{queryParams:params});
+                    }else{
+                        this.router.navigate([this.returnUrl]);
+                    }
+                    
+                    
                     //this.router.navigate(['/dashboard']);
                 } else {
                     this.error = 'Username or password is incorrect';

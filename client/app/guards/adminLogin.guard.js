@@ -30,10 +30,11 @@ var AdminLoginGuard = (function () {
                         this.router.navigate(['/vendor']);
                         break;
                     case 'user':
+                        console.log("admin loging ts");
                         this.router.navigate(['/dashboard']);
                         break;
                     default:
-                        this.router.navigate(['/dashboard']);
+                        this.router.navigate(['/']);
                         break;
                 }
                 return false;

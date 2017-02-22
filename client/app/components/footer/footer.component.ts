@@ -15,19 +15,26 @@ export class FooterComponent {
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
-    this.authenticationService.generatetoken()
-      .subscribe(
-      result => {
-
-        var currentUserStr = localStorage.getItem('currentUser');
+    var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) { //if user is there
             this.loggedIn = true;
         } else {
           this.loggedIn = false;
         }
+    // this.authenticationService.generatetoken()
+    //   .subscribe(
+    //   result => {
 
-      }
-      );
+    //     var currentUserStr = localStorage.getItem('currentUser');
+    //     var currentUser = JSON.parse(currentUserStr);
+    //     if (currentUserStr) { //if user is there
+    //         this.loggedIn = true;
+    //     } else {
+    //       this.loggedIn = false;
+    //     }
+
+    //   }
+    //   );
   }
 }

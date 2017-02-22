@@ -9,17 +9,17 @@
               <div class="banner_content_block">
                 <div class="col-sm-7 banner_content_block_lf">
                   <div class="video_block">
-                    <div class="video-inner-img"> 
+                    <div class="video-inner-img">
                       <!--video-->
                       <div id="videocenter">
                         <video preload="auto" autoplay loop>
-                          <source type="video/mp4" src="video/Bigstock_81197432.mp4"/>
-                          <source type="video/webm" src="video/Bigstock_81197432.webm"/>
-                          <source type="video/ogg" src="video/Bigstock_81197432.ogv"/>
+                          <source type="video/mp4" src="video/Bigstock_81197432.mp4" />
+                          <source type="video/webm" src="video/Bigstock_81197432.webm" />
+                          <source type="video/ogg" src="video/Bigstock_81197432.ogv" />
                         </video>
                       </div>
-                      <!--End-video--> 
-                      
+                      <!--End-video-->
+
                     </div>
                     <div class="socila_links">
                       <ul>
@@ -33,23 +33,29 @@
                 <div class="col-sm-5 banner_content_block_rh text-left">
                   <h1>DONE RIGHT FIRST TIME</h1>
                   <p>We Guarantee our work, or the Service is Free.</p>
-                  
-                    <div class="block_one clearfix">
-                      <div class="more_sec"> <a href="javascript:void(0);" class="rh_btn">Learn More</a> </div>
-                      <div class="more_sec"> <a href="javascript:void(0);" class="rh_btn">Get Started</a> </div>
-                    </div>
-                    <div class="search_block">
-                      
-                      <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="rh_btn"
-                        #search [(ngModel)]="searchControl">
-                      <input type="hidden" [(ngModel)]="postal_code" id="userZipcode" name="userZipcode" />
 
-                      <span class="marker_block"><i class="fa fa-map-marker" aria-hidden="true"></i></span> </div>
-                    <div class="search_btn-wrp">
-                      
-                      <button type="button" class="rh_btn" (click)="searchPackages();">Submit</button>
+                  <div class="block_one clearfix">
+                    <div class="more_sec">
+                      <a href="javascript:void(0);" (click)="searchControl=false" class="rh_btn">Learn More</a>
                     </div>
-                  
+                    <div class="more_sec">
+                      <a href="javascript:void(0);" (click)="searchControl=false" class="rh_btn">Get Started</a>
+                    </div>
+                  </div>
+                  <div class="search_block" [ngClass]="{'hide': searchControl}" >
+
+                    <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="rh_btn"
+                      #search [(ngModel)]="searchValue">
+                    <input type="hidden" [(ngModel)]="postal_code" id="userZipcode" name="userZipcode" />
+
+                    <span class="marker_block"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                  </div>
+
+                  <div class="search_btn-wrp" [ngClass]="{'hide': searchControl}">
+
+                    <button type="button" class="rh_btn" (click)="searchPackages();">Submit</button>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -82,8 +88,8 @@
       <div class="col-md-12 no-padding">
         <h2 class="main-heading"><span>Vista Ridge Community Calendar</span></h2>
         <div class="community_tab_block">
-          <div class="tab_info"> 
-            
+          <div class="tab_info">
+
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Lawn Care</a></li>
@@ -92,7 +98,7 @@
               <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Service-3</a></li>
               <li class="more-link"><a href="javascript:void(0);"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
             </ul>
-            
+
             <!-- Tab panes -->
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="home">
@@ -318,7 +324,7 @@
     </div>
   </div>
 </div>
-<!--community-calendar--> 
+<!--community-calendar-->
 
 <!--how-its-works-->
 <div class="how-its-works">
@@ -336,9 +342,8 @@
               </div>
               <h3 class="work_heading"><a href="#">oNLINE sCHEDULE</a></h3>
               <div class="work-content">
-                <p>Lorem ipsum dolor sit amet, consectetur 
-                  adipiscing elit. Donec vel ligula id nisl ultrices 
-                  convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel ligula id nisl ultrices convallis. Etiam
+                  commodo velit ac condimentum ullamcorper.</p>
               </div>
             </div>
           </div>
@@ -349,9 +354,8 @@
               </div>
               <h3 class="work_heading"><a href="#">qUALITY WORK by trusted Pros</a></h3>
               <div class="work-content">
-                <p>Lorem ipsum dolor sit amet, consectetur 
-                  adipiscing elit. Donec vel ligula id nisl ultrices 
-                  convallis. Etiam commodo velit ac condimentum </p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel ligula id nisl ultrices convallis. Etiam
+                  commodo velit ac condimentum </p>
               </div>
             </div>
           </div>
@@ -362,9 +366,8 @@
               </div>
               <h3 class="work_heading"><a href="#">Relax</a></h3>
               <div class="work-content">
-                <p>Lorem ipsum dolor sit amet, consectetur 
-                  adipiscing elit. Donec vel ligula id nisl ultrices 
-                  convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel ligula id nisl ultrices convallis. Etiam
+                  commodo velit ac condimentum ullamcorper.</p>
               </div>
             </div>
           </div>
@@ -373,7 +376,7 @@
     </div>
   </div>
 </div>
-<!--how-its-works--> 
+<!--how-its-works-->
 
 <!--why-community-services-->
 <div class="our-services">
@@ -387,23 +390,20 @@
           <div class="col-sm-4 services_block text-center">
             <div class="ser-img"><img src="images/ser-1.png" alt="" /></div>
             <h3>Plumbing</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur 
-              adipiscing elit. Donec vel ligula id nisl ultrices 
-              convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel ligula id nisl ultrices convallis. Etiam commodo
+              velit ac condimentum ullamcorper.</p>
           </div>
           <div class="col-sm-4 services_block text-center">
             <div class="ser-img"><img src="images/ser2.png" alt="" /></div>
             <h3>Plumbing</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur 
-              adipiscing elit. Donec vel ligula id nisl ultrices 
-              convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel ligula id nisl ultrices convallis. Etiam commodo
+              velit ac condimentum ullamcorper.</p>
           </div>
           <div class="col-sm-4 services_block text-center">
             <div class="ser-img"><img src="images/ser3.png" alt="" /></div>
             <h3>Plumbing</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur 
-              adipiscing elit. Donec vel ligula id nisl ultrices 
-              convallis. Etiam commodo velit ac condimentum ullamcorper.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel ligula id nisl ultrices convallis. Etiam commodo
+              velit ac condimentum ullamcorper.</p>
           </div>
         </div>
         <div class="col-md-12 text-center"><a href="javascript:void(0);" class=" more-btn">Load More</a></div>
@@ -411,7 +411,7 @@
     </div>
   </div>
 </div>
-<!--End-why-community-services--> 
+<!--End-why-community-services-->
 
 <!--why-community-services-->
 <div class="why-community-services">
@@ -439,8 +439,14 @@
                   </ul>
                 </div>
                 <div class="services_block_info">
-                  <p>Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue. Nunc vitae augue tortor. </p>
-                  <p>Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue. Nunc vitae augue tortor. Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. </p>
+                  <p>Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. Aliquam gravida
+                    eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat
+                    volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue.
+                    Nunc vitae augue tortor. </p>
+                  <p>Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat.
+                    Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus
+                    urna ac augue. Nunc vitae augue tortor. Maecenas interdum non neque vitae gravida. Aliquam dapibus diam
+                    eu nisl viverra molestie. </p>
                 </div>
               </div>
             </div>
@@ -460,7 +466,10 @@
                   </ul>
                 </div>
                 <div class="services_block_info">
-                  <p>Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. Aliquam gravida eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue. Nunc vitae augue tortor. </p>
+                  <p>Maecenas interdum non neque vitae gravida. Aliquam dapibus diam eu nisl viverra molestie. Aliquam gravida
+                    eu eros nec sollicitudin. Morbi magna diam, consectetur sed lobortis id, facilisis ac erat. Aliquam erat
+                    volutpat. Nam cursus, ante eu dictum malesuada, enim ipsum bibendum est, et dictum lacus urna ac augue.
+                    Nunc vitae augue tortor. </p>
                 </div>
               </div>
             </div>
@@ -470,11 +479,11 @@
     </div>
   </div>
 </div>
-<!--End-why-community-services--> 
+<!--End-why-community-services-->
 
 <!--about-section-->
 <about-us></about-us>
-<!--about-section--> 
+<!--about-section-->
 
 <!--footer-section-->
 <footer></footer>

@@ -13,8 +13,9 @@ import { SERVICE_DECLARATIONS } from './services/servicelist';
 import { AlertComponent } from './directives/index';
 
 //installed modules
-import { ModalModule } from 'ng2-bootstrap';
+import { ModalModule,DatepickerModule } from 'ng2-bootstrap';
 import { AgmCoreModule } from "angular2-google-maps/core";
+import { MyDatePickerModule } from 'mydatepicker';
 
 
 import {
@@ -31,6 +32,8 @@ import {
     HttpModule,
     routing,
     ModalModule.forRoot(),
+    DatepickerModule.forRoot(),
+    MyDatePickerModule,
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyD7UAWwbYiO3Xjdp8nES-xp8h7s3YY7jjc",
       libraries: ["places"]

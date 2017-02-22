@@ -29,10 +29,11 @@ export class VendorLoginGuard implements CanActivate {
                         this.router.navigate(['/vendor']);
                         break;
                     case 'user':
+                    console.log("vendor loging ts");
                         this.router.navigate(['/dashboard']);
                         break;
                     default:
-                        this.router.navigate(['/dashboard']);
+                        this.router.navigate(['/']);
                         break;
                 }
                 return false;

@@ -29,7 +29,7 @@ export class AdminLoginGuard implements CanActivate {
                         this.router.navigate(['/vendor']);
                         break;
                     case 'user':
-                        console.log("admin loging ts")
+                        
                         this.router.navigate(['/dashboard']);
                         break;
                     default:

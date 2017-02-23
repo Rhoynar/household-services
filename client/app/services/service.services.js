@@ -28,6 +28,26 @@ var ServiceServices = (function () {
         return this.http.get('/api/service', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    ServiceServices.prototype.getServiceByid = function (serviceId) {
+        var headers = this.getHeader();
+        return this.http.get('/api/service/' + serviceId, { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    ServiceServices.prototype.addService = function (serviceDetails) {
+        var headers = this.getHeader();
+        return this.http.post('/api/service', JSON.stringify(serviceDetails), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    ServiceServices.prototype.updateService = function (serviceDetails) {
+        var headers = this.getHeader();
+        return this.http.put('/api/service', JSON.stringify(serviceDetails), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    ServiceServices.prototype.deleteService = function (serviceId) {
+        var headers = this.getHeader();
+        return this.http.delete('/api/service/' + serviceId, { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     ServiceServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};

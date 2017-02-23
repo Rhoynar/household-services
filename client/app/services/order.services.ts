@@ -32,6 +32,11 @@ export class OrderServices {
             .map(this.extractData);//.catch(this.handleError);;
     }
 
+    getAllOrder() {
+        var headers = this.getHeader();
+        return this.http.get('/api/getAllOrder', { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
 
 
     private extractData(res: Response) {

@@ -506,6 +506,118 @@ var userOrder= function (req, res) {
 
 }
 
+var getAllOrder= function (req, res) {
+    if (req.user) {
+        
+        Orders.find({}).populate('clientId').populate('vendorId').populate('packageId').populate({
+            path: 'packageId',
+            model: 'Packages',
+            populate: {
+                path: 'serviceId',
+                model: 'Services'
+            }
+        }).exec(function (err, orderDocs) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: orderDocs });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+}
+
+var deleteService = function (req, res) {
+    if (req.user) {
+        var serviceId = req.params.id;
+        Services.remove({ _id: serviceId }, function (err, removeService) {
+            if (err) {
+                return res.json({ status: 'error', error: err, msg: "Some error occured please try later" });
+            } else {
+                return res.json({ status: 'success', msg: 'Service Deleted successfully' });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+}
+
+var updateService = function (req, res) {
+    
+    if (req.user) {
+        var updateDetails =
+            {
+                title: req.body.title,
+            }
+
+        Services.findByIdAndUpdate(req.body.id, updateDetails, function (err, updateRes) {
+
+            if (err) {
+                return res.json({ status: 'error', error: err });
+            }
+            else {
+                return res.json({ status: 'success', msg: 'Service updated successfully' });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+var addService=  function (req, res) {
+
+    if (req.user) {
+        var serviceDetails = new Services();
+
+        serviceDetails.title = req.body.title;
+        
+        serviceDetails.created = Date.now();
+
+        serviceDetails.save(function (err) {
+            if (err) {
+                return res.json({ status: 'error', error: err });
+            } else {
+                return res.json({ status: 'success', msg: 'Service added successfully' });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+
+    //return res.json({});
+}
+
+var getServiceById = function (req, res) {
+    var condition = {};
+    var serviceId = req.params.id;
+    if (serviceId != '') {
+        Services.findById(serviceId).exec(function (err, packageDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch Service , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: packageDoc });
+            }
+        });
+    } else {
+        res.status(403);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);
 
@@ -518,7 +630,7 @@ router.post('/checkUniqueEmail', checkUniqueEmail);
 router.get('/profile/:id', getProfile);
 router.put('/profile',updateProfile);
 
-router.get('/service',getAllService);
+
 
 router.put('/vendor',addVendor);
 
@@ -532,5 +644,13 @@ router.post('/getPackageByZipcode', getPackageByZipcode);
 
 router.post('/createOrder',createOrder);
 router.get('/userOrder',userOrder);
+router.get('/getAllOrder',getAllOrder);
+
+router.get('/service',getAllService);
+router.get('/service/:id',getServiceById);
+router.post('/service',addService);
+router.put('/service',updateService);
+router.delete('/service/:id',deleteService);
+
 //https://github.com/kekeh/mydatepicker
 module.exports = router;

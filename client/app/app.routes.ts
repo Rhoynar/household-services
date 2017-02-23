@@ -5,7 +5,8 @@ import {
   EditUserProfileComponent,AdminDashboardComponent,VendorSignupComponent,
   VendorDashboardComponent,ListVendorComponent,AdminPackageListComponent,
   AdminAddPackageComponent,AdminEditPackageComponent,UserPackageSearchComponent,
-  UserPackageListComponent,UserOrderListComponent
+  UserPackageListComponent,UserOrderListComponent,AdminListServiceComponent,
+  AdminAddServiceComponent,AdminEditServiceComponent,AdminOrderListComponent
 } from './components/index';
 
 import {
@@ -29,9 +30,16 @@ const APP_ROUTES: Routes = [
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/vendors', component: ListVendorComponent, canActivate: [AdminLoginGuard] },
+  
   { path: 'admin/packages', component: AdminPackageListComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/package/new', component: AdminAddPackageComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/package/edit/:id', component: AdminEditPackageComponent, canActivate: [AdminLoginGuard] },
+  
+  { path: 'admin/services', component: AdminListServiceComponent, canActivate: [AdminLoginGuard] },
+  { path: 'admin/services/new', component: AdminAddServiceComponent, canActivate: [AdminLoginGuard] },
+  { path: 'admin/services/:id', component: AdminEditServiceComponent, canActivate: [AdminLoginGuard] },
+
+  { path: 'admin/orders', component: AdminOrderListComponent, canActivate: [AdminLoginGuard] },
 
   { path: 'vendor/signup', component: VendorSignupComponent, canActivate: [GuestGuard] },
   { path: 'vendor', component: VendorDashboardComponent, canActivate: [VendorLoginGuard] },

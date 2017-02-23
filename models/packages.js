@@ -11,7 +11,7 @@ var packageSchema = new Schema({
     features:[],
     serviceId:{type: Schema.Types.ObjectId, ref: 'Services'},
     vendors:[{type: Schema.Types.ObjectId, ref: 'Users'}],
-    created:Date
+    created:{ type : Date, default: new Date() }
 });
 
 module.exports = mongoose.model('Packages', packageSchema);

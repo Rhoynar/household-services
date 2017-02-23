@@ -1,9 +1,7 @@
-<top-header></top-header>
+<top-admin-header></top-admin-header>
 
 
 <page-title [pagetitle]="pagetitle"></page-title>
-
-<mid-header></mid-header>
 
 <!--inner-mid-sec-->
 <div class="inner-mid-sec white-bg">
@@ -11,9 +9,9 @@
     <div class="row">
       <div class="col-md-12 no-padding dashboard_page">
 
-        <h2 class="inner-top-heading">Your Orders</h2>
+        <h2 class="inner-top-heading">All Orders</h2>
         <div class="services_wrapper">
-          <div class="services_info_block clearfix" *ngFor="let eachorder of userOrders">
+          <div class="services_info_block clearfix" *ngFor="let eachorder of orderList">
 
             <div class="col-md-8 ser-lf">
               <div class="services-lf">
@@ -23,7 +21,8 @@
                 <h3>{{eachorder.packageId.title}}</h3>
                 <h4>Order No. {{eachorder._id}}</h4>
                 <p>Service type:- <b>{{eachorder.packageId?.serviceId.title}}</b></p>
-                <p>Vendor <b>{{eachorder.vendorId?.name}}</b></p>
+                <p>User :- <b>{{eachorder.clientId?.name}}</b></p>
+                <p>Vendor:- <b>{{eachorder.vendorId?.name}}</b></p>
                 
               </div>
             </div>

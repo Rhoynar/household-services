@@ -1,0 +1,50 @@
+<top-admin-header></top-admin-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 no-padding dashboard_page">
+
+                <div class="form_block">
+
+
+                    <form [formGroup]="addServiceForm" (ngSubmit)="submitForm()">
+                        <div class="form-group" [ngClass]="{'has-error':!addServiceForm.controls['title'].valid && addServiceForm.controls['title'].touched}">
+                            <label class="input-heading">Title :</label>
+                            <div class="input-box">
+                                <input type="text" name="title" id="title" class="input-fill" [formControl]="addServiceForm.controls['title']" />
+                                <div *ngIf="addServiceForm.controls['title'].hasError('required') && addServiceForm.controls['title'].touched" class="alert alert-danger">You must include a title.</div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group btn-wrp">
+
+                            <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->
+                            <button type="submit" [disabled]="!addServiceForm.valid" class="sub-btn">Submit</button>
+                            <button type="button" class="sub-btn cancel-btn" (click)="servicePage();">Cancel</button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

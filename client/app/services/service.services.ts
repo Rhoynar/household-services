@@ -20,12 +20,33 @@ export class ServiceServices {
         return headers;
     }
 
-
-
-
     getAllService() {
         var headers = this.getHeader();
         return this.http.get('/api/service', { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getServiceByid(serviceId:String){
+        var headers = this.getHeader();
+        return this.http.get('/api/service/'+serviceId, { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    addService(serviceDetails:any){
+        var headers = this.getHeader();
+        return this.http.post('/api/service', JSON.stringify(serviceDetails), { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    updateService(serviceDetails:any){
+        var headers = this.getHeader();
+        return this.http.put('/api/service', JSON.stringify(serviceDetails), { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    deleteService(serviceId:String) {
+        var headers = this.getHeader();
+        return this.http.delete('/api/service/'+serviceId, { headers: headers })
             .map(this.extractData);//.catch(this.handleError);;
     }
 

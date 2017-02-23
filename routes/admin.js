@@ -48,6 +48,12 @@ router.get('/packages', isAdminLoggedIn, getTemplate);
 router.get('/packages/new', isAdminLoggedIn, getTemplate);
 router.get('/package/edit/:id',isAdminLoggedIn,getTemplate);
 
+router.get('/services', isAdminLoggedIn, getTemplate);
+router.get('/services/:id',isAdminLoggedIn,getTemplate);
+router.get('/services/new',isAdminLoggedIn,getTemplate);
+
+router.get('/orders', isAdminLoggedIn, getTemplate);
+
 
 
 

@@ -6,7 +6,8 @@ import {
   VendorDashboardComponent,ListVendorComponent,AdminPackageListComponent,
   AdminAddPackageComponent,AdminEditPackageComponent,UserPackageSearchComponent,
   UserPackageListComponent,UserOrderListComponent,AdminListServiceComponent,
-  AdminAddServiceComponent,AdminEditServiceComponent,AdminOrderListComponent
+  AdminAddServiceComponent,AdminEditServiceComponent,AdminOrderListComponent,
+  VendorOrderListComponent,VendorPackageListComponent
 } from './components/index';
 
 import {
@@ -44,7 +45,8 @@ const APP_ROUTES: Routes = [
   { path: 'vendor/signup', component: VendorSignupComponent, canActivate: [GuestGuard] },
   { path: 'vendor', component: VendorDashboardComponent, canActivate: [VendorLoginGuard] },
   { path: 'vendor/dashboard', component: VendorDashboardComponent, canActivate: [VendorLoginGuard] },
-  
+  { path: 'vendor/orders', component: VendorOrderListComponent, canActivate: [VendorLoginGuard] },
+  { path: 'vendor/packages', component: VendorPackageListComponent, canActivate: [VendorLoginGuard] },
   { path: '**', component: GuestHomeComponent, canActivate: [GuestGuard] },
 
 ];

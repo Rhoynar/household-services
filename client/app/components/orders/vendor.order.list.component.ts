@@ -5,14 +5,14 @@ import { AlertService,AuthenticationService,OrderServices } from '../../services
 
 @Component({
   moduleId: module.id,
-  selector: 'admin-order-list',
-  templateUrl: './admin.order.list.component.html'
+  selector: 'vendor-order-list',
+  templateUrl: './vendor.order.list.component.html'
   //styles: [main]
 })
-export class AdminOrderListComponent {
+export class VendorOrderListComponent {
 
   public orderList: any = [];
-  public pagetitle:String='Orders';
+  public pagetitle:String='Orders List';
   constructor(
     private alertService: AlertService,
     private orderServices: OrderServices,
@@ -23,7 +23,7 @@ export class AdminOrderListComponent {
 
 //get packages
   getAllOrder() {
-    this.orderServices.getAllOrder()
+    this.orderServices.getvendorOrder()
       .subscribe(data => {
         this.orderList = data.result;
       },

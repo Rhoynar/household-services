@@ -506,6 +506,34 @@ var userOrder= function (req, res) {
 
 }
 
+var vendorOrder= function (req, res) {
+    if (req.user) {
+        var condition = {};
+        if (req.body.postalCode != '') {
+            condition = { vendorId: req.user.id };
+        }
+        Orders.find(condition).populate('clientId').populate('packageId').populate({
+            path: 'packageId',
+            model: 'Packages',
+            populate: {
+                path: 'serviceId',
+                model: 'Services'
+            }
+        }).exec(function (err, orderDocs) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: orderDocs });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+}
+
 var getAllOrder= function (req, res) {
     if (req.user) {
         
@@ -644,6 +672,7 @@ router.post('/getPackageByZipcode', getPackageByZipcode);
 
 router.post('/createOrder',createOrder);
 router.get('/userOrder',userOrder);
+router.get('/vendorOrder',vendorOrder);
 router.get('/getAllOrder',getAllOrder);
 
 router.get('/service',getAllService);

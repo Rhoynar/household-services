@@ -24,7 +24,7 @@ var isVendorLoggedIn=function(req, res, next) {
                 return next();    
                 break;
             case 'user':
-                res.redirect('/admin/dashboard');
+                res.redirect('/dashboard');
                 return false;    
                 break;
             default:
@@ -65,6 +65,8 @@ var forGuestOnly = function (req, res, next) {
 router.get('/', isVendorLoggedIn, getTemplate);
 router.get('/signup', forGuestOnly, getTemplate);
 router.get('/dashboard', isVendorLoggedIn, getTemplate);
+router.get('/orders', isVendorLoggedIn, getTemplate);
+router.get('/packages', isVendorLoggedIn, getTemplate);
 
 
 

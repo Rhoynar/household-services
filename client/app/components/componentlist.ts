@@ -26,7 +26,9 @@ import {
 	AdminListServiceComponent,
 	AdminAddServiceComponent,
 	AdminEditServiceComponent,
-	AdminOrderListComponent
+	AdminOrderListComponent,
+	VendorOrderListComponent,
+	VendorPackageListComponent
 } from './index';
 
 export const COMPONENT_DECLARATIONS = [
@@ -57,6 +59,8 @@ export const COMPONENT_DECLARATIONS = [
   AdminListServiceComponent,
   AdminAddServiceComponent,
   AdminEditServiceComponent,
-  AdminOrderListComponent
+  AdminOrderListComponent,
+  VendorOrderListComponent,
+  VendorPackageListComponent
 ];
 

@@ -32,6 +32,11 @@ var OrderServices = (function () {
         return this.http.get('/api/userOrder', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    OrderServices.prototype.getvendorOrder = function () {
+        var headers = this.getHeader();
+        return this.http.get('/api/vendorOrder', { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     OrderServices.prototype.getAllOrder = function () {
         var headers = this.getHeader();
         return this.http.get('/api/getAllOrder', { headers: headers })

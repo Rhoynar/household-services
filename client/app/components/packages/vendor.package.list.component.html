@@ -1,0 +1,54 @@
+<top-vendor-header></top-vendor-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding dashboard_page">
+        
+        <div class="services_wrapper">
+            <alert [alertType]="'packageAlert'"></alert>
+
+          <div class="col-md-6" *ngFor="let package of availablePackages">
+            <div class="col-md-12">
+              <h4>{{package.title}}</h4>
+              
+            </div>
+            
+            <p class="text-center" [ngSwitch]="package.frequency">
+              ${{package.price}}
+              <span *ngSwitchCase="'daily'">Daily</span>
+              <span *ngSwitchCase="'monthly'">Per Month</span>
+              <span *ngSwitchCase="'yearly'">Per Year</span>
+              <span *ngSwitchDefault></span>
+            </p>
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let feature of package.features">{{feature}}</li>
+            </ul>
+          </div>
+
+
+
+
+        </div>
+        <div *ngIf="availablePackages.length<=0" class="text-center">No package available</div>
+
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+</div>
+
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

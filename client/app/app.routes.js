@@ -26,6 +26,8 @@ var APP_ROUTES = [
     { path: 'vendor/signup', component: index_1.VendorSignupComponent, canActivate: [index_2.GuestGuard] },
     { path: 'vendor', component: index_1.VendorDashboardComponent, canActivate: [index_2.VendorLoginGuard] },
     { path: 'vendor/dashboard', component: index_1.VendorDashboardComponent, canActivate: [index_2.VendorLoginGuard] },
+    { path: 'vendor/orders', component: index_1.VendorOrderListComponent, canActivate: [index_2.VendorLoginGuard] },
+    { path: 'vendor/packages', component: index_1.VendorPackageListComponent, canActivate: [index_2.VendorLoginGuard] },
     { path: '**', component: index_1.GuestHomeComponent, canActivate: [index_2.GuestGuard] },
 ];
 exports.routing = router_1.RouterModule.forRoot(APP_ROUTES);

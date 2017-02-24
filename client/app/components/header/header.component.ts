@@ -16,7 +16,7 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService,
+    private authenticationService: AuthenticationService
   ) {
 
 
@@ -30,6 +30,10 @@ export class HeaderComponent {
           }
         } else {
           this.loggedIn = false;
+          // if(this.router.url!='/'){
+          //   this.router.navigate(['/login']);
+          // }
+          
           
         }
       });

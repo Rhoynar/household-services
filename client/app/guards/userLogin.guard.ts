@@ -8,12 +8,18 @@ import { AuthenticationService, UserServices } from '../services/index';
 @Injectable()
 export class UserLoginGuard implements CanActivate {
 
-  constructor(private UserServices: UserServices, private router: Router) { }
+  constructor(
+    private UserServices: UserServices, 
+    private router: Router
+    ) { }
 
   authenticated: any;
   test: any;
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(
+    route: ActivatedRouteSnapshot, 
+  state: RouterStateSnapshot
+  ) {
     var currentUserStr = localStorage.getItem('currentUser');
     var currentUser = JSON.parse(currentUserStr);
     if (currentUserStr) { //if user is there

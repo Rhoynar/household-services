@@ -13,13 +13,15 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var UserPackageListComponent = (function () {
     //constructor start
-    function UserPackageListComponent(router, packageService, activatedRoute, alertService, orderServices) {
+    function UserPackageListComponent(router, packageService, activatedRoute, alertService, stripeServices, orderServices) {
         this.router = router;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
         this.alertService = alertService;
+        this.stripeServices = stripeServices;
         this.orderServices = orderServices;
         this.availablePackages = [];
+        this.userCreditCards = [];
         this.pagetitle = "Package List";
         this.zipcode = "";
         this.selectedPackage = "";
@@ -27,6 +29,13 @@ var UserPackageListComponent = (function () {
         this.preferedType = "";
         this.additionalInstruction = "";
         this.selDate = { year: 0, month: 0, day: 0 };
+        this.cardsvisible = false;
+        this.useCardId = '';
+        this.processingCard = false;
+        this.cardNumber = '';
+        this.expiryMonth = '';
+        this.expiryYear = '';
+        this.cvc = '';
         this.myDatePickerOptions = {
             // other options...
             dateFormat: 'dd-mm-yyyy',
@@ -72,8 +81,15 @@ var UserPackageListComponent = (function () {
         this.preferedType = "";
         this.additionalInstruction = "";
     };
+    UserPackageListComponent.prototype.cancelPurchase = function () {
+        this.cardsvisible = false;
+        this.cardNumber = '';
+        this.expiryMonth = '';
+        this.expiryYear = '';
+        this.cvc = '';
+        this.cancelSelection();
+    };
     UserPackageListComponent.prototype.submitForm = function (form) {
-        var _this = this;
         if (this.preferedType != '' && this.preferedDate.epoc > 0) {
             var orderDetails = {
                 "serviceDate": this.preferedDate.date,
@@ -81,23 +97,95 @@ var UserPackageListComponent = (function () {
                 "instruction": this.additionalInstruction,
                 "packageId": this.selectedPackage
             };
-            this.orderServices.createOrder(orderDetails).subscribe(function (data) {
-                _this.alertService.success(data.msg, 'additional-form');
-                _this.router.navigate(['/dashboard']);
-                //return false;
-            }, function (error) {
-                var body = error.json() || '';
-                var err = body.error || JSON.stringify(body);
-                var errr = JSON.parse(err);
-                _this.alertService.error(errr.msg, 'additional-form');
-            });
+            this.cardsvisible = true;
         }
         else {
             this.alertService.error("Please complete form", 'additional-form');
         }
     };
+    //get users credit cards
+    UserPackageListComponent.prototype.getCards = function () {
+        var _this = this;
+        this.stripeServices.getCards()
+            .subscribe(function (data) {
+            //this.stripeCustomerId = data.stripe_cus_id;
+            _this.userCreditCards = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+            if (error.status) {
+                _this.router.navigate(['/login']);
+            }
+        });
+    };
+    UserPackageListComponent.prototype.makePayment = function (cardDetails) {
+        var _this = this;
+        var orderDetails = {
+            "serviceDate": this.preferedDate.date,
+            "serviceType": this.preferedType,
+            "instruction": this.additionalInstruction,
+            "packageId": this.selectedPackage
+        };
+        var con = confirm('Are you Sure, you wanna make this payment?');
+        if (con) {
+            this.processingCard = true;
+            //carddetail,orderdetail,newcard,savecard
+            this.stripeServices.makePayment(cardDetails, orderDetails, false, false)
+                .subscribe(function (data) {
+                _this.processingCard = false;
+                _this.router.navigate(['/order']);
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                //alert(errr.msg);
+                _this.alertService.error(errr.msg, 'card-error');
+                if (error.status) {
+                    _this.router.navigate(['/login']);
+                }
+            });
+        }
+    };
+    UserPackageListComponent.prototype.payWithNewCard = function (saveCard) {
+        var _this = this;
+        var orderDetails = {
+            "serviceDate": this.preferedDate.date,
+            "serviceType": this.preferedType,
+            "instruction": this.additionalInstruction,
+            "packageId": this.selectedPackage
+        };
+        var cardDetails = {
+            number: this.cardNumber,
+            exp_month: this.expiryMonth,
+            exp_year: this.expiryYear,
+            cvc: this.cvc
+        };
+        var con = confirm('Are you Sure, you wanna make this payment?');
+        if (con) {
+            this.processingCard = true;
+            //this.stripeServices.payWithNewCard(cardDetails, orderDetails)
+            //carddetail,orderdetail,newcard,savecard
+            this.stripeServices.makePayment(cardDetails, orderDetails, true, saveCard)
+                .subscribe(function (data) {
+                _this.processingCard = false;
+                _this.router.navigate(['/order']);
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                //alert(errr.msg);
+                _this.alertService.error(errr.msg, 'card-error');
+                if (error.status) {
+                    _this.router.navigate(['/login']);
+                }
+            });
+        }
+    };
     UserPackageListComponent.prototype.ngAfterViewInit = function () {
         //this.getAllPackage();
+        this.getCards();
     };
     UserPackageListComponent.prototype.ngOnInit = function () {
     };
@@ -109,7 +197,7 @@ var UserPackageListComponent = (function () {
             selector: 'user-package-list',
             templateUrl: './user.package.list.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.OrderServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.StripeServices, index_1.OrderServices])
     ], UserPackageListComponent);
     return UserPackageListComponent;
 }());

@@ -1,5 +1,6 @@
 export * from './home/guestHome.component';
 export * from './footer/footer.component';
+export * from './learnmore/learnmore.component';
 
 export * from './header/header.component';
 export * from './header/header.admin.component';

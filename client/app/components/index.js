@@ -4,6 +4,7 @@ function __export(m) {
 }
 __export(require('./home/guestHome.component'));
 __export(require('./footer/footer.component'));
+__export(require('./learnmore/learnmore.component'));
 __export(require('./header/header.component'));
 __export(require('./header/header.admin.component'));
 __export(require('./header/header.vendor.component'));

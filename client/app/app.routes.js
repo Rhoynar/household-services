@@ -6,6 +6,7 @@ var APP_ROUTES = [
     { path: '', component: index_1.GuestHomeComponent, canActivate: [index_2.GuestGuard] },
     { path: 'login', component: index_1.UserLoginComponent, canActivate: [index_2.GuestGuard] },
     { path: 'createtoken', component: index_1.TokenComponent },
+    { path: 'services', component: index_1.UserListServicesComponent },
     { path: 'signup', component: index_1.UserSignupComponent, canActivate: [index_2.GuestGuard] },
     { path: 'dashboard', component: index_1.UserDashboardComponent, canActivate: [index_2.UserLoginGuard] },
     { path: 'profile', component: index_1.UserProfileComponent, canActivate: [index_2.UserLoginGuard] },

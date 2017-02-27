@@ -17,7 +17,7 @@ import * as moment from 'moment';
 export class UserPackageSearchComponent implements AfterViewInit {
   availablePackages: any = [];
 
-  pagetitle: String = "Package List";
+  public pagetitle: String = "Package List";
   public zipcode: any = "";
   public selectedPackage: String = "";
   public preferedDate: any = "";
@@ -64,6 +64,10 @@ export class UserPackageSearchComponent implements AfterViewInit {
     let params: any = this.activatedRoute.snapshot.queryParams;
 
     this.zipcode = params.zip;
+    if(params.id){
+      this.selectedPackage = params.id;
+    }
+    
     this.getPackageByZipcode();
 
   }

@@ -288,7 +288,7 @@ deleteUser = function (req, res) {
 
 var getAllPackage = function (req, res) {
 
-    if (req.user) {
+    //if (req.user) {
         Packages.find({}).populate('serviceId').exec(
             function (err, vendorDoc) {
                 if (err) {
@@ -298,11 +298,11 @@ var getAllPackage = function (req, res) {
                 }
             });
 
-    } else {
-        res.status(401);
-        res.json({ status: 'error', msg: 'some error occured' });
-        return res.send();
-    }
+    // } else {
+    //     res.status(401);
+    //     res.json({ status: 'error', msg: 'some error occured' });
+    //     return res.send();
+    // }
 }
 
 var addPackage = function (req, res) {
@@ -411,7 +411,7 @@ var getPackageByid = function (req, res) {
 
 var getPackageByZipcode = function (req, res) {
     var condition = {};
-    if (req.body.postalCode != '') {
+    if (req.body.postalCode) {
         condition = { postalcode: req.body.postalCode };
     }
     Packages.find(condition).populate('serviceId').exec(function (err, packageDoc) {
@@ -1050,11 +1050,11 @@ var makePayment = function (req, res) {
                         receipt_email: userDetails.email,
                         source: cardDetails.id, // obtained with Stripe.js
                         description: "Charge for package " + orderDetails.packageId
-                        
+
                     };
 
                     if (!newCard || saveCard) {
-                        stripeReqObject.customer= userDetails.stripeCustomerId;
+                        stripeReqObject.customer = userDetails.stripeCustomerId;
                     }
                     createStripeCharge(stripeReqObject, function (err, result) {
                         if (err) return callback(err);

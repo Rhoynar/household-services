@@ -1,0 +1,102 @@
+<top-header></top-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="packages_page">
+
+        <div class="premium_block clearfix">
+          <div class="col-sm-3 premium_inq" *ngFor="let package of servicesList">
+            <div class="main_bcx">
+              <div class="bro_top_sec">
+                <h2 class="Bronze_offers_top-head">{{package.title}}</h2>
+                <div class="Bronze_offers">
+                  <div class="banner-up">
+                    <div class="banner-in">
+                      <p [ngSwitch]="package.frequency">${{package.price}}
+                        <sup *ngSwitchCase="'daily'">/Day</sup>
+                        <sup *ngSwitchCase="'monthly'">/Mn</sup>
+                        <sup *ngSwitchCase="'yearly'">yr</sup>
+                        <sup *ngSwitchDefault></sup>
+
+                      </p>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bro_mid-sec">
+                <ul class="deatil_info">
+                  <li *ngFor="let feature of package.features">
+                    {{feature}}
+                  </li>
+                </ul>
+              </div>
+              <div class="buy_now bronze"><a [routerLink]="['/package/search']" [queryParams]="{id: package._id}">Get Started</a></div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--inner-mid-sec-->
+
+<!--inner-mid-sec-->
+<!--<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="packages_page">
+
+        <div class="premium_block clearfix">
+          <div class="col-sm-3 premium_inq plan-four" *ngFor="let package of packages">
+            <div class="main_bcx">
+              <div class="bro_top_sec">
+                <h2 class="Bronze_offers_top-head">{{package.title}} </h2>
+                <div class="Bronze_offers">
+                  <div class="banner-up">
+                    <div class="banner-in">
+                      <p [ngSwitch]="package.frequency">${{package.price}}
+                        <sup *ngSwitchCase="'daily'">/Day</sup>
+                        <sup *ngSwitchCase="'monthly'">/Mn</sup>
+                        <sup *ngSwitchCase="'yearly'">yr</sup>
+                        <sup *ngSwitchDefault></sup>
+                        
+                        </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bro_mid-sec">
+                <ul class="deatil_info">
+                  <li *ngFor="let feature of package.features">
+                    {{feature}}
+                  </li>
+                </ul>
+              </div>
+              <div class="buy_now bronze">
+                <a class="btn btn-success" [routerLink]="['/package/purchase',package._id]">Get Started</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

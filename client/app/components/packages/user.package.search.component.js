@@ -47,6 +47,9 @@ var UserPackageSearchComponent = (function () {
         };
         var params = this.activatedRoute.snapshot.queryParams;
         this.zipcode = params.zip;
+        if (params.id) {
+            this.selectedPackage = params.id;
+        }
         this.getPackageByZipcode();
     }
     UserPackageSearchComponent.prototype.onDateChanged = function (event) {

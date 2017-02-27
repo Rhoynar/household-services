@@ -36,10 +36,11 @@
 
                   <div class="block_one clearfix">
                     <div class="more_sec">
-                      <a href="javascript:void(0);" (click)="searchControl=false" class="rh_btn">Learn More</a>
+                      <a href="javascript:void(0);" (click)="searchControl=!searchControl" class="rh_btn">Learn More</a>
                     </div>
                     <div class="more_sec">
-                      <a href="javascript:void(0);" (click)="searchControl=false" class="rh_btn">Get Started</a>
+                      <!--(click)="searchControl=false"-->
+                      <a href="javascript:void(0);"  class="rh_btn">Get Started</a>
                     </div>
                   </div>
                   <div class="search_block" [ngClass]="{'hide': searchControl}" >

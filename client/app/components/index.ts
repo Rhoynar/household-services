@@ -39,3 +39,4 @@ export * from './orders/vendor.order.list.component';
 export * from './services/admin.list.services.component';
 export * from './services/admin.add.services.component';
 export * from './services/admin.edit.services.component';
+export * from './services/user.list.services.component';

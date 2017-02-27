@@ -30,6 +30,7 @@ exports.COMPONENT_DECLARATIONS = [
     index_1.AdminEditServiceComponent,
     index_1.AdminOrderListComponent,
     index_1.VendorOrderListComponent,
-    index_1.VendorPackageListComponent
+    index_1.VendorPackageListComponent,
+    index_1.UserListServicesComponent
 ];
 //# sourceMappingURL=componentlist.js.map

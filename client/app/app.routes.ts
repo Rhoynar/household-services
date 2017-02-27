@@ -7,7 +7,7 @@ import {
   AdminAddPackageComponent,AdminEditPackageComponent,UserPackageSearchComponent,
   UserPackageListComponent,UserOrderListComponent,AdminListServiceComponent,
   AdminAddServiceComponent,AdminEditServiceComponent,AdminOrderListComponent,
-  VendorOrderListComponent,VendorPackageListComponent
+  VendorOrderListComponent,VendorPackageListComponent,UserListServicesComponent
 } from './components/index';
 
 import {
@@ -20,6 +20,7 @@ const APP_ROUTES: Routes = [
   { path: '', component: GuestHomeComponent, canActivate: [GuestGuard] },
   { path: 'login', component: UserLoginComponent, canActivate: [GuestGuard] },
   { path: 'createtoken', component: TokenComponent },
+  { path: 'services', component: UserListServicesComponent },
   { path: 'signup', component: UserSignupComponent, canActivate: [GuestGuard] },
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [UserLoginGuard] },
   { path: 'profile', component: UserProfileComponent, canActivate: [UserLoginGuard] },

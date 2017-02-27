@@ -114,6 +114,7 @@ router.get('/facebookloginreturn',
 router.get('/', forGuestOnly, getTemplate);
 router.get('/login', forGuestOnly, getTemplate);
 router.get('/logout', logout);
+router.get('/services', getTemplate);
 router.get('/dashboard', isUserLoggedIn, getTemplate);
 router.get('/profile', isUserLoggedIn, getTemplate);
 router.get('/createtoken', isUserLoggedIn, getTemplate);

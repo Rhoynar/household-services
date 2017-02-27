@@ -12,11 +12,21 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../services/index');
 var UserLoginGuard = (function () {
-    function UserLoginGuard(UserServices, router) {
+    function UserLoginGuard(UserServices, authenticationService, router) {
         this.UserServices = UserServices;
+        this.authenticationService = authenticationService;
         this.router = router;
     }
     UserLoginGuard.prototype.canActivate = function (route, state) {
+        var _this = this;
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (currentUserStr && result == false) {
+                _this.router.navigate(['/']);
+            }
+        });
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) {
@@ -48,7 +58,7 @@ var UserLoginGuard = (function () {
     };
     UserLoginGuard = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [index_1.UserServices, router_1.Router])
+        __metadata('design:paramtypes', [index_1.UserServices, index_1.AuthenticationService, router_1.Router])
     ], UserLoginGuard);
     return UserLoginGuard;
 }());

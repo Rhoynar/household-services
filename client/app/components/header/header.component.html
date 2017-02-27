@@ -20,8 +20,8 @@
                   <div class="navi-menu1">
                     <ul class="nav navbar-nav">
                       <li *ngIf="loggedIn" [ngClass]="{active: router.url==='/dashboard'}"><a [routerLink]="['/dashboard']">Home </a> </li>
-                      <li><a href="javascript:void(0);" class="active">Services</a> </li>
-                      <li><a href="javascript:void(0);">How its work</a> </li>
+                      <li [ngClass]="{active: router.url==='/services'}"><a [routerLink]="['/services']" class="active">Services</a> </li>
+                      <li *ngIf="!loggedIn"><a href="javascript:void(0);">How its work</a> </li>
                       <li *ngIf="!loggedIn" [ngClass]="{active: router.url==='/signup'}"><a [routerLink]="['/signup']">Join </a></li>
                       <li *ngIf="!loggedIn" [ngClass]="{active: router.url==='/login'}"><a [routerLink]="['/login']">Login </a> </li>
                       <li *ngIf="loggedIn"><a href="javascript:void(0);" (click)="logout();">Logout </a> </li>

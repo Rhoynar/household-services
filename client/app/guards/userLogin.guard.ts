@@ -9,37 +9,46 @@ import { AuthenticationService, UserServices } from '../services/index';
 export class UserLoginGuard implements CanActivate {
 
   constructor(
-    private UserServices: UserServices, 
+    private UserServices: UserServices,
+    private authenticationService: AuthenticationService,
     private router: Router
-    ) { }
+  ) { }
 
   authenticated: any;
   test: any;
 
   canActivate(
-    route: ActivatedRouteSnapshot, 
-  state: RouterStateSnapshot
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
   ) {
     var currentUserStr = localStorage.getItem('currentUser');
     var currentUser = JSON.parse(currentUserStr);
+    this.authenticationService.generatetoken()
+      .subscribe(result => {
+        if (currentUserStr && result == false) {
+          this.router.navigate(['/']);
+        }
+      });
+    var currentUserStr = localStorage.getItem('currentUser');
+    var currentUser = JSON.parse(currentUserStr);
     if (currentUserStr) { //if user is there
-      console.log("from login auth gaurd:-"+currentUser.token.role )
+      console.log("from login auth gaurd:-" + currentUser.token.role)
       if (currentUser.token.role == "user") {  //if current user is admin
         return true;
       } else { //if user is there , but not admin redirect to landing page
         switch (currentUser.token.role) {
-            case 'admin':
-                this.router.navigate(['/admin']);
-                break;
-            case 'vendor':
-                this.router.navigate(['/vendor']);
-                break;
-            case 'user':
-                this.router.navigate(['/dashboard']);
-                break;
-            default:
-                this.router.navigate(['/']);
-                break;
+          case 'admin':
+            this.router.navigate(['/admin']);
+            break;
+          case 'vendor':
+            this.router.navigate(['/vendor']);
+            break;
+          case 'user':
+            this.router.navigate(['/dashboard']);
+            break;
+          default:
+            this.router.navigate(['/']);
+            break;
         }
         return false;
       }

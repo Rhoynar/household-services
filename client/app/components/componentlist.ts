@@ -30,7 +30,10 @@ import {
 	VendorOrderListComponent,
 	VendorPackageListComponent,
 	UserListServicesComponent,
-	LearnMoreComponent
+	LearnMoreComponent,
+	ConfirmSignupComponent,
+	ForgotPassComponent,
+	ResetPassComponent
 } from './index';
 
 export const COMPONENT_DECLARATIONS = [
@@ -65,6 +68,9 @@ export const COMPONENT_DECLARATIONS = [
   VendorOrderListComponent,
   VendorPackageListComponent,
   UserListServicesComponent,
-  LearnMoreComponent
+  LearnMoreComponent,
+  ConfirmSignupComponent,
+  ForgotPassComponent,
+  ResetPassComponent
 ];
 

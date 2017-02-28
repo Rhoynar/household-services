@@ -27,11 +27,6 @@ var StripeServices = (function () {
         return this.http.post('/api/makePayment', JSON.stringify({ cardDetails: cardDetails, orderDetails: orderDetails, newCard: newCard, saveCard: saveCard }), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
-    StripeServices.prototype.payFromExistingCard = function (cardDetails, orderDetails) {
-        var headers = this.getHeader();
-        return this.http.post('/api/payFromExistingCard', JSON.stringify({ cardDetails: cardDetails, orderDetails: orderDetails }), { headers: headers })
-            .map(this.extractData); //.catch(this.handleError);;
-    };
     StripeServices.prototype.payWithNewCard = function (cardDetails, orderDetails) {
         var headers = this.getHeader();
         return this.http.post('/api/payWithNewCard', JSON.stringify({ cardDetails: cardDetails, orderDetails: orderDetails }), { headers: headers })

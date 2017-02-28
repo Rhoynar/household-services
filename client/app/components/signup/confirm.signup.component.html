@@ -1,0 +1,40 @@
+<top-header></top-header>
+
+<div class="about_section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 no-padding gray-heading">
+        <h2 class="main-heading"><span>Thank You</span></h2>
+      </div>
+      <div class="about_info">
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='alreadyexist'">
+          <p>You have already signed up and confirmed your account. Did you forget your password?</p>
+          
+
+        </div>
+
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='emailsent'">
+          
+          <p>An email has been sent to you. Please check it to verify your account.</p>
+
+        </div>
+
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='emailsentagain'">
+          
+          <p>An email has been sent to you, yet again. Please check it to verify your account.</p>
+
+        </div>
+
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='code-expired'">
+          <p>Your verification code has expired. Please sign up again.</p>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

@@ -18,11 +18,25 @@ export class CustomValidator {
     return EMAIL_REGEXP.test(control.value) ? null : {
       validateEmail: true
     };
-
     //return null;
-
   }
 
+  matches = (feildName:any) => {
+  return (control:FormControl) => {
+    //var num = +control.value;
+    
+    if (control.parent) {
+        console.log(control.parent);
+        if(control.value!=control.parent.value[feildName]){
+          return {matches: true};      
+        }
+      }
+    return {matches: false};
+
+    
+    //return null;
+  };
+};
 
   emailTaken(control: FormControl): Promise<ValidationResult> {
     
@@ -36,7 +50,7 @@ export class CustomValidator {
         userdata.id = control.parent.value['id'];
       }
 
-      this.http.post(AppSettings.API_ENDPOINT+'/api/checkUniqueEmail', JSON.stringify(userdata), { headers: headers })
+      this.http.post('/api/checkUniqueEmail', JSON.stringify(userdata), { headers: headers })
         .map((res: Response) => res.json())
         .subscribe((data: any) => {
           if (data.msg == 'available') {

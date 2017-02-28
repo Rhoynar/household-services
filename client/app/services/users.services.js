@@ -56,6 +56,20 @@ var UserServices = (function () {
         return this.http.delete('/api/deleteuser/' + userId)
             .map(this.extractData); //.catch(this.handleError);;
     };
+    UserServices.prototype.forgotPass = function (userData) {
+        var headers = this.getHeader();
+        return this.http.post('/api/forgotpass', JSON.stringify(userData), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.getForgotReq = function (requestId) {
+        return this.http.get('/api/forgotpass/' + requestId)
+            .map(this.extractData); //.catch(this.handleError)
+    };
+    UserServices.prototype.resetPass = function (userData) {
+        var headers = this.getHeader();
+        return this.http.post('/api/resetpass', JSON.stringify(userData), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     UserServices.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};

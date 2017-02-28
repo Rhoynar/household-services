@@ -62,6 +62,24 @@ export class UserServices{
     }
 
 
+    forgotPass(userData:any){
+        var headers=this.getHeader();
+        return this.http.post('/api/forgotpass',JSON.stringify(userData),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getForgotReq(requestId:String){
+        return this.http.get('/api/forgotpass/'+requestId)
+        .map(this.extractData);//.catch(this.handleError)
+
+    }
+
+    resetPass(userData:any){
+        var headers=this.getHeader();
+        return this.http.post('/api/resetpass',JSON.stringify(userData),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
      private extractData(res: Response) {
         let body = res.json();
         return body || { };

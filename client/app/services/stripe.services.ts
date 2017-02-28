@@ -23,11 +23,7 @@ makePayment(cardDetails:any,orderDetails:any,newCard:any,saveCard:any){
         .map(this.extractData);//.catch(this.handleError);;
     }
 
-    payFromExistingCard(cardDetails:any,orderDetails:any){
-        var headers=this.getHeader();
-        return this.http.post('/api/payFromExistingCard',JSON.stringify({cardDetails:cardDetails,orderDetails:orderDetails}),{headers:headers})
-        .map(this.extractData);//.catch(this.handleError);;
-    }
+    
 
     payWithNewCard(cardDetails:any,orderDetails:any){
         var headers=this.getHeader();

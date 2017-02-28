@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var Users = require('../models/users');
 var TmpUsers= require('../models/tmpusers');
 var Services = require('../models/services');
+var Passwordchange = require('../models/passwordchange');
 var Packages = require('../models/packages');
 var Orders = require('../models/orders');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
@@ -64,17 +65,30 @@ nev.configure({
 
 
 var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport({
-    from: 'replyemail@example.com',
-    options: {
-        host: 'smtp.gmail.com',
-        port: 465,
-        auth: {
-            user: 'rakesh.s@cisinlabs.com',
-            pass: 'n4tdvrt89'
-        }
-    }
-});
+var smtpTransport = require('nodemailer-smtp-transport');
+// var transporter = nodemailer.createTransport({
+//     from: 'rakesh.s@cisinlabs.com',
+//     options: {
+//         host: 'smtp.gmail.com',
+//         port: 465,
+//         secure:true,
+//         auth: {
+//             user: 'rakesh.s@cisinlabs.com',
+//             pass: 'n4tdvrt89'
+//         }
+//     }
+// });
+
+var transporter = nodemailer.createTransport(smtpTransport({
+              host: 'smtp.gmail.com',
+              port: 465,
+              secure: true,
+              auth: {
+                user: 'rakesh.s@cisinlabs.com',
+                pass: 'n4tdvrt89'
+              }
+            }));
+
 
 
 
@@ -208,7 +222,7 @@ var userRegister = function (req, res, next) {
                 // user already exists in persistent collection...
                 // user already exists in persistent collection
                 if (existingPersistentUser) {
-                    return res.json({
+                    return res.json({status:'sucess',sort_msg:'alreadyexist',
                       msg: 'You have already signed up and confirmed your account. Did you forget your password?'
                     });
                 }
@@ -222,6 +236,7 @@ var userRegister = function (req, res, next) {
                         }
 
                         res.json({
+                            status:'sucess',sort_msg:'emailsent',
                             msg: 'An email has been sent to you. Please check it to verify your account.',
                             info: info
                         });
@@ -241,10 +256,12 @@ var userRegister = function (req, res, next) {
                           }
                           if (userFound) {
                             res.json({
+                              status:'sucess',sort_msg:'emailsentagain',
                               msg: 'An email has been sent to you, yet again. Please check it to verify your account.'
                             });
                           } else {
                             res.json({
+                                status:'fail',sort_msg:'code-expired',
                               msg: 'Your verification code has expired. Please sign up again.'
                             });
                           }
@@ -846,229 +863,9 @@ var createStripeCharge = function (stripeReqObject, callback) {
 }
 
 
-var payFromExistingCard = function (req, res) {
-
-    if (req.user) {
-        var cardDetails = req.body.cardDetails;
-        var orderDetails = req.body.orderDetails;
-
-        var userDetails = {};
-        var chargeDetails = {};
-        async.series(
-            [
-                function (callback) {
-                    getUserForStripe(req.user.id, function (err, result) {
-                        if (err) return callback(err);
-                        userDetails = result;
-                        if (typeof (userDetails.stripeCustomerId) == 'undefined' || userDetails.stripeCustomerId == '') {
-                            callback("Stripe customer id not Found");
-                        } else {
-                            callback();
-                        }
-
-                    });
-                },
-                function (callback) {
-                    Packages.findById(orderDetails.packageId).lean().exec(function (err, packageDoc) {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            orderDetails.amount = packageDoc.price;
-
-                            var vendorIndex = randomIntInc(0, packageDoc.vendors.length - 1);
-                            orderDetails.vendorId = packageDoc.vendors[vendorIndex];
-                            callback(null, packageDoc);
-                        }
-                    });
-
-                },
-                function (callback) {
-                    var stripeReqObject = {
-                        amount: orderDetails.amount * 100,
-                        currency: "usd",
-                        receipt_email: userDetails.email,
-                        source: cardDetails.id, // obtained with Stripe.js
-                        description: "Charge for package " + orderDetails.packageId,
-                        customer: userDetails.stripeCustomerId
-                    };
-
-                    createStripeCharge(stripeReqObject, function (err, result) {
-                        if (err) return callback(err);
-                        chargeDetails = result
-                        callback(null, result);
-                    });
-                }
-
-            ],
-            function (error, result) {
-                if (error) {
-                    res.status(200);
-                    res.send({ status: 'error', msg: "Some error occured please try later", result: [], error: error });
-                } else {
 
 
-                    var order = new Orders();
-                    order.packageId = orderDetails.packageId;
-                    order.amount = orderDetails.amount;
-                    order.clientId = req.user.id;
-                    order.vendorId = orderDetails.vendorId;
-                    order.stripeChargeId = chargeDetails.id;
-                    order.chargeDetail = chargeDetails;
-                    //order.tokenDetail='';
-                    order.serviceDate = new Date(orderDetails.serviceDate.year, orderDetails.serviceDate.month - 1, orderDetails.serviceDate.day + 1);
-                    order.instruction = orderDetails.instruction;
-                    order.serviceType = orderDetails.serviceType;
-                    order.created = Date.now();
-                    order.save(function (err) {
-                        if (err) {
-                            return res.json({ status: 'error', error: err });
-                        } else {
-                            return res.json({ status: 'success', msg: 'Order added successfully' });
-                        }
-                    });
-                }
 
-            });
-
-    } else {
-        res.status(401);
-        res.json({ status: 'error', msg: 'some error occured' });
-        return res.send();
-    }
-}
-
-var payWithNewCard = function (req, res) {
-
-    if (req.user) {
-        var cardDetails = req.body.cardDetails;
-        var orderDetails = req.body.orderDetails;
-
-        var userDetails = {};
-        var chargeDetails = {};
-
-        async.series(
-            [
-                function (callback) {
-                    getUserForStripe(req.user.id, function (err, result) {
-                        if (err) return callback(err);
-                        userDetails = result;
-                        callback();
-                    });
-                },
-                function (callback) {
-                    if (typeof (userDetails.stripeCustomerId) == 'undefined' || userDetails.stripeCustomerId == '') {
-                        createStripeCustomer(userDetails, function (err, result) {
-                            if (err) return callback(err);
-                            userDetails.stripeCustomerId = result.id;
-                            userDetails.stripeCustomer = result;
-                            var updateDetails =
-                                {
-                                    stripeCustomerId: result.id,
-                                    stripeCustomer: result
-                                }
-
-                            Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
-                                if (err) {
-                                    callback(err);
-                                }
-                                else {
-                                    callback();
-                                }
-                            });
-                        })
-                    } else {
-                        callback();
-                    }
-                },
-                function (callback) {
-                    Packages.findById(orderDetails.packageId).lean().exec(function (err, packageDoc) {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            orderDetails.amount = packageDoc.price;
-
-                            var vendorIndex = randomIntInc(0, packageDoc.vendors.length - 1);
-                            orderDetails.vendorId = packageDoc.vendors[vendorIndex];
-                            callback(null, packageDoc);
-                        }
-                    });
-
-                },
-                function (callback) {
-                    cardDetails.object = 'card';
-                    createCardSource(userDetails.stripeCustomerId, cardDetails, function (err, result) {
-                        if (err) return callback(err);
-                        userDetails.stripeCustomer.sources.total_count++;
-
-                        userDetails.stripeCustomer.sources.data.push(result);
-                        updateDetails = { stripeCustomer: userDetails.stripeCustomer }
-                        cardDetails.id = result.id;
-                        Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
-                            if (err) {
-                                callback(err);
-                            }
-                            else {
-                                callback();
-                            }
-                        });
-                    });
-                },
-                function (callback) {
-                    var stripeReqObject = {
-                        amount: orderDetails.amount * 100,
-                        currency: "usd",
-                        receipt_email: userDetails.email,
-                        source: cardDetails.id, // obtained with Stripe.js
-                        description: "Charge for package " + orderDetails.packageId,
-                        customer: userDetails.stripeCustomerId
-                    };
-
-                    createStripeCharge(stripeReqObject, function (err, result) {
-                        if (err) return callback(err);
-                        chargeDetails = result
-                        callback(null, result);
-                    });
-                }
-
-
-            ],
-            function (error, result) {
-
-                if (error) {
-                    res.status(200);
-                    res.send({ status: 'error', msg: "Some error occured please try later", result: [], error: error });
-                } else {
-
-
-                    var order = new Orders();
-                    order.packageId = orderDetails.packageId;
-                    order.amount = orderDetails.amount;
-                    order.clientId = req.user.id;
-                    order.vendorId = orderDetails.vendorId;
-                    order.stripeChargeId = chargeDetails.id;
-                    order.chargeDetail = chargeDetails;
-                    //order.tokenDetail='';
-                    order.serviceDate = new Date(orderDetails.serviceDate.year, orderDetails.serviceDate.month - 1, orderDetails.serviceDate.day + 1);
-                    order.instruction = orderDetails.instruction;
-                    order.serviceType = orderDetails.serviceType;
-                    order.created = Date.now();
-                    order.save(function (err) {
-                        if (err) {
-                            return res.json({ status: 'error', error: err });
-                        } else {
-                            return res.json({ status: 'success', msg: 'Order added successfully' });
-                        }
-                    });
-                }
-
-            });
-    } else {
-        res.status(401);
-        res.json({ status: 'error', msg: 'some error occured' });
-        return res.send();
-    }
-
-}
 
 
 
@@ -1265,6 +1062,131 @@ var createCardToken = function (cardDetails, callback) {
     });
 }
 
+var forgotpass= function (req, res) {
+    //if user is logged in
+    var profile = req.body;
+    //res.render('index.html');
+    Users.findOne({ email: profile.useremail }, function (err, user) {
+        if (err) {
+            res.status(400);
+            res.json({ msg: err });  // handle errors!
+        }
+
+        if(user){
+            
+            var newChangeReq = new Passwordchange();
+            
+            newChangeReq.userId = user._id;
+            var thirdyMinutesLater = new Date();
+            thirdyMinutesLater.setMinutes(thirdyMinutesLater.getMinutes() + 30);
+            newChangeReq.validtill=thirdyMinutesLater,
+            
+
+            newChangeReq.save(function (err,data) {
+                if (err) {
+                    res.status(400);
+                    res.json({ msg: err });  // handle errors!
+                } else {
+                    
+
+                    var verificationURL='http://ec2-54-165-12-165.compute-1.amazonaws.com:5000/resetpass/'+data._id;
+                    let mailOptions = {
+                        from: 'Do Not Reply <user@gmail.com>', // sender address
+                        to: user.email, // list of receivers
+                        subject: 'Password Change request', // Subject line
+                        text: 'Hello '+user.name+' we have received your password change request. please change it by clicking following link or copying and pasting it into your browser'+verificationURL, // plain text body
+                        html: '<b>Hello '+user.name+'</b><p>we have received your password change request.</p><p>please change it by clicking <a href="'+verificationURL+'">this link</a></p>If you are unable to do so, copy and ' +
+                'paste the following link into your browser:</p><p>'+verificationURL+'</p>'
+                    };
+                    
+                    
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) {
+                            res.status(400);
+                            res.json({msg:err});
+                            //res.json({ msg: "Unable to send email , please try later" });  // handle errors!
+                        }else{
+                            res.status(200);
+                            res.json({ msg: 'Change Request generated succesfully' });  // handle errors!    
+                        }
+                        transporter.close();
+                        
+                    });
+                    
+                }
+            });
+        }else{
+            res.status(400);
+            res.json({ msg: 'Profile with this email is not found' });  // handle errors!
+        }
+    });
+    
+    
+}
+
+var getForgotReq = function (req, res) {
+    var condition = {};
+    var forgotReqId = req.params.id;
+    if (forgotReqId != '') {
+        Passwordchange.findById(forgotReqId).populate('userId').exec(function (err, changeReq) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch Change request , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: changeReq });
+            }
+        });
+    } else {
+        res.status(403);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+var resetpass =function (req, res) {
+    //if user is logged in
+    var userData = req.body;
+    //res.render('index.html');
+    //Users.findOne({ email: profile.useremail }, function (err, user) {
+    Passwordchange.findById(userData.id).populate('userId').exec(function (err, changeData) {
+        if (err) {
+            res.status(400);
+            res.json({ msg: err });  // handle errors!
+        }
+        
+        if(changeData){
+            if(changeData.validtill<new Date){
+                res.status(400).json({ msg: "Change request Expired" }); 
+            }else{
+                var newUser=new Users();
+                updateDetails ={
+                    password: newUser.generateHash(userData.userpass),
+                }
+
+                
+                Users.findByIdAndUpdate(userData.userId, updateDetails, function (err, updateRes) {
+                    if (err) {
+                        return res.json({ status: 'error', error: err });
+                    }
+                    else {
+                        return res.json({ status: 'success', msg: 'User updated successfully' });
+                    }
+                });    
+            }
+
+            
+        }else{
+            res.status(400);
+            res.json({ msg: 'No Change request found' });  // handle errors!
+        }
+
+        
+    });
+    
+    
+}
+
+
 router.get('/email-verification/:URL', function(req, res) {
   var url = req.params.URL;
 
@@ -1323,10 +1245,13 @@ router.post('/service', addService);
 router.put('/service', updateService);
 router.delete('/service/:id', deleteService);
 
+router.post('/forgotpass',forgotpass);
+router.get('/forgotpass/:id',getForgotReq);
+router.post('/resetpass',resetpass);
 //striperoutes
 router.get('/getUserStripeCard', getUserStripeCard);
-router.post('/payFromExistingCard', payFromExistingCard);
-router.post('/payFromExistingCard', payFromExistingCard);
+//router.post('/payFromExistingCard', payFromExistingCard);
+//router.post('/payFromExistingCard', payFromExistingCard);
 router.post('/makePayment', makePayment);
 
 //https://github.com/kekeh/mydatepicker

@@ -62,6 +62,24 @@
                 class="alert alert-danger">
                 Your password must be at least 8 characters long.
               </div>
+
+              <div class="input-block"> 
+                <span class="input-icon">
+                <i class="fa fa-lock"></i>
+                </span>
+                <input class="input-fill2" placeholder="Confirm Password" type="password" [formControl]="profileSignupForm.controls['retypeuserpass']">
+              </div>
+
+              <div *ngIf="profileSignupForm.controls['retypeuserpass'].hasError('required') && profileSignupForm.controls['retypeuserpass'].touched"
+                class="alert alert-danger">
+                You must include a retype password.
+              </div>
+
+              <div *ngIf="profileSignupForm.controls['retypeuserpass'].hasError('matches') && profileSignupForm.controls['retypeuserpass'].touched"
+                class="alert alert-danger">
+                Should match password
+              </div>
+
               <div class="text-center login_wrp">
                 <button type="submit" class="rh_btn login_btn" [disabled]="!profileSignupForm.valid">Register</button>
               </div>

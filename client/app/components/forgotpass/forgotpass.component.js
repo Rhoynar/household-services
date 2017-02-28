@@ -14,8 +14,8 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var index_1 = require('../../services/index');
 var custom_validator_1 = require('../../validators/custom.validator');
-var UserSignupComponent = (function () {
-    function UserSignupComponent(http, fb, route, router, authenticationService, UserServices, alertService) {
+var ForgotPassComponent = (function () {
+    function ForgotPassComponent(http, fb, route, router, authenticationService, UserServices, alertService) {
         this.http = http;
         this.fb = fb;
         this.route = route;
@@ -23,44 +23,39 @@ var UserSignupComponent = (function () {
         this.authenticationService = authenticationService;
         this.UserServices = UserServices;
         this.alertService = alertService;
-        this.pagetitle = "Register";
+        this.pagetitle = "Forgot Password";
         this.loading = false;
         this.error = '';
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
     }
-    UserSignupComponent.prototype.ngOnInit = function () {
-        this.profileSignupForm = this.fb.group({
-            username: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.minLength(5)])],
-            useremail: ['', forms_1.Validators.compose([this.customValidator.validEmail, forms_1.Validators.required]), forms_1.Validators.composeAsync([this.customValidator.emailTaken.bind(this.customValidator)])],
-            userpass: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.minLength(8)])],
-            retypeuserpass: ['', forms_1.Validators.compose([forms_1.Validators.required, this.customValidator.matches('userpass')])],
+    ForgotPassComponent.prototype.ngOnInit = function () {
+        this.forgotPassForm = this.fb.group({
+            useremail: ['', forms_1.Validators.compose([this.customValidator.validEmail, forms_1.Validators.required])],
         });
     };
-    UserSignupComponent.prototype.registerUser = function () {
+    ForgotPassComponent.prototype.submitForm = function () {
         var _this = this;
-        this.UserServices.registerUser(this.profileSignupForm.value)
+        this.UserServices.forgotPass(this.forgotPassForm.value)
             .subscribe(function (data) {
-            _this.alertService.success(data.msg, 'login');
-            if (data.sort_msg) {
-            }
-            _this.router.navigate(['/confirmsignup/' + data.sort_msg]);
+            _this.alertService.success(data.msg, 'forgotpass');
+            //this.router.navigate(['/confirmsignup/' + data.sort_msg]);
             //return false;
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
-            _this.alertService.error(errr.msg, 'signup');
+            _this.alertService.error(errr.msg, 'forgotpass');
         });
     };
-    UserSignupComponent = __decorate([
+    ForgotPassComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'user-signup',
-            templateUrl: './userSignup.component.html'
+            selector: 'forgot-pass',
+            templateUrl: './forgotpass.component.html'
         }), 
         __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.ActivatedRoute, router_1.Router, index_1.AuthenticationService, index_1.UserServices, index_1.AlertService])
-    ], UserSignupComponent);
-    return UserSignupComponent;
+    ], ForgotPassComponent);
+    return ForgotPassComponent;
 }());
-exports.UserSignupComponent = UserSignupComponent;
-//# sourceMappingURL=userSignup.component.js.map
+exports.ForgotPassComponent = ForgotPassComponent;
+//# sourceMappingURL=forgotpass.component.js.map

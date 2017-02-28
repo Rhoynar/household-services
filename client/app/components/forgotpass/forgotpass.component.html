@@ -1,0 +1,60 @@
+<top-header></top-header>
+
+<!--(emitCommunityChange)="myCrazyCallback($event)"-->
+<page-title [pagetitle]="pagetitle"></page-title>
+
+
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <div class="sign-in-box">
+          <div class="user_block"><img src="images/user-pic2.jpg" alt="" /></div>
+
+          <h3 class="user-heding">Forgot Password</h3>
+          <alert [alertType]="'forgotpass'"></alert>
+          <form [formGroup]="forgotPassForm" (ngSubmit)="submitForm()">
+            <div class="login_info_block">
+              <h4>What is your email</h4>
+
+              
+
+              <div class="input-block"> <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                <input class="input-fill2" placeholder="Email" type="text" [formControl]="forgotPassForm.controls['useremail']">
+              </div>
+              <div *ngIf="forgotPassForm.controls['useremail'].hasError('required') && forgotPassForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                You must include a email.
+              </div>
+              <div *ngIf="forgotPassForm.controls['useremail'].hasError('validateEmail') && forgotPassForm.controls['useremail'].touched"
+                class="alert alert-danger">
+                Please insert valid email address
+              </div>
+              
+
+              
+
+              <div class="text-center login_wrp">
+                <button type="submit" class="rh_btn login_btn" [disabled]="!forgotPassForm.valid">Register</button>
+              </div>
+            </div>
+                       
+
+            <p class="account-txt"><a [routerLink]="['/login']">Sign in here.</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

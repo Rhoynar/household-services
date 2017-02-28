@@ -19,7 +19,6 @@
               <div class="input-block"> <span class="input-icon"><i class="fa fa-envelope"></i></span>
                 <input placeholder="Enter your Email" type="text" name="loginuseremail" id="loginuseremail" class="input-fill2" [formControl]="loginForm.controls['loginuseremail']"
                 />
-                
 
               </div>
               <div *ngIf="loginForm.controls['loginuseremail'].hasError('required') && loginForm.controls['loginuseremail'].touched" class="alert alert-danger">
@@ -56,7 +55,7 @@
               </ul>
             </div>
             <div class="form-group text-center Submit-inq">
-              <div class="forgot-txt"><a href="#" class="forgot-pas">Forgot Password?</a>
+              <div class="forgot-txt"><a [routerLink]="['/forgotpass']" class="forgot-pas">Forgot Password?</a>
                 <a href="#" class="forget-mail">Forget Email?</a>
               </div>
             </div>

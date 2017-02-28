@@ -8,21 +8,21 @@ import { CustomValidator } from '../../validators/custom.validator';
 
 @Component({
     moduleId: module.id,
-    selector: 'user-signup',
-    templateUrl: './userSignup.component.html'
+    selector: 'forgot-pass',
+    templateUrl: './forgotpass.component.html'
     //styles: [main]
 })
-export class UserSignupComponent {
+export class ForgotPassComponent {
 
 
-    pagetitle = "Register";
+    pagetitle = "Forgot Password";
 
 
     loading = false;
     error = '';
 
-    profileSignupForm: FormGroup;
-    customValidator = new CustomValidator(this.http);
+    public forgotPassForm: FormGroup;
+    public customValidator = new CustomValidator(this.http);
 
 
     constructor(
@@ -38,32 +38,27 @@ export class UserSignupComponent {
     }
 
     ngOnInit() {
-        this.profileSignupForm = this.fb.group({
-            username: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
-            useremail: ['', Validators.compose([this.customValidator.validEmail, Validators.required]), Validators.composeAsync([this.customValidator.emailTaken.bind(this.customValidator)])],
-            userpass: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-            retypeuserpass: ['', Validators.compose([Validators.required, this.customValidator.matches('userpass')])],
+        this.forgotPassForm = this.fb.group({
+            useremail: ['', Validators.compose([this.customValidator.validEmail,Validators.required])],
         });
     }
 
 
-    registerUser() {
+    submitForm() {
 
 
-        this.UserServices.registerUser(this.profileSignupForm.value)
+        this.UserServices.forgotPass(this.forgotPassForm.value)
             .subscribe(data => {
-                this.alertService.success(data.msg, 'login');
-                if(data.sort_msg){
-
-                }
-                this.router.navigate(['/confirmsignup/'+data.sort_msg]);
+                this.alertService.success(data.msg, 'forgotpass');
+                
+                //this.router.navigate(['/confirmsignup/' + data.sort_msg]);
                 //return false;
             },
             error => {
                 const body = error.json() || '';
                 const err = body.error || JSON.stringify(body);
                 var errr = JSON.parse(err);
-                this.alertService.error(errr.msg, 'signup');
+                this.alertService.error(errr.msg, 'forgotpass');
             }
             );
     }

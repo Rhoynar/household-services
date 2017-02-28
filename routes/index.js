@@ -187,6 +187,8 @@ router.get('/login', forGuestOnly, getTemplate);
 router.get('/logout', logout);
 router.get('/services', getTemplate);
 router.get('/learnmore', getTemplate);
+router.get('/forgotpass',forGuestOnly, getTemplate);
+router.get('/resetpass/:id',forGuestOnly,getTemplate);
 router.get('/dashboard', isUserLoggedIn, getTemplate);
 router.get('/profile', isUserLoggedIn, getTemplate);
 router.get('/createtoken', isUserLoggedIn, getTemplate);

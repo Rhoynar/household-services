@@ -8,7 +8,7 @@ import {
   UserPackageListComponent,UserOrderListComponent,AdminListServiceComponent,
   AdminAddServiceComponent,AdminEditServiceComponent,AdminOrderListComponent,
   VendorOrderListComponent,VendorPackageListComponent,UserListServicesComponent,
-  LearnMoreComponent
+  LearnMoreComponent,ConfirmSignupComponent,ForgotPassComponent,ResetPassComponent
 } from './components/index';
 
 import {
@@ -22,6 +22,9 @@ const APP_ROUTES: Routes = [
   { path: 'login', component: UserLoginComponent, canActivate: [GuestGuard] },
   { path: 'createtoken', component: TokenComponent },
   { path: 'learnmore', component: LearnMoreComponent},
+  { path: 'forgotpass', component: ForgotPassComponent, canActivate: [GuestGuard] },
+  { path: 'resetpass/:id', component: ResetPassComponent, canActivate: [GuestGuard] },
+  { path: 'confirmsignup/:type', component: ConfirmSignupComponent, canActivate: [GuestGuard]},
   { path: 'services', component: UserListServicesComponent },
   { path: 'signup', component: UserSignupComponent, canActivate: [GuestGuard] },
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [UserLoginGuard] },
@@ -30,6 +33,7 @@ const APP_ROUTES: Routes = [
   { path: 'package/search', component: UserPackageSearchComponent, canActivate: [UserLoginGuard] },
   { path: 'package', component: UserPackageListComponent, canActivate: [UserLoginGuard] },
   { path: 'order', component: UserOrderListComponent, canActivate: [UserLoginGuard] },
+  
 
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },

@@ -13,7 +13,11 @@ export * from './aboutus/aboutus.component';
 export * from './login/userLogin.component';
 
 export * from './signup/userSignup.component';
+export * from './signup/confirm.signup.component';
 export * from './signup/vendor.signup.component';
+
+export * from './forgotpass/forgotpass.component';
+export * from './forgotpass/resetpass.component';
 
 export * from './token/token.component';
 

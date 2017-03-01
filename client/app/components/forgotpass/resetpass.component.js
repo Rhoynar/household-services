@@ -25,6 +25,8 @@ var ResetPassComponent = (function () {
         this.pagetitle = "Reset Password";
         this.changeReqDetails = {};
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
+        this.validUrl = true;
+        this.msgType = "";
         var params = this.activatedRoute.snapshot.params;
         this.requestId = params.id;
         this.resetPassForm = this.fb.group({
@@ -43,6 +45,8 @@ var ResetPassComponent = (function () {
                 _this.resetPassForm.controls['userId'].setValue(_this.changeReqDetails.userId._id);
             }
             else {
+                _this.validUrl = false;
+                _this.msgType = "req_not_found";
                 _this.alertService.error(data.msg, 'forgotpass');
             }
             //this.router.navigate(['/confirmsignup/' + data.sort_msg]);
@@ -59,12 +63,16 @@ var ResetPassComponent = (function () {
         this.UserServices.resetPass(this.resetPassForm.value)
             .subscribe(function (data) {
             _this.alertService.success(data.msg, 'forgotpass');
+            _this.validUrl = false;
+            _this.msgType = data.msgType;
             //this.router.navigate(['/confirmsignup/' + data.sort_msg]);
             //return false;
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
+            _this.validUrl = false;
+            _this.msgType = errr.msgType;
             _this.alertService.error(errr.msg, 'forgotpass');
         });
     };

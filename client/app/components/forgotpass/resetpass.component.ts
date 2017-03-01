@@ -23,7 +23,8 @@ export class ResetPassComponent {
 
     public resetPassForm: FormGroup;
     public customValidator = new CustomValidator(this.http);
-
+    public validUrl:any=true;
+    public msgType:String="";
 
     constructor(
         private http: Http,
@@ -52,7 +53,8 @@ export class ResetPassComponent {
                     this.changeReqDetails= data.result;
                     this.resetPassForm.controls['userId'].setValue(this.changeReqDetails.userId._id);
                 } else {
-                    
+                    this.validUrl=false;
+                    this.msgType="req_not_found"
                     this.alertService.error(data.msg, 'forgotpass');
                 }
                 //this.router.navigate(['/confirmsignup/' + data.sort_msg]);
@@ -74,7 +76,8 @@ export class ResetPassComponent {
         this.UserServices.resetPass(this.resetPassForm.value)
             .subscribe(data => {
                 this.alertService.success(data.msg, 'forgotpass');
-
+                this.validUrl=false;
+                this.msgType=data.msgType;
                 //this.router.navigate(['/confirmsignup/' + data.sort_msg]);
                 //return false;
             },
@@ -82,6 +85,8 @@ export class ResetPassComponent {
                 const body = error.json() || '';
                 const err = body.error || JSON.stringify(body);
                 var errr = JSON.parse(err);
+                this.validUrl=false;
+                this.msgType=errr.msgType;
                 this.alertService.error(errr.msg, 'forgotpass');
             }
             );

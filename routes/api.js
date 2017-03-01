@@ -10,6 +10,7 @@ var Passwordchange = require('../models/passwordchange');
 var Packages = require('../models/packages');
 var Orders = require('../models/orders');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
+var moment = require('moment');
 
 var nev = require('email-verification')(mongoose);
 
@@ -609,7 +610,7 @@ var createOrder = function (req, res) {
         //order.stripeChargeId='';
         //order.chargeDetail='';
         //order.tokenDetail='';
-        order.serviceDate = new Date(req.body.serviceDate.year, req.body.serviceDate.month - 1, req.body.serviceDate.day + 1);
+        order.serviceDate = new Date(req.body.serviceDate.year, req.body.serviceDate.month - 1, req.body.serviceDate.day + 1,0,0,0);
         order.instruction = req.body.instruction;
         order.serviceType = req.body.serviceType;
         order.created = Date.now();
@@ -653,8 +654,19 @@ var userOrder = function (req, res) {
     if (req.user) {
         var condition = {};
         if (req.body.postalCode != '') {
-            condition = { clientId: req.user.id };
+            condition = { 
+                clientId: req.user.id
+             };
         }
+
+        var sDate=moment(new Date()).format("YYYY-MM-DD");
+        var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
+        condition.serviceDate={ "$gte": sDate, "$lt": eDate };
+        
+        
+        
+        console.log(sDate+" "+eDate);
+        
         Orders.find(condition).populate('vendorId').populate('packageId').populate({
             path: 'packageId',
             model: 'Packages',
@@ -1030,7 +1042,7 @@ var makePayment = function (req, res) {
                     order.stripeChargeId = chargeDetails.id;
                     order.chargeDetail = chargeDetails;
                     order.tokenDetail = tokenDetails;
-                    order.serviceDate = new Date(orderDetails.serviceDate.year, orderDetails.serviceDate.month - 1, orderDetails.serviceDate.day + 1);
+                    order.serviceDate = new Date(orderDetails.serviceDate.year, orderDetails.serviceDate.month - 1, orderDetails.serviceDate.day + 1,0,0,0);
                     order.instruction = orderDetails.instruction;
                     order.serviceType = orderDetails.serviceType;
                     order.created = Date.now();
@@ -1151,33 +1163,62 @@ var resetpass =function (req, res) {
     Passwordchange.findById(userData.id).populate('userId').exec(function (err, changeData) {
         if (err) {
             res.status(400);
-            res.json({ msg: err });  // handle errors!
+            res.json({ msg: err,msgType:"unexpected" });  // handle errors!
         }
         
         if(changeData){
-            if(changeData.validtill<new Date){
-                res.status(400).json({ msg: "Change request Expired" }); 
+            if(changeData.validtill<new Date || changeData.used=="yes"){
+                res.status(400).json({ msg: "Change request Expired or already used",msgType:"expiredLink" }); 
             }else{
-                var newUser=new Users();
-                updateDetails ={
-                    password: newUser.generateHash(userData.userpass),
+
+
+                async.series(
+            [
+                function (callback) {
+                    var updateDetails ={used:"yes"};
+                    Passwordchange.findByIdAndUpdate(userData.id, updateDetails, function (err, updateRes) {
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
+                            callback();
+                        }
+                    }); 
+                },
+                function (callback) {
+
+                    var newUser=new Users();
+                    updateDetails ={
+                        password: newUser.generateHash(userData.userpass),
+                    }
+                    Users.findByIdAndUpdate(userData.userId, updateDetails, function (err, updateRes) {
+                        if (err) {
+                            callback(err);
+                        }
+                        else {
+                            callback();
+                        }
+                    }); 
+                }
+            ],
+            function (error, result) {
+                if (error) {
+                    return res.json({ status: 'error', error: err ,msgType:"unexpected"});
+                }
+                else {
+                    return res.json({ status: 'success', msg: 'Password updated successfully',msgType:"allgood" });
                 }
 
-                
-                Users.findByIdAndUpdate(userData.userId, updateDetails, function (err, updateRes) {
-                    if (err) {
-                        return res.json({ status: 'error', error: err });
-                    }
-                    else {
-                        return res.json({ status: 'success', msg: 'User updated successfully' });
-                    }
-                });    
+            });
+
+
+                   
             }
 
             
         }else{
             res.status(400);
-            res.json({ msg: 'No Change request found' });  // handle errors!
+            res.json({ msg: 'No Change request found',msgType:"notfound" });  // handle errors!
         }
 
         

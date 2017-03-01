@@ -6,7 +6,7 @@
 
 <div class="inner-mid-sec white-bg">
   <div class="container">
-    <div class="row">
+    <div class="row" *ngIf="validUrl">
       <div class="col-sm-6 col-sm-offset-3">
         <div class="sign-in-box">
           <div class="user_block"><img src="images/user-pic2.jpg" alt="" /></div>
@@ -18,7 +18,7 @@
               <h4>Type in new Password</h4>
 
               
-
+                
               <div class="input-block"> <span class="input-icon"><i class="fa fa-lock"></i></span>
                 <input class="input-fill2" placeholder="Password" type="password" [formControl]="resetPassForm.controls['userpass']">
               </div>
@@ -40,7 +40,7 @@
               <!--{{resetPassForm.controls['retypeuserpass'].errors|json}}-->
               <div *ngIf="resetPassForm.controls['retypeuserpass'].hasError('required') && resetPassForm.controls['retypeuserpass'].touched"
                 class="alert alert-danger">
-                You must include a retype password.
+                Please retype password
               </div>
 
               <div *ngIf="resetPassForm.controls['retypeuserpass'].hasError('matches') && resetPassForm.controls['retypeuserpass'].touched"
@@ -52,7 +52,7 @@
               
 
               <div class="text-center login_wrp">
-                <button type="submit" class="rh_btn login_btn" [disabled]="!resetPassForm.valid">Register</button>
+                <button type="submit" class="rh_btn login_btn" [disabled]="!resetPassForm.valid">Reset</button>
               </div>
             </div>
                        
@@ -62,6 +62,41 @@
         </div>
       </div>
     </div>
+
+
+    <div class="row" *ngIf="!validUrl">
+      <div class="col-md-12 no-padding gray-heading">
+        <!--<h2 class="main-heading"><span>Thank You</span></h2>-->
+      </div>
+      <div class="about_info">
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='req_not_found'">
+          <p>Invalid change request!</p>
+        </div>
+
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='notfound'">
+          <p>Invalid change request!</p>
+        </div>
+
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='unexpected'">
+          <p>Some error occured please try latter!</p>
+        </div>
+        
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='expiredLink'">
+          <p>Reset password link or already used , please request for another!</p>
+        </div>
+
+        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='allgood'">
+          <p>Password updated successfully, Please login with new password!</p>
+        </div>
+
+        
+
+
+
+      </div>
+    </div>
+
+
   </div>
 </div>
 

@@ -16,6 +16,7 @@ declare var $: any;
 export class UserProfileComponent implements AfterViewInit, OnInit {
   public userProfile: any = {};
   public pagetitle: String = 'User Profile';
+  
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,

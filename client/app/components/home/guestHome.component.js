@@ -29,7 +29,8 @@ var GuestHomeComponent = (function () {
         }
         else {
             //this.router.navigate(['/package/search']);
-            this.router.navigate(['/package/search'], { queryParams: { zip: this.postal_code } });
+            //this.router.navigate(['/package/search'], { queryParams: {zip:this.postal_code} });
+            this.router.navigate(['/services'], { queryParams: { zip: this.postal_code } });
         }
     };
     GuestHomeComponent.prototype.ngAfterViewInit = function () {

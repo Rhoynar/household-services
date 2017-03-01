@@ -26,12 +26,17 @@ export class CustomValidator {
     //var num = +control.value;
     
     if (control.parent) {
-        console.log(control.parent);
+        
         if(control.value!=control.parent.value[feildName]){
+        
           return {matches: true};      
+        }else{
+          return null;  
         }
+      }else{
+        return null;
       }
-    return {matches: false};
+    
 
     
     //return null;

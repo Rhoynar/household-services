@@ -17,12 +17,16 @@ var CustomValidator = (function () {
             return function (control) {
                 //var num = +control.value;
                 if (control.parent) {
-                    console.log(control.parent);
                     if (control.value != control.parent.value[feildName]) {
                         return { matches: true };
                     }
+                    else {
+                        return null;
+                    }
                 }
-                return { matches: false };
+                else {
+                    return null;
+                }
                 //return null;
             };
         };

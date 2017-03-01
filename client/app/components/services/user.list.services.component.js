@@ -18,7 +18,16 @@ var UserListServicesComponent = (function () {
         this.alertService = alertService;
         this.authenticationService = authenticationService;
         this.loggedIn = false;
+        this.zipcode = "";
         this.pagetitle = "Services";
+        var params = this.activatedRoute.snapshot.queryParams;
+        this.zipcode = params.zip;
+        if (params.zip) {
+            this.getPackageByZipcode();
+        }
+        else {
+            this.getAllPackage();
+        }
     }
     //get packages
     UserListServicesComponent.prototype.getAllPackage = function () {
@@ -33,8 +42,20 @@ var UserListServicesComponent = (function () {
             alert(errr.msg);
         });
     };
+    //get packages
+    UserListServicesComponent.prototype.getPackageByZipcode = function () {
+        var _this = this;
+        this.packageService.getPackageByZipcode(this.zipcode)
+            .subscribe(function (data) {
+            _this.servicesList = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     UserListServicesComponent.prototype.ngAfterViewInit = function () {
-        this.getAllPackage();
     };
     UserListServicesComponent = __decorate([
         core_1.Component({

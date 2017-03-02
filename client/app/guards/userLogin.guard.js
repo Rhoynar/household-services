@@ -30,7 +30,6 @@ var UserLoginGuard = (function () {
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) {
-            console.log("from login auth gaurd:-" + currentUser.token.role);
             if (currentUser.token.role == "user") {
                 return true;
             }

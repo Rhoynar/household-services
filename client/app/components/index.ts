@@ -29,6 +29,8 @@ export * from './dashboard/vendor.dashboard.component';
 export * from './dashboard/userDashboard.component';
 
 export * from './vendors/list.vendors.component';
+export * from './vendors/list.pending.vendors.component';
+
 
 export * from './packages/admin.package.list.component';
 export * from './packages/admin.add.package.component';

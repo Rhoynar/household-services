@@ -56,6 +56,17 @@ export class UserServices{
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    getVendorByStatus(status:any){
+        return this.http.get('/api/vendorbystatus/'+status)
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    approveVendor(vendorDetails:any){
+        var headers=this.getHeader();
+        return this.http.put('/api/approveVendor/',JSON.stringify(vendorDetails),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
     deleteUser(userId:any){
         return this.http.delete('/api/deleteuser/'+userId)
         .map(this.extractData);//.catch(this.handleError);;

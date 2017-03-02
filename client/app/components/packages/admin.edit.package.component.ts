@@ -180,14 +180,15 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
 
 
 
-      this.getAllVendors();
+      this.getActiveVendors();
       this.getAllServices();
 
   }
 
   //get vendors
-  getAllVendors() {
-    this.userServices.getUserByRole('vendor')
+  getActiveVendors() {
+    //this.userServices.getUserByRole('vendor')
+    this.userServices.getVendorByStatus(1)
       .subscribe(data => {
         this.availableVendors = data.result;
       },

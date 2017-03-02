@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { OrderServices } from '../../services/index';
 declare var $: any;
 
 
@@ -13,9 +14,25 @@ declare var $: any;
 export class VendorDashboardComponent implements AfterViewInit {
 
   public pagetitle: any = "Dashboard";
-  constructor() {
+  public orderList: any = [];
+  constructor(private orderServices: OrderServices) {
 
+    this.getUpcomingVendorOrders();
+  }
 
+  getUpcomingVendorOrders() {
+    this.orderServices.upcomingVendorOrder()
+      .subscribe(data => {
+        this.orderList = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
   }
 
   ngAfterViewInit() {

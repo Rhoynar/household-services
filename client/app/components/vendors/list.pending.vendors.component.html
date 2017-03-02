@@ -6,13 +6,13 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 no-padding dashboard_page">
-        <a class="btn btn-warning" [routerLink]="['/admin/waitingvendors']">Pending Vendors</a>
+
         <div class="services_wrapper">
           <alert [alertType]="'vendorAlert'"></alert>
           <div class="services_info_block clearfix" *ngFor='let eachVendor of availableVendors; let i = index;'>
 
             <div class="col-md-8 ser-lf">
-              
+
               <div class="col-md-10">
                 <h3>{{eachVendor?.name}}</h3>
 
@@ -23,12 +23,12 @@
                 </p>
               </div>
               <div col-md-2>
-                  <button type="button" class="btn btn-danger" (click)="deleteVendor(eachVendor._id)">Delete</button>
-                  
-                  <!--<button type="button" class="btn btn-primary" [routerLink]="['/admin/vendor/edit/',eachVendor._id]">Edit</button>-->
+                <button type="button" class="btn btn-danger" (click)="deleteVendor(eachVendor._id)">Delete</button>
+                <button type="button" class="btn btn-success" (click)="approveVendor(eachVendor._id)">Approve</button>
+                <!--<button type="button" class="btn btn-primary" [routerLink]="['/admin/vendor/edit/',eachVendor._id]">Edit</button>-->
               </div>
             </div>
-            
+
 
 
 

@@ -52,6 +52,15 @@ var UserServices = (function () {
         return this.http.get('/api/userbyrole/' + roleType)
             .map(this.extractData); //.catch(this.handleError);;
     };
+    UserServices.prototype.getVendorByStatus = function (status) {
+        return this.http.get('/api/vendorbystatus/' + status)
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    UserServices.prototype.approveVendor = function (vendorDetails) {
+        var headers = this.getHeader();
+        return this.http.put('/api/approveVendor/', JSON.stringify(vendorDetails), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     UserServices.prototype.deleteUser = function (userId) {
         return this.http.delete('/api/deleteuser/' + userId)
             .map(this.extractData); //.catch(this.handleError);;

@@ -396,7 +396,7 @@ var addVendor = function (req, res, next) {
 
         if (!err && user !== null) {
             res.status(400);
-            res.json({ msg: 'User Already exits' });
+            res.json({ msg: 'User with this email Already exits' });
         } else {
             var newUser = new Users();
             newUser.email = profile.useremail;
@@ -406,6 +406,7 @@ var addVendor = function (req, res, next) {
             newUser.role = 'vendor';
             newUser.services = profile.serviceList;
             newUser.created = Date.now();
+            newUser.created = 0;
 
             newUser.save(function (err) {
                 if (err) {
@@ -437,6 +438,57 @@ var getUsersByRole = function (req, res) {
         return res.send();
     }
 
+}
+
+var vendorbystatus = function (req, res) {
+
+    if (req.user) {
+        var statusCondition=[{'status':req.params.status}];
+        if(req.params.status==0){
+            statusCondition.push({'status':null});    
+            statusCondition.push({'status':''});    
+        }
+        
+        Users.find({ 'role': 'vendor',$or:statusCondition }).populate('services').exec(function (err, vendorDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch data , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: vendorDoc });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+}
+
+approveVendor= function (req, res) {
+    if (req.user) {
+        var profile = req.body;
+
+        updateDetails =
+            {
+                status:1,
+            }
+
+        Users.findByIdAndUpdate(profile.vendorId, updateDetails, function (err, updateRes) {
+
+            if (err) {
+
+                return res.json({ status: 'error', error: err });
+            }
+            else {
+
+                return res.json({ status: 'success', msg: 'vendor Approved successfully' });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
 }
 
 deleteUser = function (req, res) {
@@ -650,24 +702,85 @@ var createOrder = function (req, res) {
     }
 }
 
-var userOrder = function (req, res) {
+
+var upComingUserOrder=function(req,res){
     if (req.user) {
         var condition = {};
-        if (req.body.postalCode != '') {
+        //if (req.body.postalCode != '') {
             condition = { 
                 clientId: req.user.id
              };
-        }
+        //}
 
         var sDate=moment(new Date()).format("YYYY-MM-DD");
         var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
         condition.serviceDate={ "$gte": sDate, "$lt": eDate };
         
+        Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').populate({
+            path: 'packageId',
+            model: 'Packages',
+            populate: {
+                path: 'serviceId',
+                model: 'Services'
+            }
+        }).exec(function (err, orderDocs) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: orderDocs });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+} 
+var userOrder = function (req, res) {
+    if (req.user) {
+        var condition = {};
+        //if (req.body.postalCode != '') {
+            condition = { 
+                clientId: req.user.id
+             };
+        //}
+
         
         
-        console.log(sDate+" "+eDate);
+        Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').populate({
+            path: 'packageId',
+            model: 'Packages',
+            populate: {
+                path: 'serviceId',
+                model: 'Services'
+            }
+        }).exec(function (err, orderDocs) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: orderDocs });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+
+}
+
+var upcomingVendorOrder = function (req, res) {
+    if (req.user) {
+        var condition = {};
         
-        Orders.find(condition).populate('vendorId').populate('packageId').populate({
+        condition = { vendorId: req.user.id };
+        
+
+        var sDate=moment(new Date()).format("YYYY-MM-DD");
+        var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
+        condition.serviceDate={ "$gte": sDate, "$lt": eDate };
+
+        Orders.find(condition).sort({serviceDate: 1}).populate('clientId').populate('packageId').populate({
             path: 'packageId',
             model: 'Packages',
             populate: {
@@ -695,7 +808,12 @@ var vendorOrder = function (req, res) {
         if (req.body.postalCode != '') {
             condition = { vendorId: req.user.id };
         }
-        Orders.find(condition).populate('clientId').populate('packageId').populate({
+
+        var sDate=moment(new Date()).format("YYYY-MM-DD");
+        var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
+        //condition.serviceDate={ "$gte": sDate, "$lt": eDate };
+
+        Orders.find(condition).sort({serviceDate: 1}).populate('clientId').populate('packageId').populate({
             path: 'packageId',
             model: 'Packages',
             populate: {
@@ -1256,12 +1374,15 @@ router.get('/createtoken', createtoken);
 
 router.put('/user', userRegister);
 router.get('/userbyrole/:roleType', getUsersByRole);
+router.get('/vendorbystatus/:status',vendorbystatus);
 router.delete('/deleteuser/:id', deleteUser);
 
 router.post('/checkUniqueEmail', checkUniqueEmail);
 
 router.get('/profile/:id', getProfile);
 router.put('/profile', updateProfile);
+
+router.put('/approveVendor',approveVendor);
 
 
 
@@ -1279,6 +1400,8 @@ router.post('/createOrder', createOrder);
 router.get('/userOrder', userOrder);
 router.get('/vendorOrder', vendorOrder);
 router.get('/getAllOrder', getAllOrder);
+router.get('/upComingUserOrder',upComingUserOrder);
+router.get('/upcomingVendorOrder',upcomingVendorOrder);
 
 router.get('/service', getAllService);
 router.get('/service/:id', getServiceById);

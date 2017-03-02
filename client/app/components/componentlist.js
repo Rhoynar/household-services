@@ -35,6 +35,7 @@ exports.COMPONENT_DECLARATIONS = [
     index_1.LearnMoreComponent,
     index_1.ConfirmSignupComponent,
     index_1.ForgotPassComponent,
-    index_1.ResetPassComponent
+    index_1.ResetPassComponent,
+    index_1.ListPendingVendorComponent
 ];
 //# sourceMappingURL=componentlist.js.map

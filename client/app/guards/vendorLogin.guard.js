@@ -10,11 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var index_1 = require('../services/index');
 var VendorLoginGuard = (function () {
-    function VendorLoginGuard(router) {
+    function VendorLoginGuard(router, authenticationService) {
         this.router = router;
+        this.authenticationService = authenticationService;
     }
     VendorLoginGuard.prototype.canActivate = function (route, state) {
+        var _this = this;
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (currentUserStr && result == false) {
+                _this.router.navigate(['/']);
+            }
+        });
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) {
@@ -45,7 +56,7 @@ var VendorLoginGuard = (function () {
     };
     VendorLoginGuard = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [router_1.Router])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
     ], VendorLoginGuard);
     return VendorLoginGuard;
 }());

@@ -140,13 +140,14 @@ var AdminEditPackageComponent = (function () {
             //alert(errr.msg);
             _this.alertService.error(errr.msg, 'package-error');
         });
-        this.getAllVendors();
+        this.getActiveVendors();
         this.getAllServices();
     };
     //get vendors
-    AdminEditPackageComponent.prototype.getAllVendors = function () {
+    AdminEditPackageComponent.prototype.getActiveVendors = function () {
         var _this = this;
-        this.userServices.getUserByRole('vendor')
+        //this.userServices.getUserByRole('vendor')
+        this.userServices.getVendorByStatus(1)
             .subscribe(function (data) {
             _this.availableVendors = data.result;
         }, function (error) {

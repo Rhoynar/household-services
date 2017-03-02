@@ -117,7 +117,7 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
 
 
   ngAfterViewInit() {
-    this.getAllVendors();
+    this.getActiveVendors();
     this.getAllServices();
 
   }
@@ -129,8 +129,9 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
   }
 
   //get vendors
-  getAllVendors() {
-    this.userServices.getUserByRole('vendor')
+  getActiveVendors() {
+    //this.userServices.getUserByRole('vendor')
+    this.userServices.getVendorByStatus(1)
       .subscribe(data => {
         this.availableVendors = data.result;
       },

@@ -32,9 +32,21 @@ export class OrderServices {
             .map(this.extractData);//.catch(this.handleError);;
     }
 
+    upcomingVendorOrder(){
+        var headers = this.getHeader();
+        return this.http.get('/api/upcomingVendorOrder', { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
     getvendorOrder() {
         var headers = this.getHeader();
         return this.http.get('/api/vendorOrder', { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    getUpcomingUserOrder(){
+        var headers = this.getHeader();
+        return this.http.get('/api/upComingUserOrder', { headers: headers })
             .map(this.extractData);//.catch(this.handleError);;
     }
 

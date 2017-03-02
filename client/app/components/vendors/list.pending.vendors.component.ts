@@ -9,15 +9,15 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'list-vendors',
-  templateUrl: './list.vendors.component.html'
+  selector: 'list-pending-vendors',
+  templateUrl: './list.pending.vendors.component.html'
 
 })
-export class ListVendorComponent implements AfterViewInit, OnInit, OnDestroy {
+export class ListPendingVendorComponent implements AfterViewInit, OnInit, OnDestroy {
 
   availableVendors: any;
   loggedIn: any = false;
-  pagetitle="Vendor List";
+  pagetitle="Pending Vendor List";
 
 
   //constructor start
@@ -32,8 +32,9 @@ export class ListVendorComponent implements AfterViewInit, OnInit, OnDestroy {
   //end of constructor
 
   //get vendors
-  getActiveVendors() {
-    this.userServices.getVendorByStatus(1)
+  getPendingVendors() {
+    //this.userServices.getUserByRole('vendor')
+    this.userServices.getVendorByStatus(0)
       .subscribe(data => {
         this.availableVendors = data.result;
       },
@@ -47,6 +48,31 @@ export class ListVendorComponent implements AfterViewInit, OnInit, OnDestroy {
       );
   }
 
+  approveVendor(vendorId: any) {
+    var con = confirm("Are you sure!, You want to approve this vendor");
+    if (con) {
+
+
+      this.userServices.approveVendor({vendorId:vendorId})
+        .subscribe(data => {
+          if (data.status == 'success') {
+            this.alertService.success(data.msg, 'vendorAlert');
+            this.getPendingVendors();
+          } else {
+            this.alertService.error(data.msg, 'vendorAlert');
+          }
+        },
+        error => {
+          const body = error.json() || '';
+          const err = body.error || JSON.stringify(body);
+          var errr = JSON.parse(err);
+
+          this.alertService.error(errr.msg, 'vendorAlert');
+        }
+        );
+    }
+  }
+
 
 deleteVendor(vendorId: any) {
     var con = confirm("Are you sure!, You want to delete this vendor");
@@ -57,7 +83,7 @@ deleteVendor(vendorId: any) {
         .subscribe(data => {
           if (data.status == 'success') {
             this.alertService.success(data.msg, 'vendorAlert');
-            this.getActiveVendors();
+            this.getPendingVendors();
           } else {
             this.alertService.error(data.msg, 'vendorAlert');
           }
@@ -77,7 +103,7 @@ deleteVendor(vendorId: any) {
 
 
   ngAfterViewInit() {
-    this.getActiveVendors();
+    this.getPendingVendors();
 
   }
   ngOnInit() {

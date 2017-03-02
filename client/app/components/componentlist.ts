@@ -33,7 +33,8 @@ import {
 	LearnMoreComponent,
 	ConfirmSignupComponent,
 	ForgotPassComponent,
-	ResetPassComponent
+	ResetPassComponent,
+	ListPendingVendorComponent
 } from './index';
 
 export const COMPONENT_DECLARATIONS = [
@@ -71,6 +72,7 @@ export const COMPONENT_DECLARATIONS = [
   LearnMoreComponent,
   ConfirmSignupComponent,
   ForgotPassComponent,
-  ResetPassComponent
+  ResetPassComponent,
+  ListPendingVendorComponent
 ];
 

@@ -21,6 +21,7 @@ var APP_ROUTES = [
     { path: 'admin', component: index_1.AdminDashboardComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/dashboard', component: index_1.AdminDashboardComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/vendors', component: index_1.ListVendorComponent, canActivate: [index_2.AdminLoginGuard] },
+    { path: 'admin/waitingvendors', component: index_1.ListPendingVendorComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/packages', component: index_1.AdminPackageListComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/package/new', component: index_1.AdminAddPackageComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/package/edit/:id', component: index_1.AdminEditPackageComponent, canActivate: [index_2.AdminLoginGuard] },

@@ -9,10 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var index_1 = require('../../services/index');
 var VendorDashboardComponent = (function () {
-    function VendorDashboardComponent() {
+    function VendorDashboardComponent(orderServices) {
+        this.orderServices = orderServices;
         this.pagetitle = "Dashboard";
+        this.orderList = [];
+        this.getUpcomingVendorOrders();
     }
+    VendorDashboardComponent.prototype.getUpcomingVendorOrders = function () {
+        var _this = this;
+        this.orderServices.upcomingVendorOrder()
+            .subscribe(function (data) {
+            _this.orderList = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     VendorDashboardComponent.prototype.ngAfterViewInit = function () {
     };
     VendorDashboardComponent = __decorate([
@@ -21,7 +37,7 @@ var VendorDashboardComponent = (function () {
             selector: 'vendor-dashboard',
             templateUrl: './vendor.dashboard.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [index_1.OrderServices])
     ], VendorDashboardComponent);
     return VendorDashboardComponent;
 }());

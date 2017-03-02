@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
+import { AuthenticationService, UserServices } from '../services/index';
 
 
 @Injectable()
 export class VendorLoginGuard implements CanActivate {
 
     constructor(
-        private router: Router
+        private router: Router,
+        private authenticationService: AuthenticationService,
     ) { }
 
     canActivate(
@@ -17,6 +18,17 @@ export class VendorLoginGuard implements CanActivate {
     ) {
         var currentUserStr = localStorage.getItem('currentUser')
         var currentUser = JSON.parse(currentUserStr);
+
+        this.authenticationService.generatetoken()
+            .subscribe(result => {
+                if (currentUserStr && result == false) {
+                    this.router.navigate(['/']);
+                }
+            });
+
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+
         if (currentUserStr) { //if user is there
             if (currentUser.token.role == "vendor") {  //if current user is admin
                 return true;
@@ -29,7 +41,7 @@ export class VendorLoginGuard implements CanActivate {
                         this.router.navigate(['/vendor']);
                         break;
                     case 'user':
-                    console.log("vendor loging ts");
+                        console.log("vendor loging ts");
                         this.router.navigate(['/dashboard']);
                         break;
                     default:

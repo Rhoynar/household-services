@@ -20,7 +20,8 @@ var userSchema = new Schema({
     country:String,
     stripeCustomerId:String,
     stripeCustomer:{},
-    services:[{ type: Schema.Types.ObjectId, ref: 'Services' }]
+    services:[{ type: Schema.Types.ObjectId, ref: 'Services' }],
+    status:String
 });
 
 

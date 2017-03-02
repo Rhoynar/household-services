@@ -14,6 +14,7 @@ var vendorSchema = new Schema({
     zipcode:String,
     city:String,
     country:String,
+    status:String
 });
 
 

@@ -11,20 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
-var ListVendorComponent = (function () {
+var ListPendingVendorComponent = (function () {
     //constructor start
-    function ListVendorComponent(router, userServices, alertService) {
+    function ListPendingVendorComponent(router, userServices, alertService) {
         this.router = router;
         this.userServices = userServices;
         this.alertService = alertService;
         this.loggedIn = false;
-        this.pagetitle = "Vendor List";
+        this.pagetitle = "Pending Vendor List";
     }
     //end of constructor
     //get vendors
-    ListVendorComponent.prototype.getActiveVendors = function () {
+    ListPendingVendorComponent.prototype.getPendingVendors = function () {
         var _this = this;
-        this.userServices.getVendorByStatus(1)
+        //this.userServices.getUserByRole('vendor')
+        this.userServices.getVendorByStatus(0)
             .subscribe(function (data) {
             _this.availableVendors = data.result;
         }, function (error) {
@@ -33,15 +34,15 @@ var ListVendorComponent = (function () {
             }
         });
     };
-    ListVendorComponent.prototype.deleteVendor = function (vendorId) {
+    ListPendingVendorComponent.prototype.approveVendor = function (vendorId) {
         var _this = this;
-        var con = confirm("Are you sure!, You want to delete this vendor");
+        var con = confirm("Are you sure!, You want to approve this vendor");
         if (con) {
-            this.userServices.deleteUser(vendorId)
+            this.userServices.approveVendor({ vendorId: vendorId })
                 .subscribe(function (data) {
                 if (data.status == 'success') {
                     _this.alertService.success(data.msg, 'vendorAlert');
-                    _this.getActiveVendors();
+                    _this.getPendingVendors();
                 }
                 else {
                     _this.alertService.error(data.msg, 'vendorAlert');
@@ -54,26 +55,47 @@ var ListVendorComponent = (function () {
             });
         }
     };
-    ListVendorComponent.prototype.ngAfterViewInit = function () {
-        this.getActiveVendors();
+    ListPendingVendorComponent.prototype.deleteVendor = function (vendorId) {
+        var _this = this;
+        var con = confirm("Are you sure!, You want to delete this vendor");
+        if (con) {
+            this.userServices.deleteUser(vendorId)
+                .subscribe(function (data) {
+                if (data.status == 'success') {
+                    _this.alertService.success(data.msg, 'vendorAlert');
+                    _this.getPendingVendors();
+                }
+                else {
+                    _this.alertService.error(data.msg, 'vendorAlert');
+                }
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                _this.alertService.error(errr.msg, 'vendorAlert');
+            });
+        }
     };
-    ListVendorComponent.prototype.ngOnInit = function () {
+    ListPendingVendorComponent.prototype.ngAfterViewInit = function () {
+        this.getPendingVendors();
+    };
+    ListPendingVendorComponent.prototype.ngOnInit = function () {
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
         }
     };
-    ListVendorComponent.prototype.ngOnDestroy = function () {
+    ListPendingVendorComponent.prototype.ngOnDestroy = function () {
     };
-    ListVendorComponent = __decorate([
+    ListPendingVendorComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'list-vendors',
-            templateUrl: './list.vendors.component.html'
+            selector: 'list-pending-vendors',
+            templateUrl: './list.pending.vendors.component.html'
         }), 
         __metadata('design:paramtypes', [router_1.Router, index_1.UserServices, index_1.AlertService])
-    ], ListVendorComponent);
-    return ListVendorComponent;
+    ], ListPendingVendorComponent);
+    return ListPendingVendorComponent;
 }());
-exports.ListVendorComponent = ListVendorComponent;
-//# sourceMappingURL=list.vendors.component.js.map
+exports.ListPendingVendorComponent = ListPendingVendorComponent;
+//# sourceMappingURL=list.pending.vendors.component.js.map

@@ -32,9 +32,19 @@ var OrderServices = (function () {
         return this.http.get('/api/userOrder', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    OrderServices.prototype.upcomingVendorOrder = function () {
+        var headers = this.getHeader();
+        return this.http.get('/api/upcomingVendorOrder', { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     OrderServices.prototype.getvendorOrder = function () {
         var headers = this.getHeader();
         return this.http.get('/api/vendorOrder', { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    OrderServices.prototype.getUpcomingUserOrder = function () {
+        var headers = this.getHeader();
+        return this.http.get('/api/upComingUserOrder', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
     OrderServices.prototype.getAllOrder = function () {

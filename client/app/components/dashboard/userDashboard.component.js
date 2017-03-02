@@ -10,19 +10,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var index_1 = require('../../services/index');
 var UserDashboardComponent = (function () {
-    function UserDashboardComponent(ngZone, router) {
+    function UserDashboardComponent(alertService, orderServices, ngZone, router) {
+        this.alertService = alertService;
+        this.orderServices = orderServices;
         this.ngZone = ngZone;
         this.router = router;
         this.pagetitle = 'Dashboard';
+        this.userOrders = [];
+        this.getUserOrder();
     }
+    //get packages
+    UserDashboardComponent.prototype.getUserOrder = function () {
+        var _this = this;
+        this.orderServices.getUpcomingUserOrder()
+            .subscribe(function (data) {
+            _this.userOrders = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     UserDashboardComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'user-dashboard',
             templateUrl: './userDashboard.component.html'
         }), 
-        __metadata('design:paramtypes', [core_1.NgZone, router_1.Router])
+        __metadata('design:paramtypes', [index_1.AlertService, index_1.OrderServices, core_1.NgZone, router_1.Router])
     ], UserDashboardComponent);
     return UserDashboardComponent;
 }());

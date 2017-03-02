@@ -91,7 +91,7 @@ var AdminAddPackageComponent = (function () {
         });
     };
     AdminAddPackageComponent.prototype.ngAfterViewInit = function () {
-        this.getAllVendors();
+        this.getActiveVendors();
         this.getAllServices();
     };
     AdminAddPackageComponent.prototype.ngOnInit = function () {
@@ -101,9 +101,10 @@ var AdminAddPackageComponent = (function () {
         }
     };
     //get vendors
-    AdminAddPackageComponent.prototype.getAllVendors = function () {
+    AdminAddPackageComponent.prototype.getActiveVendors = function () {
         var _this = this;
-        this.userServices.getUserByRole('vendor')
+        //this.userServices.getUserByRole('vendor')
+        this.userServices.getVendorByStatus(1)
             .subscribe(function (data) {
             _this.availableVendors = data.result;
         }, function (error) {

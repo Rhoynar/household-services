@@ -24,6 +24,7 @@ __export(require('./dashboard/admin.dashboard.component'));
 __export(require('./dashboard/vendor.dashboard.component'));
 __export(require('./dashboard/userDashboard.component'));
 __export(require('./vendors/list.vendors.component'));
+__export(require('./vendors/list.pending.vendors.component'));
 __export(require('./packages/admin.package.list.component'));
 __export(require('./packages/admin.add.package.component'));
 __export(require('./packages/admin.edit.package.component'));

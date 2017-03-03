@@ -19,7 +19,8 @@ export class UserPackageListComponent implements AfterViewInit {
   public userCreditCards: any = [];
   public pagetitle: String = "Package List";
   public zipcode: any = "";
-  public selectedPackage: String = "";
+  public selectedPackage:any={};
+  public selectedPackageId: String = "";
   public preferedDate: any = "";
   public preferedType: any = "";
   public additionalInstruction: any = "";
@@ -41,9 +42,8 @@ export class UserPackageListComponent implements AfterViewInit {
     disableUntil: { year: 0, month: 0, day: 0 }
   };
 
-
-
-
+  
+  
   onDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
@@ -78,6 +78,10 @@ export class UserPackageListComponent implements AfterViewInit {
   }
   //end of constructor
 
+
+  selectPackage(index:number){
+       this.selectedPackage= this.availablePackages[index];
+  }
   //get packages
   getAllPackage() {
     this.packageService.getAllPackage()
@@ -95,7 +99,7 @@ export class UserPackageListComponent implements AfterViewInit {
   }
 
   cancelSelection() {
-    this.selectedPackage = "";
+    this.selectedPackageId = "";
     this.preferedDate = "";
     this.preferedType = "";
     this.additionalInstruction = "";
@@ -117,7 +121,7 @@ export class UserPackageListComponent implements AfterViewInit {
         "serviceDate": this.preferedDate.date,
         "serviceType": this.preferedType,
         "instruction": this.additionalInstruction,
-        "packageId": this.selectedPackage
+        "packageId": this.selectedPackageId
       };
       this.cardsvisible = true;
 
@@ -167,7 +171,7 @@ export class UserPackageListComponent implements AfterViewInit {
       "serviceDate": this.preferedDate.date,
       "serviceType": this.preferedType,
       "instruction": this.additionalInstruction,
-      "packageId": this.selectedPackage
+      "packageId": this.selectedPackageId
     };
 
     var con = confirm('Are you Sure, you wanna make this payment?');
@@ -200,7 +204,7 @@ export class UserPackageListComponent implements AfterViewInit {
       "serviceDate": this.preferedDate.date,
       "serviceType": this.preferedType,
       "instruction": this.additionalInstruction,
-      "packageId": this.selectedPackage
+      "packageId": this.selectedPackageId
     };
 
     var cardDetails = {

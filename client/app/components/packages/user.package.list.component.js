@@ -24,7 +24,8 @@ var UserPackageListComponent = (function () {
         this.userCreditCards = [];
         this.pagetitle = "Package List";
         this.zipcode = "";
-        this.selectedPackage = "";
+        this.selectedPackage = {};
+        this.selectedPackageId = "";
         this.preferedDate = "";
         this.preferedType = "";
         this.additionalInstruction = "";
@@ -62,6 +63,9 @@ var UserPackageListComponent = (function () {
         // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     };
     //end of constructor
+    UserPackageListComponent.prototype.selectPackage = function (index) {
+        this.selectedPackage = this.availablePackages[index];
+    };
     //get packages
     UserPackageListComponent.prototype.getAllPackage = function () {
         var _this = this;
@@ -76,7 +80,7 @@ var UserPackageListComponent = (function () {
         });
     };
     UserPackageListComponent.prototype.cancelSelection = function () {
-        this.selectedPackage = "";
+        this.selectedPackageId = "";
         this.preferedDate = "";
         this.preferedType = "";
         this.additionalInstruction = "";
@@ -95,7 +99,7 @@ var UserPackageListComponent = (function () {
                 "serviceDate": this.preferedDate.date,
                 "serviceType": this.preferedType,
                 "instruction": this.additionalInstruction,
-                "packageId": this.selectedPackage
+                "packageId": this.selectedPackageId
             };
             this.cardsvisible = true;
         }
@@ -126,7 +130,7 @@ var UserPackageListComponent = (function () {
             "serviceDate": this.preferedDate.date,
             "serviceType": this.preferedType,
             "instruction": this.additionalInstruction,
-            "packageId": this.selectedPackage
+            "packageId": this.selectedPackageId
         };
         var con = confirm('Are you Sure, you wanna make this payment?');
         if (con) {
@@ -154,7 +158,7 @@ var UserPackageListComponent = (function () {
             "serviceDate": this.preferedDate.date,
             "serviceType": this.preferedType,
             "instruction": this.additionalInstruction,
-            "packageId": this.selectedPackage
+            "packageId": this.selectedPackageId
         };
         var cardDetails = {
             number: this.cardNumber,

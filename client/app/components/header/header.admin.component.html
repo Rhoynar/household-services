@@ -15,6 +15,7 @@
                 <div class="collapse navbar-collapse js-navbar-collapse">
                   <div class="navi-menu1">
                     <ul class="nav navbar-nav">
+                      <li [ngClass]="{active: router.url==='/admin/community'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/community']">community</a> </li>
                       <li [ngClass]="{active: router.url==='/admin/services'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/services']">services</a> </li>
                       <li [ngClass]="{active: router.url==='/admin/vendors'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/vendors']">Vendors</a> </li>
                       <li [ngClass]="{active: router.url==='/admin/packages'}" *ngIf="loggedIn" ><a [routerLink]="['/admin/packages']">Packages</a> </li>

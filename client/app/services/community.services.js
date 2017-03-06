@@ -27,10 +27,11 @@ var CommunityServices = (function () {
         return this.http.post('/api/addCommunity', JSON.stringify(packageDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
-    /* getAllPackage() {
-         return this.http.get('/api/getAllPackage')
-             .map(this.extractData);//.catch(this.handleError);;
-     }
+    CommunityServices.prototype.getAllCommunity = function () {
+        return this.http.get('/api/getAllCommunity')
+            .map(this.extractData); //.catch(this.handleError);;
+    };
+    /*
  
      
  

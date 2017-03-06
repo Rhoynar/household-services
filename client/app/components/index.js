@@ -39,4 +39,5 @@ __export(require('./services/admin.add.services.component'));
 __export(require('./services/admin.edit.services.component'));
 __export(require('./services/user.list.services.component'));
 __export(require('./communities/admin.add.community.component'));
+__export(require('./communities/admin.list.community.component'));
 //# sourceMappingURL=index.js.map

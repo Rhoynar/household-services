@@ -509,6 +509,7 @@ deleteUser = function (req, res) {
     }
 }
 
+
 var getAllPackage = function (req, res) {
 
     //if (req.user) {
@@ -1398,6 +1399,26 @@ var addCommunity = function (req, res) {
 }
 
 
+var getAllCommunity = function (req, res) {
+
+    if (req.user) {
+        Communities.find({}).exec(
+            function (err, vendorDoc) {
+                if (err) {
+                    res.send({ status: 'error', msg: 'Unable to fetch community , please try later', error: err });
+                } else {
+                    res.send({ status: 'success', result: vendorDoc });
+                }
+            });
+
+     } else {
+         res.status(401);
+         res.json({ status: 'error', msg: 'some error occured' });
+         return res.send();
+     }
+}
+
+
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);
 
@@ -1425,7 +1446,10 @@ router.post('/updatePackage', updatePackage);
 router.post('/getPackageByid', getPackageByid);
 router.post('/getPackageByZipcode', getPackageByZipcode);
 
+
+router.get('/getAllCommunity', getAllCommunity);
 router.post('/addCommunity', addCommunity);
+
 
 
 router.post('/createOrder', createOrder);

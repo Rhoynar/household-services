@@ -9,6 +9,7 @@ var Services = require('../models/services');
 var Passwordchange = require('../models/passwordchange');
 var Packages = require('../models/packages');
 var Orders = require('../models/orders');
+var Communities=require('../models/communities');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 var moment = require('moment');
 
@@ -560,6 +561,8 @@ var addPackage = function (req, res) {
 
     //return res.json({});
 }
+
+
 
 var updatePackage = function (req, res) {
 
@@ -1369,6 +1372,32 @@ router.get('/email-verification/:URL', function(req, res) {
 });
 
 
+var addCommunity = function (req, res) {
+
+
+    var communityDetails = new Communities();
+    //res.render('index.html');
+    //userModel.
+
+    communityDetails.title = req.body.title;
+    communityDetails.addressLineOne = req.body.addressLineOne;
+    communityDetails.addressLineTwo = req.body.addressLineTwo;
+    communityDetails.postcode = req.body.postcode;
+    communityDetails.phone = req.body.phone;
+
+    communityDetails.save(function (err) {
+        if (err) {
+            return res.json({ status: 'error', error: err });
+        } else {
+            return res.json({ status: 'success', msg: 'Commuinity added successfully' });
+        }
+    });
+
+
+    //return res.json({});
+}
+
+
 router.post('/authenticate', authenticateUser);
 router.get('/createtoken', createtoken);
 
@@ -1395,6 +1424,9 @@ router.delete('/package/:id', deletePackage);
 router.post('/updatePackage', updatePackage);
 router.post('/getPackageByid', getPackageByid);
 router.post('/getPackageByZipcode', getPackageByZipcode);
+
+router.post('/addCommunity', addCommunity);
+
 
 router.post('/createOrder', createOrder);
 router.get('/userOrder', userOrder);

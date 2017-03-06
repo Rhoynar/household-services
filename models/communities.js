@@ -4,10 +4,13 @@ var Schema = mongoose.Schema;
 
 
 var communitySchema = new Schema({
-    name: String,
-    city: String,
-    country: String,
-    phone: String,
+    
+    title: String,
+  	addressLineOne: String,
+  	addressLineTwo: String,
+  	postcode: String,
+  	phone: String,
+  	created:{ type : Date, default: new Date() }
 });
 
 module.exports = mongoose.model('Communities', communitySchema);

@@ -1,0 +1,90 @@
+<top-admin-header></top-admin-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 no-padding dashboard_page">
+
+                <div class="form_block">
+
+
+                    <form [formGroup]="addCommunityForm" (ngSubmit)="submitForm()">
+                        <div class="form-group" [ngClass]="{'has-error':!addCommunityForm.controls['title'].valid && addCommunityForm.controls['title'].touched}">
+                            <label class="input-heading">Title :</label>
+                            <div class="input-box">
+                                <input type="text" name="title" id="title" class="input-fill" [formControl]="addCommunityForm.controls['title']" />
+
+                                <div *ngIf="addCommunityForm.controls['title'].hasError('required') && addCommunityForm.controls['title'].touched" class="alert alert-danger">You must include a title.</div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" [ngClass]="{'has-error':!addCommunityForm.controls['addressLineOne'].valid && addCommunityForm.controls['addressLineOne'].touched}">
+                            <label class="input-heading">Address Line One</label>
+                            <div class="input-box">
+                                <input type="text" name="addressLineOne" id="addressLineOne" class="input-fill" [formControl]="addCommunityForm.controls['addressLineOne']" />
+
+                                <div *ngIf="addCommunityForm.controls['addressLineOne'].hasError('required') && addCommunityForm.controls['addressLineOne'].touched" class="alert alert-danger">You must include a Address.</div>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Address Line Two :</label>
+                            <div class="input-box">
+                                <input type="text" name="addressLineTwo" id="addressLineTwo" class="input-fill" [formControl]="addCommunityForm.controls['addressLineTwo']" />
+
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-heading">Postcode :</label>
+                            <div class="input-box">
+                                <input type="text" name="postcode" id="postcode" class="input-fill" [formControl]="addCommunityForm.controls['postcode']" />
+                                <div *ngIf="addCommunityForm.controls['postcode'].hasError('required') && addCommunityForm.controls['postcode'].touched" class="alert alert-danger">You must include a Postcode.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Phone :</label>
+                            <div class="input-box">
+                                <input type="text" name="phone" id="phone" class="input-fill" [formControl]="addCommunityForm.controls['phone']" />
+                                <div *ngIf="addCommunityForm.controls['phone'].hasError('required') && addCommunityForm.controls['phone'].touched" class="alert alert-danger">You must include a phone.</div>
+                            </div>
+                        </div>
+
+                        
+                        
+
+
+                        <div class="form-group btn-wrp">
+
+                            <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->
+                            <button type="submit" [disabled]="!addCommunityForm.valid" class="sub-btn">Submit</button>
+                            <button type="button" class="sub-btn cancel-btn" (click)="communityPage();">Cancel</button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

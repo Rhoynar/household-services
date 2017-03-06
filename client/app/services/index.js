@@ -10,4 +10,5 @@ __export(require('./users.services'));
 __export(require('./service.services'));
 __export(require('./package.services'));
 __export(require('./order.services'));
+__export(require('./community.services'));
 //# sourceMappingURL=index.js.map

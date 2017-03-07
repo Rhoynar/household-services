@@ -36,7 +36,8 @@ import {
 	ResetPassComponent,
 	ListPendingVendorComponent,
 	AdminAddCommunityComponent,
-	AdminCommunityListComponent
+	AdminCommunityListComponent,
+	AdminEditCommunityComponent
 } from './index';
 
 export const COMPONENT_DECLARATIONS = [
@@ -77,6 +78,7 @@ export const COMPONENT_DECLARATIONS = [
   ResetPassComponent,
   ListPendingVendorComponent,
   AdminAddCommunityComponent,
-  AdminCommunityListComponent
+  AdminCommunityListComponent,
+  AdminEditCommunityComponent
 ];
 

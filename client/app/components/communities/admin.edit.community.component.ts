@@ -2,8 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AlertService,PackageServices, UserServices,ServiceServices } from '../../services/index';
-import { UserModel } from '../../models/models';
+import { AlertService, CommunityServices } from '../../services/index';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
 declare var $: any;
@@ -12,21 +11,21 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'admin-edit-package',
-  templateUrl: './admin.edit.package.component.html'
+  selector: 'admin-edit-community',
+  templateUrl: './admin.edit.community.component.html'
 
 })
-export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestroy {
+export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDestroy {
 
   loggedIn: any = false;
-  packageId: string = '';
-  availableServices:any=[];
-  
-  editPackageForm: FormGroup;
+  communityId: string = '';
+  filesToUpload: Array<File> = [];
+  public formData: FormData = new FormData();
+  editCommunityForm: FormGroup;
   customValidator = new CustomValidator(this.http);
-  packageDetails: any = {};
+  communityDetails: any = {};
   availableVendors: any;
-  pagetitle="Update Package";
+  pagetitle = "Update Package";
   //constructor start
   constructor(
     private http: Http,
@@ -34,21 +33,19 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
     private fb: FormBuilder,
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
-    private userServices: UserServices,
-    private packageServices: PackageServices,
-    private serviceServices:ServiceServices
+    private communityServices: CommunityServices
+
   ) {
     let params: any = this.activatedRoute.snapshot.params;
-    this.packageId = params.id;
-    this.editPackageForm = this.fb.group({
+    this.communityId = params.id;
+    this.editCommunityForm = this.fb.group({
       id: ['', Validators.required],
-      serviceId: ['', Validators.required],
       title: ['', Validators.required],
+      addressLineOne: ['', Validators.required],
+      addressLineTwo: [''],
       postcode: ['', Validators.required],
-      price: ['', Validators.required],
-      frequency: ['', Validators.required],
-      vendorList: this.fb.array([]),
-      featureList: this.fb.array([])
+      phone: ['', Validators.required],
+      communityLogo: ['']
     });
 
 
@@ -58,56 +55,33 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
   }
   //end of constructor
 
-  initFeature() {
-    return this.fb.group({
-      feature: ['', Validators.required]
-    });
+
+  communityPage() {
+
+    this.router.navigate(['/admin/community']);
   }
 
-  initVendor() {
-    return this.fb.group({
-      vendor: ['', Validators.required]
-    });
-  }
-
-  addFeature() {
-    var control: any = this.editPackageForm.controls['featureList'];
-    control.push(this.initFeature());
-  }
-
-  addVendor() {
-    var control: any = this.editPackageForm.controls['vendorList'];
-    control.push(this.initVendor());
-  }
-
-  //get vendors
-  packagePage() {
-    this.router.navigate(['/admin/packages']);
-  }
-
-  removefeature(index: any) {
-    var arrayControl: any = this.editPackageForm.controls['featureList']
-    arrayControl.removeAt(index);
-  }
-
-  removeVendor(index: any) {
-    var arrayControl: any = this.editPackageForm.controls['vendorList']
-    arrayControl.removeAt(index);
-  }
 
   submitForm(): void {
-    //console.log('Reactive Form Data: ')
-    //console.log(this.editPackageForm.value);
-    
 
-    this.packageServices.updatePackage(this.editPackageForm.value)
+    console.log(this.formData);
+    console.log(this.editCommunityForm.value);
+
+    
+    this.formData.append('id',this.editCommunityForm.value.id);
+    this.formData.append('title',this.editCommunityForm.value.title);
+    this.formData.append('addressLineOne',this.editCommunityForm.value.addressLineOne);
+    this.formData.append('addressLineTwo',this.editCommunityForm.value.addressLineTwo);
+    this.formData.append('postcode',this.editCommunityForm.value.postcode);
+    this.formData.append('phone',this.editCommunityForm.value.phone);
+    this.communityServices.updateCommunity(this.editCommunityForm.value)
       .subscribe(data => {
         if (data.status == 'error') {
           alert(data.error);
 
         } else {
           alert(data.msg);
-          this.packagePage();
+          this.communityPage();
         }
 
         //this.router.navigate(['/login']);
@@ -122,8 +96,19 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
       );
   }
 
+  fileChangeEvent(event: any) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
 
+      this.formData.append('communityLogo', file, file.name);
+      console.log(this.formData);
+    }
+  }
 
+  // fileChangeEvent(fileInput: any) {
+  //   this.filesToUpload = <Array<File>>fileInput.target.files;
+  // }
 
   ngAfterViewInit() {
 
@@ -136,35 +121,21 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
     }
 
 
-    this.packageServices.getPackageByid(this.packageId)
+    this.communityServices.getCommunityByid(this.communityId)
       .subscribe(data => {
         if (data.status == "success") {
-          this.packageDetails = data.result;
-          
-          this.editPackageForm.controls['id'].setValue(this.packageDetails._id);
-          this.editPackageForm.controls['title'].setValue(this.packageDetails.title);
-          this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId);
-          this.editPackageForm.controls['postcode'].setValue(this.packageDetails.postalcode);
-          this.editPackageForm.controls['price'].setValue(this.packageDetails.price);
-          this.editPackageForm.controls['frequency'].setValue(this.packageDetails.frequency);
+          this.communityDetails = data.result;
 
-          var control: any = this.editPackageForm.controls['featureList'];
-          for (let eachFeature of this.packageDetails.features) {
-            var newControl=this.initFeature();
-             control.push(newControl);
-             newControl.controls['feature'].setValue(eachFeature);
-          }
+          this.editCommunityForm.controls['id'].setValue(this.communityDetails._id);
+          this.editCommunityForm.controls['title'].setValue(this.communityDetails.title);
+          this.editCommunityForm.controls['addressLineOne'].setValue(this.communityDetails.addressLineOne);
+          this.editCommunityForm.controls['addressLineTwo'].setValue(this.communityDetails.addressLineTwo);
+          this.editCommunityForm.controls['postcode'].setValue(this.communityDetails.postcode);
+          this.editCommunityForm.controls['phone'].setValue(this.communityDetails.phone);
 
-          var vendorControl: any = this.editPackageForm.controls['vendorList'];
-          for (let eachVendor of this.packageDetails.vendors) {
-            var newControl=this.initVendor();
-             vendorControl.push(newControl);
-             newControl.controls['vendor'].setValue(eachVendor);
-          }
-          
-          
         } else {
-          alert(data.msg);
+
+          this.alertService.error(data.msg, 'community-error');
         }
 
       },
@@ -173,50 +144,16 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
         const err = body.error || JSON.stringify(body);
         var errr = JSON.parse(err);
         //alert(errr.msg);
-        this.alertService.error(errr.msg, 'package-error');
+        this.alertService.error(errr.msg, 'community-error');
 
       }
       );
 
-
-
-      this.getActiveVendors();
-      this.getAllServices();
-
   }
 
-  //get vendors
-  getActiveVendors() {
-    //this.userServices.getUserByRole('vendor')
-    this.userServices.getVendorByStatus(1)
-      .subscribe(data => {
-        this.availableVendors = data.result;
-      },
-      error => {
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        var errr = JSON.parse(err);
-        alert(errr.msg);
 
-      }
-      );
-  }
 
-  //get services
-  getAllServices() {
-    this.serviceServices.getAllService()
-      .subscribe(data => {
-        this.availableServices = data.result;
-      },
-      error => {
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        var errr = JSON.parse(err);
-        alert(errr.msg);
 
-      }
-      );
-  }
 
   ngOnDestroy() {
 

@@ -43,30 +43,30 @@ export class AdminCommunityListComponent implements AfterViewInit {
       );
   }
 
-  // deletePackage(packageId: any) {
-  //   var con = confirm("Are you sure!, You want to delete this package");
-  //   if (con) {
+  deleteCommunity(communityId: any) {
+    var con = confirm("Are you sure!, You want to delete this community");
+    if (con) {
 
 
-  //     this.communityServices.deletePackageByid(packageId)
-  //       .subscribe(data => {
-  //         if (data.status == 'success') {
-  //           this.alertService.success(data.msg, 'packageAlert');
-  //           this.getAllPackage();
-  //         } else {
-  //           this.alertService.error(data.msg, 'packageAlert');
-  //         }
-  //       },
-  //       error => {
-  //         const body = error.json() || '';
-  //         const err = body.error || JSON.stringify(body);
-  //         var errr = JSON.parse(err);
+      this.communityServices.deleteCommunityByid(communityId)
+        .subscribe(data => {
+          if (data.status == 'success') {
+            this.alertService.success(data.msg, 'communityAlert');
+            this.getAllCommunity();
+          } else {
+            this.alertService.error(data.msg, 'communityAlert');
+          }
+        },
+        error => {
+          const body = error.json() || '';
+          const err = body.error || JSON.stringify(body);
+          var errr = JSON.parse(err);
 
-  //         this.alertService.error(errr.msg, 'packageAlert');
-  //       }
-  //       );
-  //   }
-  // }
+          this.alertService.error(errr.msg, 'communityAlert');
+        }
+        );
+    }
+  }
   ngAfterViewInit() {
     this.getAllCommunity();
 

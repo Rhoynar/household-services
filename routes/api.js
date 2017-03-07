@@ -618,6 +618,8 @@ var deletePackage = function (req, res) {
 
 }
 
+
+
 var getPackageByid = function (req, res) {
     var condition = {};
     if (req.body.packageId != '') {
@@ -1390,7 +1392,7 @@ var addCommunity = function (req, res) {
         if (err) {
             return res.json({ status: 'error', error: err });
         } else {
-            return res.json({ status: 'success', msg: 'Commuinity added successfully' });
+            return res.json({ status: 'success', msg: 'Community added successfully' });
         }
     });
 
@@ -1417,6 +1419,69 @@ var getAllCommunity = function (req, res) {
          return res.send();
      }
 }
+
+var deleteCommunity=function (req, res) {
+    if (req.user) {
+        var communityId = req.params.id;
+        Communities.remove({ _id: communityId }, function (err, removeBrand) {
+            if (err) {
+                return res.json({ status: 'error', error: err, msg: "Some error occured please try later" });
+            } else {
+                return res.json({ status: 'success', msg: 'Community Deleted successfully' });
+            }
+        });
+    } else {
+         res.status(401);
+         res.json({ status: 'error', msg: 'some error occured' });
+         return res.send();
+     }
+
+}
+
+var getCommunityByid = function (req, res) {
+    
+    var communityId = req.params.id;
+    if (communityId != '') {
+        Communities.findById(communityId).exec(function (err, packageDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch Community , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: packageDoc });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+
+var updateCommunity = function (req, res) {
+
+    var communityDetails = {};
+
+    communityDetails.title = req.body.title;
+    communityDetails.addressLineOne = req.body.addressLineOne;
+    communityDetails.addressLineTwo = req.body.addressLineTwo;
+    communityDetails.postcode = req.body.postcode;
+    communityDetails.phone = req.body.phone;
+console.log(req.body);
+    Communities.findByIdAndUpdate(req.body.id, communityDetails, function (err, updateRes) {
+
+        if (err) {
+
+            return res.json({ status: 'error', error: err });
+        }
+        else {
+
+            return res.json({ status: 'success', msg: 'Community updated successfully' });
+        }
+    });
+
+    //return res.json({});
+}
+
 
 
 router.post('/authenticate', authenticateUser);
@@ -1449,7 +1514,9 @@ router.post('/getPackageByZipcode', getPackageByZipcode);
 
 router.get('/getAllCommunity', getAllCommunity);
 router.post('/addCommunity', addCommunity);
-
+router.delete('/community/:id', deleteCommunity);
+router.get('/community/:id', getCommunityByid);
+router.post('/updateCommunity', updateCommunity);
 
 
 router.post('/createOrder', createOrder);

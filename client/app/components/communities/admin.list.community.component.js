@@ -34,27 +34,27 @@ var AdminCommunityListComponent = (function () {
             alert(errr.msg);
         });
     };
-    // deletePackage(packageId: any) {
-    //   var con = confirm("Are you sure!, You want to delete this package");
-    //   if (con) {
-    //     this.communityServices.deletePackageByid(packageId)
-    //       .subscribe(data => {
-    //         if (data.status == 'success') {
-    //           this.alertService.success(data.msg, 'packageAlert');
-    //           this.getAllPackage();
-    //         } else {
-    //           this.alertService.error(data.msg, 'packageAlert');
-    //         }
-    //       },
-    //       error => {
-    //         const body = error.json() || '';
-    //         const err = body.error || JSON.stringify(body);
-    //         var errr = JSON.parse(err);
-    //         this.alertService.error(errr.msg, 'packageAlert');
-    //       }
-    //       );
-    //   }
-    // }
+    AdminCommunityListComponent.prototype.deleteCommunity = function (communityId) {
+        var _this = this;
+        var con = confirm("Are you sure!, You want to delete this community");
+        if (con) {
+            this.communityServices.deleteCommunityByid(communityId)
+                .subscribe(function (data) {
+                if (data.status == 'success') {
+                    _this.alertService.success(data.msg, 'communityAlert');
+                    _this.getAllCommunity();
+                }
+                else {
+                    _this.alertService.error(data.msg, 'communityAlert');
+                }
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                _this.alertService.error(errr.msg, 'communityAlert');
+            });
+        }
+    };
     AdminCommunityListComponent.prototype.ngAfterViewInit = function () {
         this.getAllCommunity();
     };

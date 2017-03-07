@@ -50,3 +50,4 @@ export * from './services/user.list.services.component';
 
 export * from './communities/admin.add.community.component';
 export * from './communities/admin.list.community.component';
+export * from './communities/admin.edit.community.component';

@@ -14,79 +14,56 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
-var AdminEditPackageComponent = (function () {
+var AdminEditCommunityComponent = (function () {
     //constructor start
-    function AdminEditPackageComponent(http, router, fb, alertService, activatedRoute, userServices, packageServices, serviceServices) {
+    function AdminEditCommunityComponent(http, router, fb, alertService, activatedRoute, communityServices) {
         this.http = http;
         this.router = router;
         this.fb = fb;
         this.alertService = alertService;
         this.activatedRoute = activatedRoute;
-        this.userServices = userServices;
-        this.packageServices = packageServices;
-        this.serviceServices = serviceServices;
+        this.communityServices = communityServices;
         this.loggedIn = false;
-        this.packageId = '';
-        this.availableServices = [];
+        this.communityId = '';
+        this.filesToUpload = [];
+        this.formData = new FormData();
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
-        this.packageDetails = {};
+        this.communityDetails = {};
         this.pagetitle = "Update Package";
         var params = this.activatedRoute.snapshot.params;
-        this.packageId = params.id;
-        this.editPackageForm = this.fb.group({
+        this.communityId = params.id;
+        this.editCommunityForm = this.fb.group({
             id: ['', forms_1.Validators.required],
-            serviceId: ['', forms_1.Validators.required],
             title: ['', forms_1.Validators.required],
+            addressLineOne: ['', forms_1.Validators.required],
+            addressLineTwo: [''],
             postcode: ['', forms_1.Validators.required],
-            price: ['', forms_1.Validators.required],
-            frequency: ['', forms_1.Validators.required],
-            vendorList: this.fb.array([]),
-            featureList: this.fb.array([])
+            phone: ['', forms_1.Validators.required],
+            communityLogo: ['']
         });
     }
     //end of constructor
-    AdminEditPackageComponent.prototype.initFeature = function () {
-        return this.fb.group({
-            feature: ['', forms_1.Validators.required]
-        });
+    AdminEditCommunityComponent.prototype.communityPage = function () {
+        this.router.navigate(['/admin/community']);
     };
-    AdminEditPackageComponent.prototype.initVendor = function () {
-        return this.fb.group({
-            vendor: ['', forms_1.Validators.required]
-        });
-    };
-    AdminEditPackageComponent.prototype.addFeature = function () {
-        var control = this.editPackageForm.controls['featureList'];
-        control.push(this.initFeature());
-    };
-    AdminEditPackageComponent.prototype.addVendor = function () {
-        var control = this.editPackageForm.controls['vendorList'];
-        control.push(this.initVendor());
-    };
-    //get vendors
-    AdminEditPackageComponent.prototype.packagePage = function () {
-        this.router.navigate(['/admin/packages']);
-    };
-    AdminEditPackageComponent.prototype.removefeature = function (index) {
-        var arrayControl = this.editPackageForm.controls['featureList'];
-        arrayControl.removeAt(index);
-    };
-    AdminEditPackageComponent.prototype.removeVendor = function (index) {
-        var arrayControl = this.editPackageForm.controls['vendorList'];
-        arrayControl.removeAt(index);
-    };
-    AdminEditPackageComponent.prototype.submitForm = function () {
-        //console.log('Reactive Form Data: ')
-        //console.log(this.editPackageForm.value);
+    AdminEditCommunityComponent.prototype.submitForm = function () {
         var _this = this;
-        this.packageServices.updatePackage(this.editPackageForm.value)
+        console.log(this.formData);
+        console.log(this.editCommunityForm.value);
+        this.formData.append('id', this.editCommunityForm.value.id);
+        this.formData.append('title', this.editCommunityForm.value.title);
+        this.formData.append('addressLineOne', this.editCommunityForm.value.addressLineOne);
+        this.formData.append('addressLineTwo', this.editCommunityForm.value.addressLineTwo);
+        this.formData.append('postcode', this.editCommunityForm.value.postcode);
+        this.formData.append('phone', this.editCommunityForm.value.phone);
+        this.communityServices.updateCommunity(this.editCommunityForm.value)
             .subscribe(function (data) {
             if (data.status == 'error') {
                 alert(data.error);
             }
             else {
                 alert(data.msg);
-                _this.packagePage();
+                _this.communityPage();
             }
             //this.router.navigate(['/login']);
             //return false;
@@ -97,90 +74,58 @@ var AdminEditPackageComponent = (function () {
             alert(errr.msg);
         });
     };
-    AdminEditPackageComponent.prototype.ngAfterViewInit = function () {
+    AdminEditCommunityComponent.prototype.fileChangeEvent = function (event) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            var file = fileList[0];
+            this.formData.append('communityLogo', file, file.name);
+            console.log(this.formData);
+        }
     };
-    AdminEditPackageComponent.prototype.ngOnInit = function () {
+    // fileChangeEvent(fileInput: any) {
+    //   this.filesToUpload = <Array<File>>fileInput.target.files;
+    // }
+    AdminEditCommunityComponent.prototype.ngAfterViewInit = function () {
+    };
+    AdminEditCommunityComponent.prototype.ngOnInit = function () {
         var _this = this;
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
         }
-        this.packageServices.getPackageByid(this.packageId)
+        this.communityServices.getCommunityByid(this.communityId)
             .subscribe(function (data) {
             if (data.status == "success") {
-                _this.packageDetails = data.result;
-                _this.editPackageForm.controls['id'].setValue(_this.packageDetails._id);
-                _this.editPackageForm.controls['title'].setValue(_this.packageDetails.title);
-                _this.editPackageForm.controls['serviceId'].setValue(_this.packageDetails.serviceId);
-                _this.editPackageForm.controls['postcode'].setValue(_this.packageDetails.postalcode);
-                _this.editPackageForm.controls['price'].setValue(_this.packageDetails.price);
-                _this.editPackageForm.controls['frequency'].setValue(_this.packageDetails.frequency);
-                var control = _this.editPackageForm.controls['featureList'];
-                for (var _i = 0, _a = _this.packageDetails.features; _i < _a.length; _i++) {
-                    var eachFeature = _a[_i];
-                    var newControl = _this.initFeature();
-                    control.push(newControl);
-                    newControl.controls['feature'].setValue(eachFeature);
-                }
-                var vendorControl = _this.editPackageForm.controls['vendorList'];
-                for (var _b = 0, _c = _this.packageDetails.vendors; _b < _c.length; _b++) {
-                    var eachVendor = _c[_b];
-                    var newControl = _this.initVendor();
-                    vendorControl.push(newControl);
-                    newControl.controls['vendor'].setValue(eachVendor);
-                }
+                _this.communityDetails = data.result;
+                _this.editCommunityForm.controls['id'].setValue(_this.communityDetails._id);
+                _this.editCommunityForm.controls['title'].setValue(_this.communityDetails.title);
+                _this.editCommunityForm.controls['addressLineOne'].setValue(_this.communityDetails.addressLineOne);
+                _this.editCommunityForm.controls['addressLineTwo'].setValue(_this.communityDetails.addressLineTwo);
+                _this.editCommunityForm.controls['postcode'].setValue(_this.communityDetails.postcode);
+                _this.editCommunityForm.controls['phone'].setValue(_this.communityDetails.phone);
             }
             else {
-                alert(data.msg);
+                _this.alertService.error(data.msg, 'community-error');
             }
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
             //alert(errr.msg);
-            _this.alertService.error(errr.msg, 'package-error');
-        });
-        this.getActiveVendors();
-        this.getAllServices();
-    };
-    //get vendors
-    AdminEditPackageComponent.prototype.getActiveVendors = function () {
-        var _this = this;
-        //this.userServices.getUserByRole('vendor')
-        this.userServices.getVendorByStatus(1)
-            .subscribe(function (data) {
-            _this.availableVendors = data.result;
-        }, function (error) {
-            var body = error.json() || '';
-            var err = body.error || JSON.stringify(body);
-            var errr = JSON.parse(err);
-            alert(errr.msg);
+            _this.alertService.error(errr.msg, 'community-error');
         });
     };
-    //get services
-    AdminEditPackageComponent.prototype.getAllServices = function () {
-        var _this = this;
-        this.serviceServices.getAllService()
-            .subscribe(function (data) {
-            _this.availableServices = data.result;
-        }, function (error) {
-            var body = error.json() || '';
-            var err = body.error || JSON.stringify(body);
-            var errr = JSON.parse(err);
-            alert(errr.msg);
-        });
+    AdminEditCommunityComponent.prototype.ngOnDestroy = function () {
     };
-    AdminEditPackageComponent.prototype.ngOnDestroy = function () {
-    };
-    AdminEditPackageComponent = __decorate([
+    AdminEditCommunityComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'admin-edit-package',
-            templateUrl: './admin.edit.package.component.html'
+            selector: 'admin-edit-community',
+            templateUrl: './admin.edit.community.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.UserServices, index_1.PackageServices, index_1.ServiceServices])
-    ], AdminEditPackageComponent);
-    return AdminEditPackageComponent;
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.CommunityServices])
+    ], AdminEditCommunityComponent);
+    return AdminEditCommunityComponent;
 }());
-exports.AdminEditPackageComponent = AdminEditPackageComponent;
+exports.AdminEditCommunityComponent = AdminEditCommunityComponent;
 //# sourceMappingURL=admin.edit.community.component.js.map

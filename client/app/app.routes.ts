@@ -9,7 +9,8 @@ import {
   AdminAddServiceComponent, AdminEditServiceComponent, AdminOrderListComponent,
   VendorOrderListComponent, VendorPackageListComponent, UserListServicesComponent,
   LearnMoreComponent, ConfirmSignupComponent, ForgotPassComponent, ResetPassComponent,
-  ListPendingVendorComponent,AdminAddCommunityComponent,AdminCommunityListComponent
+  ListPendingVendorComponent,AdminAddCommunityComponent,AdminCommunityListComponent,
+  AdminEditCommunityComponent
 } from './components/index';
 
 import {
@@ -46,7 +47,9 @@ const APP_ROUTES: Routes = [
 
   { path: 'admin/community/new', component: AdminAddCommunityComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/community', component: AdminCommunityListComponent, canActivate: [AdminLoginGuard] },
-
+  { path: 'admin/community/edit/:id', component: AdminEditCommunityComponent, canActivate: [AdminLoginGuard] },
+  
+  
   { path: 'admin/services', component: AdminListServiceComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/services/new', component: AdminAddServiceComponent, canActivate: [AdminLoginGuard] },
   { path: 'admin/services/:id', component: AdminEditServiceComponent, canActivate: [AdminLoginGuard] },

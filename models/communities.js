@@ -10,6 +10,7 @@ var communitySchema = new Schema({
   	addressLineTwo: String,
   	postcode: String,
   	phone: String,
+  	communityLogo:String,
   	created:{ type : Date, default: new Date() }
 });
 

@@ -42,9 +42,9 @@ var CommunityServices = (function () {
             .map(this.extractData); //.catch(this.handleError);;
     };
     CommunityServices.prototype.updateCommunity = function (communityDetails) {
-        // var headers = new Headers();
-        // headers.append('Content-Type', 'multipart/form-data');
-        // headers.append('Accept', 'application/json');
+        //var headers = new Headers();
+        //headers.append('Content-Type', 'multipart/form-data');
+        //headers.append('Accept', 'application/json');
         var headers = this.getHeader();
         return this.http.post('/api/updateCommunity', JSON.stringify(communityDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;

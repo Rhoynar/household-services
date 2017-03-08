@@ -39,7 +39,8 @@ var AdminEditCommunityComponent = (function () {
             addressLineTwo: [''],
             postcode: ['', forms_1.Validators.required],
             phone: ['', forms_1.Validators.required],
-            communityLogo: ['']
+            communityLogo: [''],
+            commLogo: ['']
         });
     }
     //end of constructor
@@ -48,14 +49,13 @@ var AdminEditCommunityComponent = (function () {
     };
     AdminEditCommunityComponent.prototype.submitForm = function () {
         var _this = this;
-        console.log(this.formData);
-        console.log(this.editCommunityForm.value);
         this.formData.append('id', this.editCommunityForm.value.id);
         this.formData.append('title', this.editCommunityForm.value.title);
         this.formData.append('addressLineOne', this.editCommunityForm.value.addressLineOne);
         this.formData.append('addressLineTwo', this.editCommunityForm.value.addressLineTwo);
         this.formData.append('postcode', this.editCommunityForm.value.postcode);
         this.formData.append('phone', this.editCommunityForm.value.phone);
+        //this.formData.append('commLogo', this.editCommunityForm.value.phone);
         this.communityServices.updateCommunity(this.editCommunityForm.value)
             .subscribe(function (data) {
             if (data.status == 'error') {
@@ -74,7 +74,7 @@ var AdminEditCommunityComponent = (function () {
             alert(errr.msg);
         });
     };
-    AdminEditCommunityComponent.prototype.fileChangeEvent = function (event) {
+    AdminEditCommunityComponent.prototype.fileChangeEvent1 = function (event) {
         var fileList = event.target.files;
         if (fileList.length > 0) {
             var file = fileList[0];
@@ -82,9 +82,35 @@ var AdminEditCommunityComponent = (function () {
             console.log(this.formData);
         }
     };
-    // fileChangeEvent(fileInput: any) {
-    //   this.filesToUpload = <Array<File>>fileInput.target.files;
-    // }
+    AdminEditCommunityComponent.prototype.fileChangeEvent12 = function (event) {
+        var files = event.target.files;
+        var file = files[0];
+        var reader = new FileReader();
+        reader.onload = function (readerEvt) {
+            //this.commLogo = readerEvt.target.result;
+            //this.editCommunityForm.controls['communityLogo'].setValue(readerEvt.target.result);          
+        };
+        reader.readAsBinaryString(file);
+    };
+    AdminEditCommunityComponent.prototype.fileChangeEvent = function (event) {
+        this.readImage(event, this.setAvatar, this);
+    };
+    AdminEditCommunityComponent.prototype.readImage = function (event, callback, obj) {
+        var files = event.target.files;
+        var file = files[0];
+        this.formData.append('communityLogo', file, file.name);
+        var reader = new FileReader();
+        reader.onload = function (readerEvt) {
+            callback(readerEvt.target.result, obj);
+        };
+        reader.readAsDataURL(file);
+    };
+    AdminEditCommunityComponent.prototype.setAvatar = function (img, obj) {
+        //obj.avatar = img;
+        //console.log(img);
+        //obj.commLogo=img;  
+        obj.editCommunityForm.controls['commLogo'].setValue(img);
+    };
     AdminEditCommunityComponent.prototype.ngAfterViewInit = function () {
     };
     AdminEditCommunityComponent.prototype.ngOnInit = function () {
@@ -103,6 +129,7 @@ var AdminEditCommunityComponent = (function () {
                 _this.editCommunityForm.controls['addressLineTwo'].setValue(_this.communityDetails.addressLineTwo);
                 _this.editCommunityForm.controls['postcode'].setValue(_this.communityDetails.postcode);
                 _this.editCommunityForm.controls['phone'].setValue(_this.communityDetails.phone);
+                _this.editCommunityForm.controls['commLogo'].setValue(_this.communityDetails.communityLogo);
             }
             else {
                 _this.alertService.error(data.msg, 'community-error');

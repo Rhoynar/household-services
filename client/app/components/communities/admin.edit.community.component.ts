@@ -26,6 +26,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
   communityDetails: any = {};
   availableVendors: any;
   pagetitle = "Update Package";
+  
   //constructor start
   constructor(
     private http: Http,
@@ -45,7 +46,8 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
       addressLineTwo: [''],
       postcode: ['', Validators.required],
       phone: ['', Validators.required],
-      communityLogo: ['']
+      communityLogo: [''],
+      commLogo:['']
     });
 
 
@@ -64,17 +66,19 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
 
   submitForm(): void {
 
-    console.log(this.formData);
-    console.log(this.editCommunityForm.value);
-
     
-    this.formData.append('id',this.editCommunityForm.value.id);
-    this.formData.append('title',this.editCommunityForm.value.title);
-    this.formData.append('addressLineOne',this.editCommunityForm.value.addressLineOne);
-    this.formData.append('addressLineTwo',this.editCommunityForm.value.addressLineTwo);
-    this.formData.append('postcode',this.editCommunityForm.value.postcode);
-    this.formData.append('phone',this.editCommunityForm.value.phone);
+
+
+    this.formData.append('id', this.editCommunityForm.value.id);
+    this.formData.append('title', this.editCommunityForm.value.title);
+    this.formData.append('addressLineOne', this.editCommunityForm.value.addressLineOne);
+    this.formData.append('addressLineTwo', this.editCommunityForm.value.addressLineTwo);
+    this.formData.append('postcode', this.editCommunityForm.value.postcode);
+    this.formData.append('phone', this.editCommunityForm.value.phone);
+    //this.formData.append('commLogo', this.editCommunityForm.value.phone);
+
     this.communityServices.updateCommunity(this.editCommunityForm.value)
+    //this.communityServices.updateCommunity(this.formData)
       .subscribe(data => {
         if (data.status == 'error') {
           alert(data.error);
@@ -96,7 +100,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
       );
   }
 
-  fileChangeEvent(event: any) {
+  fileChangeEvent1(event: any) {
     let fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       let file: File = fileList[0];
@@ -106,9 +110,43 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
     }
   }
 
-  // fileChangeEvent(fileInput: any) {
-  //   this.filesToUpload = <Array<File>>fileInput.target.files;
-  // }
+  fileChangeEvent12(event: any) {
+
+    var files = event.target.files;
+    var file = files[0];
+
+    var reader = new FileReader();
+    reader.onload = function (readerEvt: any) {
+      //this.commLogo = readerEvt.target.result;
+      //this.editCommunityForm.controls['communityLogo'].setValue(readerEvt.target.result);          
+    };
+    reader.readAsBinaryString(file);
+  }
+
+  fileChangeEvent(event: any) {
+    this.readImage(event, this.setAvatar, this);
+  }
+  readImage(event: any, callback: any, obj: any) {
+
+    var files = event.target.files;
+    var file = files[0];
+    this.formData.append('communityLogo', file, file.name);
+    var reader = new FileReader();
+
+    reader.onload = function (readerEvt: any) {
+      callback(readerEvt.target.result, obj);
+    };
+    reader.readAsDataURL(file);
+
+  }
+  setAvatar(img: any, obj: any) {
+    //obj.avatar = img;
+    //console.log(img);
+    //obj.commLogo=img;  
+    obj.editCommunityForm.controls['commLogo'].setValue(img);        
+  }
+
+  
 
   ngAfterViewInit() {
 
@@ -132,6 +170,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
           this.editCommunityForm.controls['addressLineTwo'].setValue(this.communityDetails.addressLineTwo);
           this.editCommunityForm.controls['postcode'].setValue(this.communityDetails.postcode);
           this.editCommunityForm.controls['phone'].setValue(this.communityDetails.phone);
+          this.editCommunityForm.controls['commLogo'].setValue(this.communityDetails.communityLogo);
 
         } else {
 

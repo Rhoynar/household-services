@@ -1,4 +1,5 @@
 var express = require('express');
+var path = require('path');
 var router = express.Router();
 var passport = require('passport');
 const async = require('async');
@@ -13,7 +14,13 @@ var Communities=require('../models/communities');
 var stripe = require('stripe')('sk_test_CL79NO7nqpgs6DVlFYNtWIXs'); //test account
 var moment = require('moment');
 
+var multer  = require('multer');
+
+
+
 var nev = require('email-verification')(mongoose);
+
+
 
 nev.configure({
     verificationURL: 'http://ec2-54-165-12-165.compute-1.amazonaws.com:5000/email-verification/${URL}',
@@ -1457,7 +1464,7 @@ var getCommunityByid = function (req, res) {
 }
 
 
-var updateCommunity = function (req, res) {
+/*var updateCommunity = function (req, res) {
 
     var communityDetails = {};
 
@@ -1480,7 +1487,60 @@ console.log(req.body);
     });
 
     //return res.json({});
-}
+}*/
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'client/uploads/community/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now()+path.extname(file.originalname))
+  },
+  fileFilter: function (req, file, cb) {
+    console.log(file);
+     if (path.extname(file.originalname) !== '.jpeg' &&  path.extname(file.originalname) !== '.jpg') {
+       return cb(new Error('Only jpg are allowed'))
+     }
+
+    cb(null, true)
+  }
+})
+
+var upload = multer({ storage: storage })
+
+
+//var upload = multer({ dest: 'uploads/' });
+var updateCommunity= function (req, res, next) {
+//app.post('/profile', upload.single('communityLogo'), function (req, res, next) {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+
+  console.log(req.file);
+
+    
+    var communityDetails = {};
+
+    communityDetails.title = req.body.title;
+    communityDetails.addressLineOne = req.body.addressLineOne;
+    communityDetails.addressLineTwo = req.body.addressLineTwo;
+    communityDetails.postcode = req.body.postcode;
+    communityDetails.phone = req.body.phone;
+    communityDetails.communityLogo = req.body.commLogo;
+    
+    Communities.findByIdAndUpdate(req.body.id, communityDetails, function (err, updateRes) {
+
+        if (err) {
+
+            return res.json({ status: 'error', error: err });
+        }
+        else {
+
+            return res.json({ status: 'success', msg: 'Community updated successfully' });
+        }
+    });
+
+  
+};
 
 
 
@@ -1516,7 +1576,7 @@ router.get('/getAllCommunity', getAllCommunity);
 router.post('/addCommunity', addCommunity);
 router.delete('/community/:id', deleteCommunity);
 router.get('/community/:id', getCommunityByid);
-router.post('/updateCommunity', updateCommunity);
+router.post('/updateCommunity',upload.single('communityLogo'), updateCommunity);
 
 
 router.post('/createOrder', createOrder);

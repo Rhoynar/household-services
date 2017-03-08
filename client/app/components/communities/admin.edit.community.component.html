@@ -62,7 +62,8 @@
                             <label class="input-heading">Community Logo :</label>
                             <div class="input-box">
                                 <input type="file" name="communityLogo" id="communityLogo"  class="input-fill" [formControl]="editCommunityForm.controls['communityLogo']" (change)="fileChangeEvent($event)" />
-                                
+                                <img src="{{this.editCommunityForm.value.commLogo}}"/>
+                                <!--{{this.editCommunityForm.value|json}}-->
                             </div>
                         </div>
 

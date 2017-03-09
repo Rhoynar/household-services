@@ -8,7 +8,34 @@
 <div class="inner-mid-sec white-bg">
   <div class="container">
     <div class="row">
-      <div class="packages_page">
+
+      <div class="col-sm-6 col-sm-offset-3" *ngIf="!zipcode">
+        <div class="sign-in-box">
+          
+          <form [formGroup]="searchServicesForm" (ngSubmit)="searchService()">
+            <div class="login_info_block">
+              <h4>Please provide your zipcode to search services</h4>
+
+              <div class="input-block">
+                
+                <input class="input-fill2" placeholder="zipcode" type="text" name="zipcode" id="zipcode" [formControl]="searchServicesForm.controls['zipcode']">
+              </div>
+              <div *ngIf="searchServicesForm.controls['zipcode'].hasError('required') && searchServicesForm.controls['zipcode'].touched"
+                class="alert alert-danger">
+                This feild is required.
+              </div>
+
+              <div class="text-center login_wrp">
+                <button type="submit" class="rh_btn login_btn" [disabled]="!searchServicesForm.valid">Submit</button>
+              </div>
+            </div>
+            
+
+            
+          </form>
+        </div>
+      </div>
+      <div class="packages_page" *ngIf="zipcode">
 
         <div class="premium_block clearfix">
           <div class="col-sm-3 premium_inq" *ngFor="let package of servicesList">

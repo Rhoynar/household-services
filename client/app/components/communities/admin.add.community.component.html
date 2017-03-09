@@ -58,7 +58,21 @@
                             </div>
                         </div>
 
-                        
+                        <div class="form-group">
+                            <label class="input-heading">Community Logo :</label>
+                            <div class="input-box" *ngIf="!this.addCommunityForm.value.commLogo">
+                                <input type="file" name="communityLogo" id="communityLogo"  class="input-fill" [formControl]="addCommunityForm.controls['communityLogo']" (change)="fileChangeEvent($event)" />
+                                
+                                <!--{{this.addCommunityForm.value|json}}-->
+                            </div>
+                            <div class="input-box" *ngIf="this.addCommunityForm.value.commLogo">
+                                <button type="button" class="sub-btn cancel-btn" (click)="removeLogo();">remove</button>
+                                <img src="{{this.addCommunityForm.value.commLogo}}" style="max-width: 300px;"/>
+                                
+                                <!--{{this.addCommunityForm.value|json}}-->
+                            </div>
+                            
+                        </div>
                         
 
 

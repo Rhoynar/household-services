@@ -10,11 +10,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var index_1 = require('../services/index');
 var AdminLoginGuard = (function () {
-    function AdminLoginGuard(router) {
+    function AdminLoginGuard(router, authenticationService) {
         this.router = router;
+        this.authenticationService = authenticationService;
     }
     AdminLoginGuard.prototype.canActivate = function (route, state) {
+        var _this = this;
+        var currentUserStr = localStorage.getItem('currentUser');
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            if (currentUserStr && result == false) {
+                _this.router.navigate(['/']);
+            }
+        });
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) {
@@ -44,7 +54,7 @@ var AdminLoginGuard = (function () {
     };
     AdminLoginGuard = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [router_1.Router])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
     ], AdminLoginGuard);
     return AdminLoginGuard;
 }());

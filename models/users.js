@@ -21,7 +21,8 @@ var userSchema = new Schema({
     stripeCustomerId:String,
     stripeCustomer:{},
     services:[{ type: Schema.Types.ObjectId, ref: 'Services' }],
-    status:String
+    status:String,
+    zipcode:String
 });
 
 

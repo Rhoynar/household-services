@@ -98,6 +98,13 @@ var AdminEditCommunityComponent = (function () {
     AdminEditCommunityComponent.prototype.readImage = function (event, callback, obj) {
         var files = event.target.files;
         var file = files[0];
+        var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/xpng", "image/gif"];
+        var a = allowedTypes.indexOf(file.type);
+        if (a < 0) {
+            alert("File type not allowed");
+            obj.editCommunityForm.controls['communityLogo'].setValue('');
+            return false;
+        }
         this.formData.append('communityLogo', file, file.name);
         var reader = new FileReader();
         reader.onload = function (readerEvt) {
@@ -106,10 +113,10 @@ var AdminEditCommunityComponent = (function () {
         reader.readAsDataURL(file);
     };
     AdminEditCommunityComponent.prototype.setAvatar = function (img, obj) {
-        //obj.avatar = img;
-        //console.log(img);
-        //obj.commLogo=img;  
         obj.editCommunityForm.controls['commLogo'].setValue(img);
+    };
+    AdminEditCommunityComponent.prototype.removeLogo = function () {
+        this.editCommunityForm.controls['commLogo'].setValue('');
     };
     AdminEditCommunityComponent.prototype.ngAfterViewInit = function () {
     };

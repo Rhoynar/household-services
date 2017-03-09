@@ -36,7 +36,8 @@ var EditUserProfileComponent = (function () {
             addresslineone: ['', forms_1.Validators.required],
             addresslinetwo: '',
             usercity: '',
-            usercountry: ''
+            usercountry: '',
+            zipcode: [''],
         });
     }
     EditUserProfileComponent.prototype.ngOnInit = function () {
@@ -53,6 +54,7 @@ var EditUserProfileComponent = (function () {
             _this.profileUpdateForm.controls['addresslinetwo'].setValue(data.addresslinetwo);
             _this.profileUpdateForm.controls['usercity'].setValue(data.city);
             _this.profileUpdateForm.controls['usercountry'].setValue(data.country);
+            _this.profileUpdateForm.controls['zipcode'].setValue(data.zipcode);
         }, function (error) {
             console.log(error);
         });

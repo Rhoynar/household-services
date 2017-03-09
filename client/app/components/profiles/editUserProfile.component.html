@@ -89,6 +89,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="input-heading">Zipcode :</label>
+                            <div class="input-box">
+                                <input type="text" name="zipcode" id="zipcode" class="input-fill" [formControl]="profileUpdateForm.controls['zipcode']" />
+                            </div>
+                            <div *ngIf="profileUpdateForm.controls['zipcode'].hasError('required') && profileUpdateForm.controls['zipcode'].touched"
+                                class="alert alert-danger">
+                                This feild is required.
+                            </div>
+                        </div>
+
                         <div class="form-group btn-wrp">
 
                             <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->

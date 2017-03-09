@@ -35,16 +35,17 @@
                   <p>We Guarantee our work, or the Service is Free.</p>
 
                   <div class="block_one clearfix">
-                    <div class="more_sec">
-                      <a [routerLink]="['/learnmore']"  class="rh_btn">Learn More</a>
-                    </div>
-                    <div class="more_sec">
+                    
+                    <!--<div class="more_sec">-->
+                      <div class="">
                       <!--(click)="searchControl=false"-->
                       <a href="javascript:void(0);" (click)="searchControl=!searchControl" class="rh_btn">Get Started</a>
                     </div>
+                    <br>
                   </div>
-                  <div class="search_block" [ngClass]="{'hide': searchControl}" >
-
+                  
+                  <div class="search_block clearfix" [ngClass]="{'hide': searchControl}" >
+                      
                     <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="rh_btn"
                       #search [(ngModel)]="searchValue">
                     <input type="hidden" [(ngModel)]="postal_code" id="userZipcode" name="userZipcode" />

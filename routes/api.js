@@ -364,6 +364,7 @@ var updateProfile = function (req, res) {
             addresslinetwo: req.body.addresslinetwo,
             city: req.body.usercity,
             country: req.body.usercountry,
+            zipcode: req.body.zipcode
         }
 
     Users.findByIdAndUpdate(req.body.id, updateDetails, function (err, updateRes) {
@@ -1394,7 +1395,7 @@ var addCommunity = function (req, res) {
     communityDetails.addressLineTwo = req.body.addressLineTwo;
     communityDetails.postcode = req.body.postcode;
     communityDetails.phone = req.body.phone;
-
+    communityDetails.communityLogo = req.body.commLogo;
     communityDetails.save(function (err) {
         if (err) {
             return res.json({ status: 'error', error: err });
@@ -1515,7 +1516,7 @@ var updateCommunity= function (req, res, next) {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
 
-  console.log(req.file);
+  //console.log(req.file);
 
     
     var communityDetails = {};

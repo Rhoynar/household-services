@@ -45,7 +45,8 @@ export class EditUserProfileComponent implements AfterViewInit, OnInit {
       addresslineone: ['', Validators.required],
       addresslinetwo: '',
       usercity: '',
-      usercountry: ''
+      usercountry: '',
+      zipcode: [''],
     });
 
   }
@@ -65,6 +66,7 @@ export class EditUserProfileComponent implements AfterViewInit, OnInit {
         this.profileUpdateForm.controls['addresslinetwo'].setValue(data.addresslinetwo);
         this.profileUpdateForm.controls['usercity'].setValue(data.city);
         this.profileUpdateForm.controls['usercountry'].setValue(data.country);
+        this.profileUpdateForm.controls['zipcode'].setValue(data.zipcode);
       },
       error => {
         console.log(error);

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
+import { AuthenticationService, UserServices } from '../services/index';
 
 
 @Injectable()
 export class AdminLoginGuard implements CanActivate {
 
     constructor(
-        private router: Router
+        private router: Router,
+        private authenticationService: AuthenticationService,
     ) { }
 
     canActivate(
@@ -16,6 +17,14 @@ export class AdminLoginGuard implements CanActivate {
         state: RouterStateSnapshot
     ) {
         var currentUserStr = localStorage.getItem('currentUser')
+        
+        this.authenticationService.generatetoken()
+            .subscribe(result => {
+                if (currentUserStr && result == false) {
+                    this.router.navigate(['/']);
+                }
+            });
+        var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr) { //if user is there
             if (currentUser.token.role == "admin") {  //if current user is admin
@@ -29,7 +38,7 @@ export class AdminLoginGuard implements CanActivate {
                         this.router.navigate(['/vendor']);
                         break;
                     case 'user':
-                        
+
                         this.router.navigate(['/dashboard']);
                         break;
                     default:

@@ -29,7 +29,9 @@ var AdminAddCommunityComponent = (function () {
             addressLineOne: ['', forms_1.Validators.required],
             addressLineTwo: [''],
             postcode: ['', forms_1.Validators.required],
-            phone: ['', forms_1.Validators.required]
+            phone: ['', forms_1.Validators.required],
+            communityLogo: [''],
+            commLogo: ['']
         });
     }
     //end of constructor
@@ -55,6 +57,31 @@ var AdminAddCommunityComponent = (function () {
             var err = body.error || JSON.stringify(body);
             var errr = JSON.parse(err);
         });
+    };
+    AdminAddCommunityComponent.prototype.fileChangeEvent = function (event) {
+        this.readImage(event, this.setAvatar, this);
+    };
+    AdminAddCommunityComponent.prototype.readImage = function (event, callback, obj) {
+        var files = event.target.files;
+        var file = files[0];
+        var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/xpng", "image/gif"];
+        var a = allowedTypes.indexOf(file.type);
+        if (a < 0) {
+            alert("File type not allowed");
+            obj.addCommunityForm.controls['communityLogo'].setValue('');
+            return false;
+        }
+        var reader = new FileReader();
+        reader.onload = function (readerEvt) {
+            callback(readerEvt.target.result, obj);
+        };
+        reader.readAsDataURL(file);
+    };
+    AdminAddCommunityComponent.prototype.setAvatar = function (img, obj) {
+        obj.addCommunityForm.controls['commLogo'].setValue(img);
+    };
+    AdminAddCommunityComponent.prototype.removeLogo = function () {
+        this.addCommunityForm.controls['commLogo'].setValue('');
     };
     AdminAddCommunityComponent.prototype.ngAfterViewInit = function () {
     };

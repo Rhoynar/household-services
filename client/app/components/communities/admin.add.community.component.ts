@@ -39,8 +39,9 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
       addressLineOne: ['', Validators.required],
       addressLineTwo: [''],
       postcode: ['', Validators.required],
-      phone: ['', Validators.required]
-      
+      phone: ['', Validators.required],
+      communityLogo: [''],
+      commLogo: ['']
     });
     
   }
@@ -85,7 +86,38 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
   }
 
 
+  fileChangeEvent(event: any) {
+    this.readImage(event, this.setAvatar, this);
+  }
 
+  readImage(event: any, callback: any, obj: any) {
+
+    var files = event.target.files;
+    var file = files[0];
+    var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/xpng", "image/gif"];
+    var a = allowedTypes.indexOf(file.type);
+    if (a < 0) {
+      alert("File type not allowed");
+      obj.addCommunityForm.controls['communityLogo'].setValue('');
+      return false;
+    }
+    
+    var reader = new FileReader();
+
+    reader.onload = function (readerEvt: any) {
+      callback(readerEvt.target.result, obj);
+    };
+    reader.readAsDataURL(file);
+
+  }
+
+  setAvatar(img: any, obj: any) {
+    obj.addCommunityForm.controls['commLogo'].setValue(img);
+  }
+
+  removeLogo(){
+    this.addCommunityForm.controls['commLogo'].setValue('');
+  }
 
   ngAfterViewInit() {
     

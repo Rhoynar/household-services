@@ -26,7 +26,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
   communityDetails: any = {};
   availableVendors: any;
   pagetitle = "Update Package";
-  
+
   //constructor start
   constructor(
     private http: Http,
@@ -47,12 +47,8 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
       postcode: ['', Validators.required],
       phone: ['', Validators.required],
       communityLogo: [''],
-      commLogo:['']
+      commLogo: ['']
     });
-
-
-
-
 
   }
   //end of constructor
@@ -65,10 +61,6 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
 
 
   submitForm(): void {
-
-    
-
-
     this.formData.append('id', this.editCommunityForm.value.id);
     this.formData.append('title', this.editCommunityForm.value.title);
     this.formData.append('addressLineOne', this.editCommunityForm.value.addressLineOne);
@@ -78,7 +70,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
     //this.formData.append('commLogo', this.editCommunityForm.value.phone);
 
     this.communityServices.updateCommunity(this.editCommunityForm.value)
-    //this.communityServices.updateCommunity(this.formData)
+      //this.communityServices.updateCommunity(this.formData)
       .subscribe(data => {
         if (data.status == 'error') {
           alert(data.error);
@@ -126,10 +118,18 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
   fileChangeEvent(event: any) {
     this.readImage(event, this.setAvatar, this);
   }
+
   readImage(event: any, callback: any, obj: any) {
 
     var files = event.target.files;
     var file = files[0];
+    var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/xpng", "image/gif"];
+    var a = allowedTypes.indexOf(file.type);
+    if (a < 0) {
+      alert("File type not allowed");
+      obj.editCommunityForm.controls['communityLogo'].setValue('');
+      return false;
+    }
     this.formData.append('communityLogo', file, file.name);
     var reader = new FileReader();
 
@@ -139,31 +139,30 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
     reader.readAsDataURL(file);
 
   }
+
   setAvatar(img: any, obj: any) {
-    //obj.avatar = img;
-    //console.log(img);
-    //obj.commLogo=img;  
-    obj.editCommunityForm.controls['commLogo'].setValue(img);        
+    obj.editCommunityForm.controls['commLogo'].setValue(img);
   }
 
-  
+  removeLogo(){
+    this.editCommunityForm.controls['commLogo'].setValue('');
+  }
 
   ngAfterViewInit() {
 
-
   }
+
+
   ngOnInit() {
     if (localStorage.getItem('currentUser')) {
       // logged in so return true
       this.loggedIn = true;
     }
 
-
     this.communityServices.getCommunityByid(this.communityId)
       .subscribe(data => {
         if (data.status == "success") {
           this.communityDetails = data.result;
-
           this.editCommunityForm.controls['id'].setValue(this.communityDetails._id);
           this.editCommunityForm.controls['title'].setValue(this.communityDetails.title);
           this.editCommunityForm.controls['addressLineOne'].setValue(this.communityDetails.addressLineOne);

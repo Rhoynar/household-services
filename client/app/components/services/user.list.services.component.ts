@@ -86,7 +86,7 @@ export class UserListServicesComponent implements AfterViewInit {
 
   ngOnInit() {
         this.searchServicesForm = this.fb.group({
-            zipcode: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
+            zipcode: ['', Validators.compose([Validators.required])],
             
         });
     }

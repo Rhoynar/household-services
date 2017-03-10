@@ -67,7 +67,10 @@
               <div class="buy_now bronze"><a [routerLink]="['/package/search']" [queryParams]="{id: package._id}">Get Started</a></div>
             </div>
           </div>
-
+          <div class="col-sm-12" *ngIf="servicesList?.length==0">
+            <p>Sorry, There is no service available in your area, we will get some services for you soon.</p>
+          </div>
+          
         </div>
 
 

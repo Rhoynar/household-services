@@ -12,19 +12,32 @@
         <div class="services_wrapper">
             <alert [alertType]="'communityAlert'"></alert>
 
-          <div class="col-md-6" *ngFor="let community of availableCommunities">
-            <div class="col-md-12">
-              <h4>{{community.title}}</h4>
-              <button type="button" class="btn btn-danger" (click)="deleteCommunity(community._id)">Delete</button>
-              <button type="button" class="btn btn-primary" [routerLink]="['/admin/community/edit/',community._id]">Edit</button>
+
+          <div class="services_info_block clearfix" *ngFor="let community of availableCommunities">
+
+            <div class="col-md-8 ser-lf">
+              <div class="services-lf">
+                <div class="user-img" *ngIf="community.communityLogo">
+                  <!--<img src="images/pic-1.jpg" alt="" />-->
+                  <img src="{{community.communityLogo}}"/>
+                  </div>
+              </div>
+              <div class="services-rh">
+                <h3>{{community.title}}</h3>
+                
+                <p>Zip Code:- <b>{{community.postcode}}</b></p>
+                
+                
+              </div>
             </div>
-            
-            
-            
+            <div class="col-md-4 ser-rh">
+              <div class="">
+                <button type="button" class="dash-btn red" (click)="deleteCommunity(community._id)">Delete</button>
+                <button type="button" class="dash-btn blue" [routerLink]="['/admin/community/edit/',community._id]">Edit</button>
+              </div>
+            </div>
+
           </div>
-
-
-
 
         </div>
         <div *ngIf="availableCommunities.length<=0" class="text-center">No Community available</div>

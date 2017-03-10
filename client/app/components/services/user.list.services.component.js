@@ -72,7 +72,7 @@ var UserListServicesComponent = (function () {
     };
     UserListServicesComponent.prototype.ngOnInit = function () {
         this.searchServicesForm = this.fb.group({
-            zipcode: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.minLength(5)])],
+            zipcode: ['', forms_1.Validators.compose([forms_1.Validators.required])],
         });
     };
     UserListServicesComponent = __decorate([

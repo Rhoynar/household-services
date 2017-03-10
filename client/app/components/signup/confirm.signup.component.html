@@ -16,7 +16,7 @@
         <div class="col-sm-12 about_info_lf" *ngIf="msgType=='emailsent'">
           
           <p>An email has been sent to you. Please check it to verify your account.</p>
-
+          <p class="account-txt">After confirmation of account you may <a [routerLink]="['/login']">login from here.</a></p>
         </div>
 
         <div class="col-sm-12 about_info_lf" *ngIf="msgType=='emailsentagain'">

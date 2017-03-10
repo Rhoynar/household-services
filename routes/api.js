@@ -550,8 +550,36 @@ var addPackage = function (req, res) {
     packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
+    
+    packageDetails.communityId = req.body.communityId;
+    packageDetails.mon_mor_price = req.body.mon_mor_price;
+    packageDetails.mon_noon_price = req.body.mon_noon_price;
+    packageDetails.mon_eve_price = req.body.mon_eve_price;
+    packageDetails.tue_mor_price = req.body.tue_mor_price;
+    packageDetails.tue_noon_price = req.body.tue_noon_price;
+    packageDetails.tue_eve_price = req.body.tue_eve_price;
+    packageDetails.wed_mor_price = req.body.wed_mor_price;
+    packageDetails.wed_noon_price = req.body.wed_noon_price;
+    packageDetails.wed_eve_price = req.body.wed_eve_price;
+    packageDetails.thur_mor_price = req.body.thur_mor_price;
+    packageDetails.thur_noon_price = req.body.thur_noon_price;
+    packageDetails.thur_eve_price = req.body.thur_eve_price;
+    packageDetails.fri_mor_price = req.body.fri_mor_price;
+    packageDetails.fri_noon_price = req.body.fri_noon_price;
+    packageDetails.fri_eve_price = req.body.fri_eve_price;
+    packageDetails.sat_mor_price = req.body.sat_mor_price;
+    packageDetails.sat_noon_price = req.body.sat_noon_price;
+    packageDetails.sat_eve_price = req.body.sat_eve_price;
+    packageDetails.sun_mor_price = req.body.sun_mor_price;
+    packageDetails.sun_noon_price = req.body.sun_noon_price;
+    packageDetails.sun_eve_price = req.body.sun_eve_price;
+
+
     packageDetails.features = [];
     packageDetails.vendors = [];
+
+
+
     req.body.featureList.forEach(function (eachFeature) {
         packageDetails.features.push(eachFeature.feature);
     });
@@ -586,6 +614,31 @@ var updatePackage = function (req, res) {
     packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
+
+    packageDetails.communityId = req.body.communityId;
+    packageDetails.mon_mor_price = req.body.mon_mor_price;
+    packageDetails.mon_noon_price = req.body.mon_noon_price;
+    packageDetails.mon_eve_price = req.body.mon_eve_price;
+    packageDetails.tue_mor_price = req.body.tue_mor_price;
+    packageDetails.tue_noon_price = req.body.tue_noon_price;
+    packageDetails.tue_eve_price = req.body.tue_eve_price;
+    packageDetails.wed_mor_price = req.body.wed_mor_price;
+    packageDetails.wed_noon_price = req.body.wed_noon_price;
+    packageDetails.wed_eve_price = req.body.wed_eve_price;
+    packageDetails.thur_mor_price = req.body.thur_mor_price;
+    packageDetails.thur_noon_price = req.body.thur_noon_price;
+    packageDetails.thur_eve_price = req.body.thur_eve_price;
+    packageDetails.fri_mor_price = req.body.fri_mor_price;
+    packageDetails.fri_noon_price = req.body.fri_noon_price;
+    packageDetails.fri_eve_price = req.body.fri_eve_price;
+    packageDetails.sat_mor_price = req.body.sat_mor_price;
+    packageDetails.sat_noon_price = req.body.sat_noon_price;
+    packageDetails.sat_eve_price = req.body.sat_eve_price;
+    packageDetails.sun_mor_price = req.body.sun_mor_price;
+    packageDetails.sun_noon_price = req.body.sun_noon_price;
+    packageDetails.sun_eve_price = req.body.sun_eve_price;
+
+    
     packageDetails.features = [];
     packageDetails.vendors = [];
     req.body.featureList.forEach(function (eachFeature) {

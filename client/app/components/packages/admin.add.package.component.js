@@ -16,23 +16,47 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminAddPackageComponent = (function () {
     //constructor start
-    function AdminAddPackageComponent(http, fb, router, packageServices, userServices, serviceServices) {
+    function AdminAddPackageComponent(http, fb, router, packageServices, userServices, serviceServices, communityServices) {
         this.http = http;
         this.fb = fb;
         this.router = router;
         this.packageServices = packageServices;
         this.userServices = userServices;
         this.serviceServices = serviceServices;
+        this.communityServices = communityServices;
         this.loggedIn = false;
         this.availableServices = [];
+        this.availableCommunity = [];
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
         this.pagetitle = "New Package";
         this.addPackageForm = this.fb.group({
             title: ['', forms_1.Validators.required],
-            serviceId: ['', forms_1.Validators.required],
+            // serviceId: ['', Validators.required],
+            communityId: ['', forms_1.Validators.required],
             postcode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],
-            frequency: ['', forms_1.Validators.required],
+            mon_mor_price: [0, forms_1.Validators.required],
+            mon_noon_price: [0, forms_1.Validators.required],
+            mon_eve_price: [0, forms_1.Validators.required],
+            tue_mor_price: [0, forms_1.Validators.required],
+            tue_noon_price: [0, forms_1.Validators.required],
+            tue_eve_price: [0, forms_1.Validators.required],
+            wed_mor_price: [0, forms_1.Validators.required],
+            wed_noon_price: [0, forms_1.Validators.required],
+            wed_eve_price: [0, forms_1.Validators.required],
+            thur_mor_price: [0, forms_1.Validators.required],
+            thur_noon_price: [0, forms_1.Validators.required],
+            thur_eve_price: [0, forms_1.Validators.required],
+            fri_mor_price: [0, forms_1.Validators.required],
+            fri_noon_price: [0, forms_1.Validators.required],
+            fri_eve_price: [0, forms_1.Validators.required],
+            sat_mor_price: [0, forms_1.Validators.required],
+            sat_noon_price: [0, forms_1.Validators.required],
+            sat_eve_price: [0, forms_1.Validators.required],
+            sun_mor_price: [0, forms_1.Validators.required],
+            sun_noon_price: [0, forms_1.Validators.required],
+            sun_eve_price: [0, forms_1.Validators.required],
+            frequency: [0, forms_1.Validators.required],
             vendorList: this.fb.array([this.initVendor()]),
             featureList: this.fb.array([this.initFeature()])
         });
@@ -93,6 +117,19 @@ var AdminAddPackageComponent = (function () {
     AdminAddPackageComponent.prototype.ngAfterViewInit = function () {
         this.getActiveVendors();
         this.getAllServices();
+        this.getAllCommunities();
+    };
+    AdminAddPackageComponent.prototype.getAllCommunities = function () {
+        var _this = this;
+        this.communityServices.getAllCommunity()
+            .subscribe(function (data) {
+            _this.availableCommunity = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     AdminAddPackageComponent.prototype.ngOnInit = function () {
         if (localStorage.getItem('currentUser')) {
@@ -135,7 +172,7 @@ var AdminAddPackageComponent = (function () {
             selector: 'admin-add-package',
             templateUrl: './admin.add.package.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.PackageServices, index_1.UserServices, index_1.ServiceServices])
+        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.PackageServices, index_1.UserServices, index_1.ServiceServices, index_1.CommunityServices])
     ], AdminAddPackageComponent);
     return AdminAddPackageComponent;
 }());

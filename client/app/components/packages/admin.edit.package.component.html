@@ -23,7 +23,7 @@
                             </div>
 
                         </div>
-                        <div class="form-group" [ngClass]="{'has-error':!editPackageForm.controls['serviceId'].valid && editPackageForm.controls['serviceId'].touched}">
+                        <!--<div class="form-group" [ngClass]="{'has-error':!editPackageForm.controls['serviceId'].valid && editPackageForm.controls['serviceId'].touched}">
                             <label class="input-heading">Service Type</label>
                             <div class="input-box">
 
@@ -34,7 +34,21 @@
 
                             </div>
                             <div *ngIf="editPackageForm.controls['serviceId'].hasError('required') && editPackageForm.controls['serviceId'].touched" class="alert alert-danger">You must include a service type.</div>
+                        </div>-->
+
+                        <div class="form-group" [ngClass]="{'has-error':!editPackageForm.controls['communityId'].valid && editPackageForm.controls['communityId'].touched}">
+                            <label class="input-heading">Community</label>
+                            <div class="input-box">
+
+                                <select class="input-fill" [formControl]="editPackageForm.controls['communityId']">
+                                        <option value="">Please Select</option>
+                                        <option value="{{eachCommunity._id}}" *ngFor="let eachCommunity of availableCommunity">{{eachCommunity.title}}</option>
+                                </select>
+
+                            </div>
+                            <div *ngIf="editPackageForm.controls['communityId'].hasError('required') && editPackageForm.controls['communityId'].touched" class="alert alert-danger">You must include a Community.</div>
                         </div>
+
                         <div class="form-group">
                             <label class="input-heading">Price :</label>
                             <div class="input-box">
@@ -75,6 +89,129 @@
                                 </select>-->
 
                                 <div *ngIf="editPackageForm.controls['frequency'].hasError('required') && editPackageForm.controls['frequency'].touched" class="alert alert-danger">You must include a frequency.</div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">Prices (In $):</label>
+                            <div class="input-box">
+                                <div class="community-table">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th>Timing</th>
+                                            <th align="center">Morning</th>
+                                            <th align="center">Noon</th>
+                                            <th align="center">Evening</th>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Monday</td>
+                                            <td align="center">
+                                                <input type="text" name="mon_mor_price" id="mon_mor_price" class="input-fill" [formControl]="editPackageForm.controls['mon_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['mon_mor_price'].hasError('required') && editPackageForm.controls['mon_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="mon_noon_price" id="mon_noon_price" class="input-fill" [formControl]="editPackageForm.controls['mon_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['mon_noon_price'].hasError('required') && editPackageForm.controls['mon_noon_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="mon_eve_price" id="mon_eve_price" class="input-fill" [formControl]="editPackageForm.controls['mon_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['mon_eve_price'].hasError('required') && editPackageForm.controls['mon_eve_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Tuesday</td>
+                                            <td align="center">
+                                                <input type="text" name="tue_mor_price" id="tue_mor_price" class="input-fill" [formControl]="editPackageForm.controls['tue_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['tue_mor_price'].hasError('required') && editPackageForm.controls['tue_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="tue_noon_price" id="tue_noon_price" class="input-fill" [formControl]="editPackageForm.controls['tue_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['tue_mor_price'].hasError('required') && editPackageForm.controls['tue_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="tue_eve_price" id="tue_eve_price" class="input-fill" [formControl]="editPackageForm.controls['tue_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['tue_mor_price'].hasError('required') && editPackageForm.controls['tue_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Wednesday</td>
+                                            <td align="center">
+                                                <input type="text" name="wed_mor_price" id="wed_mor_price" class="input-fill" [formControl]="editPackageForm.controls['wed_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['wed_mor_price'].hasError('required') && editPackageForm.controls['wed_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="wed_noon_price" id="wed_noon_price" class="input-fill" [formControl]="editPackageForm.controls['wed_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['wed_noon_price'].hasError('required') && editPackageForm.controls['wed_noon_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="wed_eve_price" id="wed_eve_price" class="input-fill" [formControl]="editPackageForm.controls['wed_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['wed_eve_price'].hasError('required') && editPackageForm.controls['wed_eve_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Thursday</td>
+                                            <td align="center">
+                                                <input type="text" name="thur_mor_price" id="thur_mor_price" class="input-fill" [formControl]="editPackageForm.controls['thur_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['thur_mor_price'].hasError('required') && editPackageForm.controls['thur_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="thur_noon_price" id="thur_noon_price" class="input-fill" [formControl]="editPackageForm.controls['thur_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['thur_noon_price'].hasError('required') && editPackageForm.controls['thur_noon_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="thur_eve_price" id="thur_eve_price" class="input-fill" [formControl]="editPackageForm.controls['thur_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['thur_eve_price'].hasError('required') && editPackageForm.controls['thur_eve_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Friday</td>
+                                            <td align="center">
+                                                <input type="text" name="fri_mor_price" id="fri_mor_price" class="input-fill" [formControl]="editPackageForm.controls['fri_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['fri_mor_price'].hasError('required') && editPackageForm.controls['fri_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="fri_noon_price" id="fri_noon_price" class="input-fill" [formControl]="editPackageForm.controls['fri_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['fri_noon_price'].hasError('required') && editPackageForm.controls['fri_noon_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="fri_eve_price" id="fri_eve_price" class="input-fill" [formControl]="editPackageForm.controls['fri_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['fri_eve_price'].hasError('required') && editPackageForm.controls['fri_eve_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Saturday</td>
+                                            <td align="center">
+                                                <input type="text" name="sat_mor_price" id="sat_mor_price" class="input-fill" [formControl]="editPackageForm.controls['sat_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['sat_mor_price'].hasError('required') && editPackageForm.controls['sat_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="sat_noon_price" id="sat_noon_price" class="input-fill" [formControl]="editPackageForm.controls['sat_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['sat_noon_price'].hasError('required') && editPackageForm.controls['sat_noon_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="sat_eve_price" id="sat_eve_price" class="input-fill" [formControl]="editPackageForm.controls['sat_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['sat_eve_price'].hasError('required') && editPackageForm.controls['sat_eve_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="row-bg">
+                                            <td>Sunday</td>
+                                            <td align="center">
+                                                <input type="text" name="sun_mor_price" id="sun_mor_price" class="input-fill" [formControl]="editPackageForm.controls['sun_mor_price']"/>
+                                                <div *ngIf="editPackageForm.controls['sun_mor_price'].hasError('required') && editPackageForm.controls['sun_mor_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="sun_noon_price" id="sun_noon_price" class="input-fill" [formControl]="editPackageForm.controls['sun_noon_price']"/>
+                                                <div *ngIf="editPackageForm.controls['sun_noon_price'].hasError('required') && editPackageForm.controls['sun_noon_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                            <td align="center">
+                                                <input type="text" name="sun_eve_price" id="sun_eve_price" class="input-fill" [formControl]="editPackageForm.controls['sun_eve_price']"/>
+                                                <div *ngIf="editPackageForm.controls['sun_eve_price'].hasError('required') && editPackageForm.controls['sun_eve_price'].touched" class="alert alert-danger">This feild is required.</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
 
                             </div>
                         </div>

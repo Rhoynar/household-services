@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { PackageServices, UserServices,ServiceServices } from '../../services/index';
+import { PackageServices, UserServices, ServiceServices, CommunityServices } from '../../services/index';
 import { UserModel } from '../../models/models';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
@@ -20,11 +20,11 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
 
   availableVendors: any;
   loggedIn: any = false;
-  availableServices:any=[];
-  
+  availableServices: any = [];
+  availableCommunity: any = [];
   addPackageForm: FormGroup;
   customValidator = new CustomValidator(this.http);
-  pagetitle="New Package";
+  pagetitle = "New Package";
   //constructor start
   constructor(
     private http: Http,
@@ -32,15 +32,38 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
     private router: Router,
     private packageServices: PackageServices,
     private userServices: UserServices,
-    private serviceServices:ServiceServices
+    private serviceServices: ServiceServices,
+    private communityServices: CommunityServices
   ) {
 
     this.addPackageForm = this.fb.group({
       title: ['', Validators.required],
-      serviceId: ['', Validators.required],
+      // serviceId: ['', Validators.required],
+      communityId: ['', Validators.required],
       postcode: ['', Validators.required],
       price: ['', Validators.required],
-      frequency: ['', Validators.required],
+      mon_mor_price: [0, Validators.required],
+      mon_noon_price: [0, Validators.required],
+      mon_eve_price: [0, Validators.required],
+      tue_mor_price: [0, Validators.required],
+      tue_noon_price: [0, Validators.required],
+      tue_eve_price: [0, Validators.required],
+      wed_mor_price: [0, Validators.required],
+      wed_noon_price: [0, Validators.required],
+      wed_eve_price: [0, Validators.required],
+      thur_mor_price: [0, Validators.required],
+      thur_noon_price: [0, Validators.required],
+      thur_eve_price: [0, Validators.required],
+      fri_mor_price: [0, Validators.required],
+      fri_noon_price: [0, Validators.required],
+      fri_eve_price: [0, Validators.required],
+      sat_mor_price: [0, Validators.required],
+      sat_noon_price: [0, Validators.required],
+      sat_eve_price: [0, Validators.required],
+      sun_mor_price: [0, Validators.required],
+      sun_noon_price: [0, Validators.required],
+      sun_eve_price: [0, Validators.required],
+      frequency: [0, Validators.required],
       vendorList: this.fb.array([this.initVendor()]),
       featureList: this.fb.array([this.initFeature()])
     });
@@ -73,7 +96,7 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
 
   //get vendors
   packagePage() {
-    
+
     this.router.navigate(['/admin/packages']);
   }
 
@@ -88,7 +111,7 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
   }
 
   submitForm(): void {
-    
+
     console.log(this.addPackageForm.value);
 
     this.packageServices.addPackage(this.addPackageForm.value)
@@ -119,8 +142,24 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
   ngAfterViewInit() {
     this.getActiveVendors();
     this.getAllServices();
-
+    this.getAllCommunities();
   }
+
+  getAllCommunities() {
+    this.communityServices.getAllCommunity()
+      .subscribe(data => {
+        this.availableCommunity = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+  }
+
   ngOnInit() {
     if (localStorage.getItem('currentUser')) {
       // logged in so return true

@@ -16,7 +16,7 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminEditPackageComponent = (function () {
     //constructor start
-    function AdminEditPackageComponent(http, router, fb, alertService, activatedRoute, userServices, packageServices, serviceServices) {
+    function AdminEditPackageComponent(http, router, fb, alertService, activatedRoute, userServices, packageServices, serviceServices, communityServices) {
         this.http = http;
         this.router = router;
         this.fb = fb;
@@ -25,9 +25,11 @@ var AdminEditPackageComponent = (function () {
         this.userServices = userServices;
         this.packageServices = packageServices;
         this.serviceServices = serviceServices;
+        this.communityServices = communityServices;
         this.loggedIn = false;
         this.packageId = '';
         this.availableServices = [];
+        this.availableCommunity = [];
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
         this.packageDetails = {};
         this.pagetitle = "Update Package";
@@ -35,10 +37,32 @@ var AdminEditPackageComponent = (function () {
         this.packageId = params.id;
         this.editPackageForm = this.fb.group({
             id: ['', forms_1.Validators.required],
-            serviceId: ['', forms_1.Validators.required],
+            //serviceId: ['', Validators.required],
+            communityId: ['', forms_1.Validators.required],
             title: ['', forms_1.Validators.required],
             postcode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],
+            mon_mor_price: [0, forms_1.Validators.required],
+            mon_noon_price: [0, forms_1.Validators.required],
+            mon_eve_price: [0, forms_1.Validators.required],
+            tue_mor_price: [0, forms_1.Validators.required],
+            tue_noon_price: [0, forms_1.Validators.required],
+            tue_eve_price: [0, forms_1.Validators.required],
+            wed_mor_price: [0, forms_1.Validators.required],
+            wed_noon_price: [0, forms_1.Validators.required],
+            wed_eve_price: [0, forms_1.Validators.required],
+            thur_mor_price: [0, forms_1.Validators.required],
+            thur_noon_price: [0, forms_1.Validators.required],
+            thur_eve_price: [0, forms_1.Validators.required],
+            fri_mor_price: [0, forms_1.Validators.required],
+            fri_noon_price: [0, forms_1.Validators.required],
+            fri_eve_price: [0, forms_1.Validators.required],
+            sat_mor_price: [0, forms_1.Validators.required],
+            sat_noon_price: [0, forms_1.Validators.required],
+            sat_eve_price: [0, forms_1.Validators.required],
+            sun_mor_price: [0, forms_1.Validators.required],
+            sun_noon_price: [0, forms_1.Validators.required],
+            sun_eve_price: [0, forms_1.Validators.required],
             frequency: ['', forms_1.Validators.required],
             vendorList: this.fb.array([]),
             featureList: this.fb.array([])
@@ -111,10 +135,32 @@ var AdminEditPackageComponent = (function () {
                 _this.packageDetails = data.result;
                 _this.editPackageForm.controls['id'].setValue(_this.packageDetails._id);
                 _this.editPackageForm.controls['title'].setValue(_this.packageDetails.title);
-                _this.editPackageForm.controls['serviceId'].setValue(_this.packageDetails.serviceId._id);
+                _this.editPackageForm.controls['communityId'].setValue(_this.packageDetails.communityId);
+                //this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
                 _this.editPackageForm.controls['postcode'].setValue(_this.packageDetails.postalcode);
                 _this.editPackageForm.controls['price'].setValue(_this.packageDetails.price);
                 _this.editPackageForm.controls['frequency'].setValue(_this.packageDetails.frequency);
+                _this.editPackageForm.controls['mon_mor_price'].setValue(_this.packageDetails.mon_mor_price);
+                _this.editPackageForm.controls['mon_noon_price'].setValue(_this.packageDetails.mon_noon_price);
+                _this.editPackageForm.controls['mon_eve_price'].setValue(_this.packageDetails.mon_eve_price);
+                _this.editPackageForm.controls['tue_mor_price'].setValue(_this.packageDetails.tue_mor_price);
+                _this.editPackageForm.controls['tue_noon_price'].setValue(_this.packageDetails.tue_noon_price);
+                _this.editPackageForm.controls['tue_eve_price'].setValue(_this.packageDetails.tue_eve_price);
+                _this.editPackageForm.controls['wed_mor_price'].setValue(_this.packageDetails.wed_mor_price);
+                _this.editPackageForm.controls['wed_noon_price'].setValue(_this.packageDetails.wed_noon_price);
+                _this.editPackageForm.controls['wed_eve_price'].setValue(_this.packageDetails.wed_eve_price);
+                _this.editPackageForm.controls['thur_mor_price'].setValue(_this.packageDetails.thur_mor_price);
+                _this.editPackageForm.controls['thur_noon_price'].setValue(_this.packageDetails.thur_noon_price);
+                _this.editPackageForm.controls['thur_eve_price'].setValue(_this.packageDetails.thur_eve_price);
+                _this.editPackageForm.controls['fri_mor_price'].setValue(_this.packageDetails.fri_mor_price);
+                _this.editPackageForm.controls['fri_noon_price'].setValue(_this.packageDetails.fri_noon_price);
+                _this.editPackageForm.controls['fri_eve_price'].setValue(_this.packageDetails.fri_eve_price);
+                _this.editPackageForm.controls['sat_mor_price'].setValue(_this.packageDetails.sat_mor_price);
+                _this.editPackageForm.controls['sat_noon_price'].setValue(_this.packageDetails.sat_noon_price);
+                _this.editPackageForm.controls['sat_eve_price'].setValue(_this.packageDetails.sat_eve_price);
+                _this.editPackageForm.controls['sun_mor_price'].setValue(_this.packageDetails.sun_mor_price);
+                _this.editPackageForm.controls['sun_noon_price'].setValue(_this.packageDetails.sun_noon_price);
+                _this.editPackageForm.controls['sun_eve_price'].setValue(_this.packageDetails.sun_eve_price);
                 var control = _this.editPackageForm.controls['featureList'];
                 for (var _i = 0, _a = _this.packageDetails.features; _i < _a.length; _i++) {
                     var eachFeature = _a[_i];
@@ -142,6 +188,19 @@ var AdminEditPackageComponent = (function () {
         });
         this.getActiveVendors();
         this.getAllServices();
+        this.getAllCommunities();
+    };
+    AdminEditPackageComponent.prototype.getAllCommunities = function () {
+        var _this = this;
+        this.communityServices.getAllCommunity()
+            .subscribe(function (data) {
+            _this.availableCommunity = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     //get vendors
     AdminEditPackageComponent.prototype.getActiveVendors = function () {
@@ -178,7 +237,7 @@ var AdminEditPackageComponent = (function () {
             selector: 'admin-edit-package',
             templateUrl: './admin.edit.package.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.UserServices, index_1.PackageServices, index_1.ServiceServices])
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.UserServices, index_1.PackageServices, index_1.ServiceServices, index_1.CommunityServices])
     ], AdminEditPackageComponent);
     return AdminEditPackageComponent;
 }());

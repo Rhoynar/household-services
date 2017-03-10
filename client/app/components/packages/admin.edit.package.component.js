@@ -111,7 +111,7 @@ var AdminEditPackageComponent = (function () {
                 _this.packageDetails = data.result;
                 _this.editPackageForm.controls['id'].setValue(_this.packageDetails._id);
                 _this.editPackageForm.controls['title'].setValue(_this.packageDetails.title);
-                _this.editPackageForm.controls['serviceId'].setValue(_this.packageDetails.serviceId);
+                _this.editPackageForm.controls['serviceId'].setValue(_this.packageDetails.serviceId._id);
                 _this.editPackageForm.controls['postcode'].setValue(_this.packageDetails.postalcode);
                 _this.editPackageForm.controls['price'].setValue(_this.packageDetails.price);
                 _this.editPackageForm.controls['frequency'].setValue(_this.packageDetails.frequency);

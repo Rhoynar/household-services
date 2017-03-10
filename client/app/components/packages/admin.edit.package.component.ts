@@ -143,7 +143,7 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
           
           this.editPackageForm.controls['id'].setValue(this.packageDetails._id);
           this.editPackageForm.controls['title'].setValue(this.packageDetails.title);
-          this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId);
+          this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
           this.editPackageForm.controls['postcode'].setValue(this.packageDetails.postalcode);
           this.editPackageForm.controls['price'].setValue(this.packageDetails.price);
           this.editPackageForm.controls['frequency'].setValue(this.packageDetails.frequency);

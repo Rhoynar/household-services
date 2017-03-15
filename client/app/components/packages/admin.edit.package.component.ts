@@ -43,8 +43,8 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
     this.packageId = params.id;
     this.editPackageForm = this.fb.group({
       id: ['', Validators.required],
-      //serviceId: ['', Validators.required],
-      communityId: ['', Validators.required],
+      serviceId: ['', Validators.required],
+      //communityId: ['', Validators.required],
       title: ['', Validators.required],
       postcode: ['', Validators.required],
       price: ['', Validators.required],
@@ -166,8 +166,8 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
 
           this.editPackageForm.controls['id'].setValue(this.packageDetails._id);
           this.editPackageForm.controls['title'].setValue(this.packageDetails.title);
-          this.editPackageForm.controls['communityId'].setValue(this.packageDetails.communityId);
-          //this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
+          //this.editPackageForm.controls['communityId'].setValue(this.packageDetails.communityId);
+          this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
           this.editPackageForm.controls['postcode'].setValue(this.packageDetails.postalcode);
           this.editPackageForm.controls['price'].setValue(this.packageDetails.price);
           this.editPackageForm.controls['frequency'].setValue(this.packageDetails.frequency);

@@ -46,9 +46,16 @@ var UserPackageSearchComponent = (function () {
             day: d.getDate() - 1
         };
         var params = this.activatedRoute.snapshot.queryParams;
-        this.zipcode = params.zip;
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
         if (params.id) {
             this.selectedPackage = params.id;
+        }
+        if (params.zip) {
+            this.zipcode = params.zip;
+        }
+        else if (currentUserStr) {
+            this.zipcode = currentUser.token.zipcode;
         }
         this.getPackageByZipcode();
     }

@@ -11,6 +11,7 @@ __export(require('./header/header.vendor.component'));
 __export(require('./header/midHeader.component'));
 __export(require('./header/title.component'));
 __export(require('./aboutus/aboutus.component'));
+__export(require('./faq/faq.component'));
 __export(require('./login/userLogin.component'));
 __export(require('./signup/userSignup.component'));
 __export(require('./signup/confirm.signup.component'));
@@ -41,4 +42,5 @@ __export(require('./services/user.list.services.component'));
 __export(require('./communities/admin.add.community.component'));
 __export(require('./communities/admin.list.community.component'));
 __export(require('./communities/admin.edit.community.component'));
+__export(require('./communities/community.calender.component'));
 //# sourceMappingURL=index.js.map

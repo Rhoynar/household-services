@@ -49,6 +49,11 @@ var CommunityServices = (function () {
         return this.http.post('/api/updateCommunity', JSON.stringify(communityDetails), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    CommunityServices.prototype.getCommunityCalender = function () {
+        var headers = this.getHeader();
+        return this.http.get('/api/getCommunityCalender', { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;    
+    };
     /*
  
      

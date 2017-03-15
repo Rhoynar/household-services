@@ -382,7 +382,7 @@ var updateProfile = function (req, res) {
 
 var getAllService = function (req, res) {
 
-    Services.find({}, function (err, serviceDocs) {
+    Services.find({}).populate('communityId').exec(function (err, serviceDocs) {
         if (err) {
             res.send({ status: 'error', msg: 'unable to fetch Services , please try later', error: err });
         } else {
@@ -951,6 +951,7 @@ var updateService = function (req, res) {
         var updateDetails =
             {
                 title: req.body.title,
+                communityId : req.body.communityId
             }
 
         Services.findByIdAndUpdate(req.body.id, updateDetails, function (err, updateRes) {
@@ -975,7 +976,7 @@ var addService = function (req, res) {
         var serviceDetails = new Services();
 
         serviceDetails.title = req.body.title;
-
+        serviceDetails.communityId = req.body.communityId;
         serviceDetails.created = Date.now();
 
         serviceDetails.save(function (err) {
@@ -1464,21 +1465,59 @@ var addCommunity = function (req, res) {
 
 var getAllCommunity = function (req, res) {
 
-    if (req.user) {
+    
         Communities.find({}).exec(
-            function (err, vendorDoc) {
+            function (err, communityDoc) {
                 if (err) {
                     res.send({ status: 'error', msg: 'Unable to fetch community , please try later', error: err });
                 } else {
-                    res.send({ status: 'success', result: vendorDoc });
+                    res.send({ status: 'success', result: communityDoc });
                 }
             });
 
-     } else {
-         res.status(401);
-         res.json({ status: 'error', msg: 'some error occured' });
-         return res.send();
-     }
+     
+}
+
+var getCommunityCalender=function(req, res){
+    
+    var calenderDetails={};
+    async.series(
+            [
+                function (callback) {
+                    Communities.findOne({}).exec(
+                        function (err, communityDoc) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                calenderDetails.community=communityDoc;
+                                callback(null, communityDoc);
+                            }
+                        });
+
+                },
+                function (callback) {
+                    Services.find({communityId:calenderDetails.community._id}).exec(
+                        function (err, serviceDoc) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                calenderDetails.services=serviceDoc;
+                                callback(null, serviceDoc);
+                            }
+                        });
+
+                }
+            ],
+            function (error, result) {
+                
+                    if (error) {
+                        return res.json({ status: 'error', error: error });
+                    } else {
+                        return res.json({ status: 'success', result:calenderDetails });
+                    }
+                
+
+            });
 }
 
 var deleteCommunity=function (req, res) {
@@ -1631,7 +1670,7 @@ router.post('/addCommunity', addCommunity);
 router.delete('/community/:id', deleteCommunity);
 router.get('/community/:id', getCommunityByid);
 router.post('/updateCommunity',upload.single('communityLogo'), updateCommunity);
-
+router.get('/getCommunityCalender',getCommunityCalender);
 
 router.post('/createOrder', createOrder);
 router.get('/userOrder', userOrder);

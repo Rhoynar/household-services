@@ -38,8 +38,8 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
 
     this.addPackageForm = this.fb.group({
       title: ['', Validators.required],
-      // serviceId: ['', Validators.required],
-      communityId: ['', Validators.required],
+      serviceId: ['', Validators.required],
+      //communityId: ['', Validators.required],
       postcode: ['', Validators.required],
       price: ['', Validators.required],
       mon_mor_price: [0, Validators.required],
@@ -67,7 +67,7 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
       vendorList: this.fb.array([this.initVendor()]),
       featureList: this.fb.array([this.initFeature()])
     });
-    console.log(this.addPackageForm);
+    
   }
   //end of constructor
 

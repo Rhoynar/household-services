@@ -63,11 +63,20 @@ export class UserPackageSearchComponent implements AfterViewInit {
 
     let params: any = this.activatedRoute.snapshot.queryParams;
 
-    this.zipcode = params.zip;
-    if(params.id){
+    var currentUserStr = localStorage.getItem('currentUser');
+    var currentUser = JSON.parse(currentUserStr);
+
+
+    if (params.id) {
       this.selectedPackage = params.id;
     }
-    
+
+    if (params.zip) {
+      this.zipcode = params.zip;
+    } else if (currentUserStr) {
+      this.zipcode = currentUser.token.zipcode;
+    }
+
     this.getPackageByZipcode();
 
   }

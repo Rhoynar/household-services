@@ -39,6 +39,8 @@ exports.COMPONENT_DECLARATIONS = [
     index_1.ListPendingVendorComponent,
     index_1.AdminAddCommunityComponent,
     index_1.AdminCommunityListComponent,
-    index_1.AdminEditCommunityComponent
+    index_1.AdminEditCommunityComponent,
+    index_1.FaqComponent,
+    index_1.CommunityCalenderComponent
 ];
 //# sourceMappingURL=componentlist.js.map

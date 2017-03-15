@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AlertService,ServiceServices } from '../../services/index';
+import { AlertService,ServiceServices,CommunityServices } from '../../services/index';
 import { Http, Headers, Response } from '@angular/http';
 
 declare var $: any;
@@ -19,7 +19,7 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
 
   loggedIn: any = false;
   public serviceId: string = '';
-  
+  availableCommunity: any = [];
   
   editServiceForm: FormGroup;
   
@@ -32,15 +32,16 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
     private fb: FormBuilder,
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
-    private serviceServices:ServiceServices
+    private serviceServices:ServiceServices,
+    private communityServices: CommunityServices
   ) {
     let params: any = this.activatedRoute.snapshot.params;
 
     this.serviceId = params.id;
     this.editServiceForm = this.fb.group({
       id: ['', Validators.required],
-      title: ['', Validators.required]
-      
+      title: ['', Validators.required],
+      communityId: ['', Validators.required],
     });
 
 
@@ -76,12 +77,25 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
       );
   }
 
+  getAllCommunities() {
+    this.communityServices.getAllCommunity()
+      .subscribe(data => {
+        this.availableCommunity = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
 
+      }
+      );
+  }
 
 
   ngAfterViewInit() {
 
-
+    this.getAllCommunities();
   }
   ngOnInit() {
     if (localStorage.getItem('currentUser')) {
@@ -96,6 +110,7 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
           this.serviceDetail = data.result;
           this.editServiceForm.controls['id'].setValue(this.serviceDetail._id);
           this.editServiceForm.controls['title'].setValue(this.serviceDetail.title);
+          this.editServiceForm.controls['communityId'].setValue(this.serviceDetail.communityId);
         } else {
           alert(data.msg);
         }

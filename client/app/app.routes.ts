@@ -10,7 +10,7 @@ import {
   VendorOrderListComponent, VendorPackageListComponent, UserListServicesComponent,
   LearnMoreComponent, ConfirmSignupComponent, ForgotPassComponent, ResetPassComponent,
   ListPendingVendorComponent,AdminAddCommunityComponent,AdminCommunityListComponent,
-  AdminEditCommunityComponent
+  AdminEditCommunityComponent,FaqComponent
 } from './components/index';
 
 import {
@@ -35,6 +35,7 @@ const APP_ROUTES: Routes = [
   { path: 'package/search', component: UserPackageSearchComponent, canActivate: [UserLoginGuard] },
   { path: 'package', component: UserPackageListComponent, canActivate: [UserLoginGuard] },
   { path: 'order', component: UserOrderListComponent, canActivate: [UserLoginGuard] },
+  { path: 'faq', component: FaqComponent },
 
 
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AdminLoginGuard] },

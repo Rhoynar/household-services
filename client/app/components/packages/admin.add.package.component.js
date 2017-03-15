@@ -31,8 +31,8 @@ var AdminAddPackageComponent = (function () {
         this.pagetitle = "New Package";
         this.addPackageForm = this.fb.group({
             title: ['', forms_1.Validators.required],
-            // serviceId: ['', Validators.required],
-            communityId: ['', forms_1.Validators.required],
+            serviceId: ['', forms_1.Validators.required],
+            //communityId: ['', Validators.required],
             postcode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],
             mon_mor_price: [0, forms_1.Validators.required],
@@ -60,7 +60,6 @@ var AdminAddPackageComponent = (function () {
             vendorList: this.fb.array([this.initVendor()]),
             featureList: this.fb.array([this.initFeature()])
         });
-        console.log(this.addPackageForm);
     }
     //end of constructor
     AdminAddPackageComponent.prototype.initFeature = function () {

@@ -15,22 +15,25 @@ var index_1 = require('../../services/index');
 var http_1 = require('@angular/http');
 var AdminEditServiceComponent = (function () {
     //constructor start
-    function AdminEditServiceComponent(http, router, fb, alertService, activatedRoute, serviceServices) {
+    function AdminEditServiceComponent(http, router, fb, alertService, activatedRoute, serviceServices, communityServices) {
         this.http = http;
         this.router = router;
         this.fb = fb;
         this.alertService = alertService;
         this.activatedRoute = activatedRoute;
         this.serviceServices = serviceServices;
+        this.communityServices = communityServices;
         this.loggedIn = false;
         this.serviceId = '';
+        this.availableCommunity = [];
         this.serviceDetail = {};
         this.pagetitle = "Update Service";
         var params = this.activatedRoute.snapshot.params;
         this.serviceId = params.id;
         this.editServiceForm = this.fb.group({
             id: ['', forms_1.Validators.required],
-            title: ['', forms_1.Validators.required]
+            title: ['', forms_1.Validators.required],
+            communityId: ['', forms_1.Validators.required],
         });
     }
     //end of constructor
@@ -56,7 +59,20 @@ var AdminEditServiceComponent = (function () {
             alert(errr.msg);
         });
     };
+    AdminEditServiceComponent.prototype.getAllCommunities = function () {
+        var _this = this;
+        this.communityServices.getAllCommunity()
+            .subscribe(function (data) {
+            _this.availableCommunity = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     AdminEditServiceComponent.prototype.ngAfterViewInit = function () {
+        this.getAllCommunities();
     };
     AdminEditServiceComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -70,6 +86,7 @@ var AdminEditServiceComponent = (function () {
                 _this.serviceDetail = data.result;
                 _this.editServiceForm.controls['id'].setValue(_this.serviceDetail._id);
                 _this.editServiceForm.controls['title'].setValue(_this.serviceDetail.title);
+                _this.editServiceForm.controls['communityId'].setValue(_this.serviceDetail.communityId);
             }
             else {
                 alert(data.msg);
@@ -90,7 +107,7 @@ var AdminEditServiceComponent = (function () {
             selector: 'admin-edit-service',
             templateUrl: './admin.edit.services.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.ServiceServices])
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.ServiceServices, index_1.CommunityServices])
     ], AdminEditServiceComponent);
     return AdminEditServiceComponent;
 }());

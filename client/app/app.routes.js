@@ -18,6 +18,7 @@ var APP_ROUTES = [
     { path: 'package/search', component: index_1.UserPackageSearchComponent, canActivate: [index_2.UserLoginGuard] },
     { path: 'package', component: index_1.UserPackageListComponent, canActivate: [index_2.UserLoginGuard] },
     { path: 'order', component: index_1.UserOrderListComponent, canActivate: [index_2.UserLoginGuard] },
+    { path: 'faq', component: index_1.FaqComponent },
     { path: 'admin', component: index_1.AdminDashboardComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/dashboard', component: index_1.AdminDashboardComponent, canActivate: [index_2.AdminLoginGuard] },
     { path: 'admin/vendors', component: index_1.ListVendorComponent, canActivate: [index_2.AdminLoginGuard] },

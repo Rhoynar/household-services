@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { ServiceServices } from '../../services/index';
+import { ServiceServices,CommunityServices } from '../../services/index';
 import { UserModel } from '../../models/models';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
@@ -20,20 +20,22 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
 
   public serviceDetail: any;
   loggedIn: any = false;
-  
+  availableCommunity: any = [];
   addServiceForm: FormGroup;
   customValidator = new CustomValidator(this.http);
-  pagetitle="New Service";
+  pagetitle = "New Service";
   //constructor start
   constructor(
     private http: Http,
     private fb: FormBuilder,
     private router: Router,
-    private serviceServices:ServiceServices
+    private serviceServices: ServiceServices,
+    private communityServices: CommunityServices
   ) {
 
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
+      communityId: ['', Validators.required],
     });
     console.log(this.addServiceForm);
   }
@@ -45,7 +47,7 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
   }
 
   submitForm(): void {
-    
+
     console.log(this.addServiceForm.value);
 
     this.serviceServices.addService(this.addServiceForm.value)
@@ -71,11 +73,24 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
   }
 
 
+  getAllCommunities() {
+    this.communityServices.getAllCommunity()
+      .subscribe(data => {
+        this.availableCommunity = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
 
+      }
+      );
+  }
 
   ngAfterViewInit() {
-    
-    
+    this.getAllCommunities();
+
 
   }
   ngOnInit() {
@@ -84,7 +99,7 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
     if (currentUserStr && currentUser.token.role == "admin") {
       // logged in so return true
       this.loggedIn = true;
-    }else{
+    } else {
       this.router.navigate(['/']);
     }
   }

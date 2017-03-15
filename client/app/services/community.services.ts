@@ -49,6 +49,12 @@ export class CommunityServices {
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    getCommunityCalender(){
+        var headers=this.getHeader();
+        return this.http.get('/api/getCommunityCalender',  { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;    
+    }
+
    /* 
 
     

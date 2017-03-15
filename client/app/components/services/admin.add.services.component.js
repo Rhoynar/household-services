@@ -16,16 +16,19 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminAddServiceComponent = (function () {
     //constructor start
-    function AdminAddServiceComponent(http, fb, router, serviceServices) {
+    function AdminAddServiceComponent(http, fb, router, serviceServices, communityServices) {
         this.http = http;
         this.fb = fb;
         this.router = router;
         this.serviceServices = serviceServices;
+        this.communityServices = communityServices;
         this.loggedIn = false;
+        this.availableCommunity = [];
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
         this.pagetitle = "New Service";
         this.addServiceForm = this.fb.group({
             title: ['', forms_1.Validators.required],
+            communityId: ['', forms_1.Validators.required],
         });
         console.log(this.addServiceForm);
     }
@@ -55,7 +58,20 @@ var AdminAddServiceComponent = (function () {
             alert(errr.msg);
         });
     };
+    AdminAddServiceComponent.prototype.getAllCommunities = function () {
+        var _this = this;
+        this.communityServices.getAllCommunity()
+            .subscribe(function (data) {
+            _this.availableCommunity = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     AdminAddServiceComponent.prototype.ngAfterViewInit = function () {
+        this.getAllCommunities();
     };
     AdminAddServiceComponent.prototype.ngOnInit = function () {
         var currentUserStr = localStorage.getItem('currentUser');
@@ -76,7 +92,7 @@ var AdminAddServiceComponent = (function () {
             selector: 'admin-add-service',
             templateUrl: './admin.add.services.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.ServiceServices])
+        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.ServiceServices, index_1.CommunityServices])
     ], AdminAddServiceComponent);
     return AdminAddServiceComponent;
 }());

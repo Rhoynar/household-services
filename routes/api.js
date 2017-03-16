@@ -23,7 +23,7 @@ var nev = require('email-verification')(mongoose);
 
 
 nev.configure({
-    verificationURL: 'http://ec2-54-165-12-165.compute-1.amazonaws.com:5000/email-verification/${URL}',
+    verificationURL: 'http://ec2-184-73-127-34.compute-1.amazonaws.com:5000/email-verification/${URL}',
     URLLength: 48,
 
     // mongo-stuff
@@ -1287,7 +1287,7 @@ var forgotpass= function (req, res) {
                 } else {
                     
 
-                    var verificationURL='http://ec2-54-165-12-165.compute-1.amazonaws.com:5000/resetpass/'+data._id;
+                    var verificationURL='/orders/resetpass/'+data._id;
                     let mailOptions = {
                         from: 'Do Not Reply <user@gmail.com>', // sender address
                         to: user.email, // list of receivers
@@ -1505,7 +1505,30 @@ var getCommunityCalender=function(req, res){
                                 callback(null, serviceDoc);
                             }
                         });
-
+                },
+                function (callback) {
+                    
+                    calenderDetails.packages=[];
+                    if(calenderDetails.services.length>0){
+                        async.forEach(calenderDetails.services, function(eachService, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
+                            Packages.findOne({"frequency" : "daily","serviceId":eachService._id}).exec(
+                                function (err, packageDoc) {
+                                    if (err) {
+                                        callback(err);
+                                    } else {
+                                        calenderDetails.packages.push(packageDoc);
+                                        callback();
+                                    }
+                                });
+                        }, function(err) {
+                            if (err) return callback(err);
+                            //Tell the user about the great success
+                            callback();
+                        });
+                    }else{
+                        callback();
+                    }
+                    
                 }
             ],
             function (error, result) {

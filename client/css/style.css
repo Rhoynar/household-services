@@ -14,7 +14,8 @@ h6 { font-weight: 700; margin: 0; padding: 0; text-transform: uppercase; }
 p { color: #717171; font-size: 15px; line-height: 20px; }
 input,
 button,
-textarea { font-family: 'museo_sans500'; font-size: 14px; border-radius: 0; -webkit-appearance: none; }
+textarea { font-family: 'museo_sans500'; font-size: 14px; border-radius: 0;  }
+/*-webkit-appearance: none;*/
 body { font-size: 14px; font-weight: 500; color: #717171; font-family: 'museo_sans500'; background: #fff; line-height: 18px; }
 @font-face { font-family: 'montserratlight'; src: url('../fonts/montserrat-light-webfont.woff2') format('woff2'), url('../fonts/montserrat-light-webfont.woff') format('woff'); font-weight: normal; font-style: normal; }
 @font-face { font-family: 'museo_sans500'; src: url('../fonts/museosans_0-webfont.woff2') format('woff2'), url('../fonts/museosans_0-webfont.woff') format('woff'); font-weight: normal; font-style: normal; }

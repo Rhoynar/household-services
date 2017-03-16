@@ -4,7 +4,7 @@
       <div class="col-md-12 no-padding">
         <h2 class="main-heading"><span>{{communityCalender?.community?.title}} Community Calendar</span></h2>
         <div class="community_tab_block">
-          <div class="tab_info">
+          <div class="tab_info" *ngIf="communityCalender?.services?.length>0">
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
@@ -21,57 +21,60 @@
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <th>Timing</th>
-                      <th align="center">09:00 am</th>
-                      <th align="center">12:00 pm</th>
-                      <th align="center">03:00 pm</th>
+                      <th align="center">Morning</th>
+                      <th align="center">Noon</th>
+                      <th align="center">Evening</th>
                     </tr>
                     <tr class="row-bg">
                       <td>Monday</td>
-                      <td align="center">$25</td>
-                      <td align="center">$25</td>
-                      <td align="center">$25</td>
+                      <td align="center">{{communityCalender?.packages[i].mon_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].mon_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].mon_eve_price| currency:'USD':true}}</td>
                     </tr>
                     <tr class="row-bg">
-                      <td>Tueday</td>
-                      <td align="center">$25</td>
-                      <td align="center">$25</td>
-                      <td align="center">$25</td>
+                      <td>Tuesday</td>
+                      <td align="center">{{communityCalender?.packages[i].tue_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].tue_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].tue_eve_price| currency:'USD':true}}</td>
                     </tr>
                     <tr class="row-bg">
                       <td>Wednesday</td>
-                      <td align="center">$28</td>
-                      <td align="center">$28</td>
-                      <td align="center">$28</td>
+                      <td align="center">{{communityCalender?.packages[i].wed_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].wed_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].wed_eve_price| currency:'USD':true}}</td>
                     </tr>
                     <tr class="row-bg">
                       <td>Thursday</td>
-                      <td align="center">$25</td>
-                      <td align="center">$25</td>
-                      <td align="center">$25</td>
+                      <td align="center">{{communityCalender?.packages[i].thur_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].thur_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].thur_eve_price| currency:'USD':true}}</td>
                     </tr>
                     <tr class="row-bg">
                       <td>Friday</td>
-                      <td align="center">$30</td>
-                      <td align="center">$30</td>
-                      <td align="center">$30</td>
+                      <td align="center">{{communityCalender?.packages[i].fri_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].fri_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].fri_eve_price| currency:'USD':true}}</td>
                     </tr>
                     <tr class="row-bg">
                       <td>Saturday</td>
-                      <td align="center">$28</td>
-                      <td align="center">$28</td>
-                      <td align="center">$28</td>
+                      <td align="center">{{communityCalender?.packages[i].sat_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].sat_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].sat_eve_price| currency:'USD':true}}</td>
                     </tr>
                     <tr class="row-bg">
                       <td>Sunday</td>
-                      <td align="center">$35</td>
-                      <td align="center">$35</td>
-                      <td align="center">$35</td>
+                      <td align="center">{{communityCalender?.packages[i].sun_mor_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].sun_noon_price| currency:'USD':true}}</td>
+                      <td align="center">{{communityCalender?.packages[i].sun_eve_price| currency:'USD':true}}</td>
                     </tr>
                   </table>
                 </div>
               </div>
               
             </div>
+          </div>
+          <div class="tab_info" *ngIf="communityCalender?.services?.length<=0">
+            <p>No Services Found....</p>
           </div>
         </div>
       </div>

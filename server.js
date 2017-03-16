@@ -42,7 +42,8 @@ var app=express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true,limit: '50mb' }));
-app.use(bodyParser.json({limit: '50mb'}));
+//app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json());
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(flash()); // use connect-flash for flash messages stored in session
 

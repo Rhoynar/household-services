@@ -12,12 +12,12 @@
       <div class="choose-the-package">
         <h3 class="bdr-heading">Choose the package</h3>
 
-        <span *ngFor="let package of availablePackages">
+        <span *ngFor="let package of availablePackages; let i=index;">
           <div class="col-sm-4" *ngIf="selectedPackage=='' || selectedPackage==package._id">
             <div class="package_deatil">
               <h3>
                 {{package.title}}
-                <span>${{package.price}} / Service</span>
+                <!--<span>${{package.price}} / Service</span>-->
               </h3>
               <ul class="rules_info">
                 
@@ -25,7 +25,7 @@
               </ul>
               <div class="Select_package">
                 <div class="radio-block">
-                  <input type="radio" name="selectedPackage" [(ngModel)]="selectedPackage" value="{{package._id}}" id="package_{{package._id}}"
+                  <input type="radio" (click)="setSelectedPackageDetail(i);" name="selectedPackage" [(ngModel)]="selectedPackage" value="{{package._id}}" id="package_{{package._id}}"
                     class="css-checkbox" />
                   <label for="package_{{package._id}}">Select the package</label>
                 </div>
@@ -36,25 +36,146 @@
 
 
         <div class="col-sm-6" *ngIf="selectedPackage!=''">
+          <div class="community-table">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Timing</th>
+                      <th align="center">Morning</th>
+                      <th align="center">Noon</th>
+                      <th align="center">Evening</th>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Monday</td>
+                      <td align="center">
+                        <input id="packageType_mon_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.mon_mor_price,'mon','mor')" value="mon_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_mon_mor_price">{{packageCalender?.mon_mor_price| currency:'USD':true}}</label>
+                      </td>
+                      <td align="center">
+                        <input id="packageType_mon_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.mon_noon_price,'mon','noon')" value="mon_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_mon_noon_price">{{packageCalender?.mon_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_mon_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.mon_eve_price,'mon','eve')" value="mon_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_mon_eve_price">{{packageCalender?.mon_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Tuesday</td>
+                      <td align="center">
+                        <input id="packageType_tue_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.tue_mor_price,'tue','mor')" value="tue_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_tue_mor_price">{{packageCalender?.tue_mor_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_tue_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.tue_noon_price,'tue','noon')" value="tue_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_tue_noon_price">{{packageCalender?.tue_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_tue_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.tue_eve_price,'tue','eve')" value="tue_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_tue_eve_price">{{packageCalender?.tue_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Wednesday</td>
+                      <td align="center">
+                        <input id="packageType_wed_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.wed_mor_price,'wed','mor')" value="wed_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_wed_mor_price">{{packageCalender?.wed_mor_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_wed_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.wed_noon_price,'wed','noon')" value="wed_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_wed_noon_price">{{packageCalender?.wed_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_wed_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.wed_eve_price,'wed','eve')" value="wed_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_wed_eve_price">{{packageCalender?.wed_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Thursday</td>
+                      <td align="center">
+                        <input id="packageType_thur_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.thur_mor_price,'thur','mor')" value="thur_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_thur_mor_price">{{packageCalender?.thur_mor_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_thur_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.thur_noon_price,'thur','noon')" value="thur_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_thur_noon_price">{{packageCalender?.thur_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_thur_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.thur_eve_price,'thur','eve')" value="thur_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_thur_eve_price">{{packageCalender?.thur_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Friday</td>
+                      <td align="center">
+                        <input id="packageType_fri_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.fri_mor_price,'fri','mor')" value="fri_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_fri_mor_price">{{packageCalender?.fri_mor_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_fri_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.fri_noon_price,'fri','noon')" value="fri_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_fri_noon_price">{{packageCalender?.fri_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_fri_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.fri_eve_price,'fri','eve')" value="fri_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_fri_eve_price">{{packageCalender?.fri_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Saturday</td>
+                      <td align="center">
+                        <input id="packageType_sat_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.sat_mor_price,'sat','mor')" value="sat_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_sat_mor_price">{{packageCalender?.sat_mor_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_sat_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.sat_noon_price,'sat','noon')" value="sat_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_sat_noon_price">{{packageCalender?.sat_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_sat_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.sat_eve_price,'sat','eve')" value="sat_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_sat_eve_price">{{packageCalender?.sat_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                    <tr class="row-bg">
+                      <td>Sunday</td>
+                      <td align="center">
+                        <input id="packageType_sun_mor_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.sun_mor_price,'sun','mor')" value="sun_mor_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_sun_mor_price">{{packageCalender?.sun_mor_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_sun_noon_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.sun_noon_price,'sun','noon')" value="sun_noon_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_sun_noon_price">{{packageCalender?.sun_noon_price| currency:'USD':true}}</label>
+                        </td>
+                      <td align="center">
+                        <input id="packageType_sun_eve_price" type="radio" [(ngModel)]="packagePriceType" (click)="setPriceDetails(packageCalender?.sun_eve_price,'sun','eve')" value="sun_eve_price" name="packagePriceType" class="css-checkbox" />
+                        <label for="packageType_sun_eve_price">{{packageCalender?.sun_eve_price| currency:'USD':true}}</label>
+                        </td>
+                    </tr>
+                  </table>
+                </div>
 
-
-          <div class="form_block">
+          <div class="form_block" *ngIf="packagePrice!=''">
             <h3>Additional</h3>
             <form novalidate #form="ngForm" name="packagePrefrence" id="packagePrefrence" (ngSubmit)="submitForm(form.value)">
               <alert [alertType]="'additional-form'"></alert>
+              
               <div class="form-group">
                 <label class="input-heading">Prefered Date :</label>
                 <div class="input-box">
-                  
+                  <!--(calendarViewChanged)="onCalendarViewChanged($event)"-->
                   <my-date-picker [selDate]="selDate"  [options]="myDatePickerOptions"
-                (dateChanged)="onDateChanged($event)" name="preferedDate" [(ngModel)]="preferedDate" required></my-date-picker>
+                (dateChanged)="onDateChanged($event)"  name="preferedDate" [(ngModel)]="preferedDate" required></my-date-picker>
                     <!--<div style="position: absolute; z-index:10; min-height:290px;">
                       <datepicker name="bhata" [(ngModel)]="preferedDate" [minDate]="minDate" [showWeeks]="true" [dateDisabled]="dateDisabled"></datepicker>
                     </div>-->
 
                 </div>
               </div>
-
+              <div class="form-group">
+                <!--{{selDate|json}}-->
+                <!--<input type="text" [(ngModel)]="packagePriceType" name="packagePriceType"/>
+                <input type="text" [(ngModel)]="packagePrice" name="packagePrice"/>
+                <input type="text" [(ngModel)]="packageDay" name="packageDay"/>
+                <input type="text" [(ngModel)]="packageMeridian" name="packageMeridian"/>-->
+              </div>
               <div class="form-group">
                 <label class="input-heading">Service :</label>
                 <div class="input-box">

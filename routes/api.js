@@ -1291,7 +1291,7 @@ var forgotpass= function (req, res) {
                 } else {
                     
 
-                    var verificationURL='/orders/resetpass/'+data._id;
+                    var verificationURL='http://ec2-184-73-127-34.compute-1.amazonaws.com:5000/resetpass/'+data._id;
                     let mailOptions = {
                         from: 'Do Not Reply <user@gmail.com>', // sender address
                         to: user.email, // list of receivers

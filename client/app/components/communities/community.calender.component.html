@@ -27,45 +27,45 @@
                     </tr>
                     <tr class="row-bg">
                       <td>Monday</td>
-                      <td align="center">{{communityCalender?.packages[i].mon_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].mon_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].mon_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'mon_mor_price'}">{{communityCalender?.packages[i].mon_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'mon_noon_price'}">{{communityCalender?.packages[i].mon_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'mon_eve_price'}">{{communityCalender?.packages[i].mon_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                     <tr class="row-bg">
                       <td>Tuesday</td>
-                      <td align="center">{{communityCalender?.packages[i].tue_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].tue_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].tue_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'tue_mor_price'}">{{communityCalender?.packages[i].tue_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'tue_noon_price'}">{{communityCalender?.packages[i].tue_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'tue_eve_price'}">{{communityCalender?.packages[i].tue_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                     <tr class="row-bg">
                       <td>Wednesday</td>
-                      <td align="center">{{communityCalender?.packages[i].wed_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].wed_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].wed_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'wed_mor_price'}">{{communityCalender?.packages[i].wed_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'wed_noon_price'}">{{communityCalender?.packages[i].wed_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'wed_eve_price'}">{{communityCalender?.packages[i].wed_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                     <tr class="row-bg">
                       <td>Thursday</td>
-                      <td align="center">{{communityCalender?.packages[i].thur_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].thur_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].thur_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'thur_mor_price'}">{{communityCalender?.packages[i].thur_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'thur_noon_price'}">{{communityCalender?.packages[i].thur_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'thur_eve_price'}">{{communityCalender?.packages[i].thur_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                     <tr class="row-bg">
                       <td>Friday</td>
-                      <td align="center">{{communityCalender?.packages[i].fri_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].fri_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].fri_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'fri_mor_price'}">{{communityCalender?.packages[i].fri_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'fri_noon_price'}">{{communityCalender?.packages[i].fri_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'fri_eve_price'}">{{communityCalender?.packages[i].fri_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                     <tr class="row-bg">
                       <td>Saturday</td>
-                      <td align="center">{{communityCalender?.packages[i].sat_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].sat_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].sat_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'sat_mor_price'}">{{communityCalender?.packages[i].sat_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'sat_noon_price'}">{{communityCalender?.packages[i].sat_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'sat_eve_price'}">{{communityCalender?.packages[i].sat_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                     <tr class="row-bg">
                       <td>Sunday</td>
-                      <td align="center">{{communityCalender?.packages[i].sun_mor_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].sun_noon_price| currency:'USD':true}}</td>
-                      <td align="center">{{communityCalender?.packages[i].sun_eve_price| currency:'USD':true}}</td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'sun_mor_price'}">{{communityCalender?.packages[i].sun_mor_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'sun_noon_price'}">{{communityCalender?.packages[i].sun_noon_price| currency:'USD':true}}</a></td>
+                      <td align="center"><a [routerLink]="['/package/search']" [queryParams]="{id: communityCalender?.packages[i]._id,priceType:'sun_eve_price'}">{{communityCalender?.packages[i].sun_eve_price| currency:'USD':true}}</a></td>
                     </tr>
                   </table>
                 </div>

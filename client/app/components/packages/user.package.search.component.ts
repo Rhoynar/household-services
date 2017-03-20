@@ -234,6 +234,16 @@ export class UserPackageSearchComponent implements AfterViewInit {
         }
       }
     }
+
+    if(this.packagePriceType!=''){
+      var priceTypeArr=this.packagePriceType.split("_"); 
+      //console.log(this.packageCalender);
+      this.setPriceDetails(eval("this.packageCalender."+this.packagePriceType),priceTypeArr[0],priceTypeArr[1])
+
+    }
+      
+
+
   }
 
   setSelectedPackageDetail(i: any) {
@@ -261,7 +271,11 @@ export class UserPackageSearchComponent implements AfterViewInit {
         "serviceDate": this.preferedDate.date,
         "serviceType": this.preferedType,
         "instruction": this.additionalInstruction,
-        "packageId": this.selectedPackage
+        "packageId": this.selectedPackage,
+        "price":this.packagePrice,
+        "packageType":this.packagePriceType,
+        "packageDay":this.packageDay,
+        "packageMeridian":this.packageMeridian
       };
       this.orderServices.createOrder(orderDetails).subscribe(data => {
 

@@ -15,6 +15,10 @@ var orderSchema = new Schema({
     serviceDate:{ type : Date },
     instruction:String,
     serviceType:String,
+    instruction:String,
+    packageType:String,
+    packageDay:String,
+    packageMeridian:String,
     created:{ type : Date, default: new Date() }
 });
 

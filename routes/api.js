@@ -733,6 +733,10 @@ var createOrder = function (req, res) {
         order.instruction = req.body.instruction;
         order.serviceType = req.body.serviceType;
         order.created = Date.now();
+        order.amount= req.body.price;
+        order.packageType= req.body.packageType;
+        order.packageDay= req.body.packageDay;
+        order.packageMeridian= req.body.packageMeridian;
 
         async.series(
             [
@@ -741,7 +745,7 @@ var createOrder = function (req, res) {
                         if (err) {
                             callback(err);
                         } else {
-                            order.amount = packageDoc.price;
+                            //order.amount = packageDoc.price;
 
                             var vendorIndex = randomIntInc(0, packageDoc.vendors.length - 1);
                             order.vendorId = packageDoc.vendors[vendorIndex];

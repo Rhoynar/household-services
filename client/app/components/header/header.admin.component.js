@@ -20,6 +20,7 @@ var AdminHeaderComponent = (function () {
             .subscribe(function (result) {
             var currentUserStr = localStorage.getItem('currentUser');
             var currentUser = JSON.parse(currentUserStr);
+            console.log(currentUser);
             if (currentUserStr) {
                 if (currentUser.token.role == "admin") {
                     _this.loggedIn = true;

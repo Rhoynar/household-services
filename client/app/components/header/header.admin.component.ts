@@ -28,7 +28,6 @@ export class AdminHeaderComponent implements AfterViewInit {
 
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
-        console.log(currentUser);
         if (currentUserStr) { //if user is there
           if (currentUser.token.role == "admin") {  //if current user is admin
             this.loggedIn = true;

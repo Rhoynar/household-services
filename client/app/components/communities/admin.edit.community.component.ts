@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AlertService, CommunityServices } from '../../services/index';
+import { AlertService, CommunityServices, ServiceServices } from '../../services/index';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
 declare var $: any;
@@ -19,13 +19,14 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
 
   loggedIn: any = false;
   communityId: string = '';
+  availableServices: any = [];
   filesToUpload: Array<File> = [];
   public formData: FormData = new FormData();
   editCommunityForm: FormGroup;
   customValidator = new CustomValidator(this.http);
   communityDetails: any = {};
   availableVendors: any;
-  pagetitle = "Update Package";
+  pagetitle = "Update Community";
 
   //constructor start
   constructor(
@@ -34,6 +35,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
     private fb: FormBuilder,
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
+    private serviceServices: ServiceServices,
     private communityServices: CommunityServices
 
   ) {
@@ -46,6 +48,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
       addressLineTwo: [''],
       postcode: ['', Validators.required],
       phone: ['', Validators.required],
+      serviceList: this.fb.array([]),
       communityLogo: [''],
       commLogo: ['']
     });
@@ -53,6 +56,21 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
   }
   //end of constructor
 
+  initService() {
+    return this.fb.group({
+      service: ['', Validators.required]
+    });
+  }
+
+  addService() {
+    var control: any = this.editCommunityForm.controls['serviceList'];
+    control.push(this.initService());
+  }
+
+  removeService(index: any) {
+    var arrayControl: any = this.editCommunityForm.controls['serviceList']
+    arrayControl.removeAt(index);
+  }
 
   communityPage() {
 
@@ -144,7 +162,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
     obj.editCommunityForm.controls['commLogo'].setValue(img);
   }
 
-  removeLogo(){
+  removeLogo() {
     this.editCommunityForm.controls['commLogo'].setValue('');
   }
 
@@ -158,7 +176,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
       // logged in so return true
       this.loggedIn = true;
     }
-
+    this.getAllServices();
     this.communityServices.getCommunityByid(this.communityId)
       .subscribe(data => {
         if (data.status == "success") {
@@ -170,6 +188,20 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
           this.editCommunityForm.controls['postcode'].setValue(this.communityDetails.postcode);
           this.editCommunityForm.controls['phone'].setValue(this.communityDetails.phone);
           this.editCommunityForm.controls['commLogo'].setValue(this.communityDetails.communityLogo);
+
+          var serviceControl: any = this.editCommunityForm.controls['serviceList'];
+          if (this.communityDetails.services && this.communityDetails.services.length > 0) {
+            for (let eachService of this.communityDetails.services) {
+              var newControl = this.initService();
+              serviceControl.push(newControl);
+              newControl.controls['service'].setValue(eachService);
+            }
+          }else{
+            var newControl = this.initService();
+            serviceControl.push(newControl);
+          }
+
+
 
         } else {
 
@@ -189,7 +221,21 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
 
   }
 
+  //get services
+  getAllServices() {
+    this.serviceServices.getAllService()
+      .subscribe(data => {
+        this.availableServices = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
 
+      }
+      );
+  }
 
 
 

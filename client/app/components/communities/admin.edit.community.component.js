@@ -16,20 +16,22 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminEditCommunityComponent = (function () {
     //constructor start
-    function AdminEditCommunityComponent(http, router, fb, alertService, activatedRoute, communityServices) {
+    function AdminEditCommunityComponent(http, router, fb, alertService, activatedRoute, serviceServices, communityServices) {
         this.http = http;
         this.router = router;
         this.fb = fb;
         this.alertService = alertService;
         this.activatedRoute = activatedRoute;
+        this.serviceServices = serviceServices;
         this.communityServices = communityServices;
         this.loggedIn = false;
         this.communityId = '';
+        this.availableServices = [];
         this.filesToUpload = [];
         this.formData = new FormData();
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
         this.communityDetails = {};
-        this.pagetitle = "Update Package";
+        this.pagetitle = "Update Community";
         var params = this.activatedRoute.snapshot.params;
         this.communityId = params.id;
         this.editCommunityForm = this.fb.group({
@@ -39,11 +41,25 @@ var AdminEditCommunityComponent = (function () {
             addressLineTwo: [''],
             postcode: ['', forms_1.Validators.required],
             phone: ['', forms_1.Validators.required],
+            serviceList: this.fb.array([]),
             communityLogo: [''],
             commLogo: ['']
         });
     }
     //end of constructor
+    AdminEditCommunityComponent.prototype.initService = function () {
+        return this.fb.group({
+            service: ['', forms_1.Validators.required]
+        });
+    };
+    AdminEditCommunityComponent.prototype.addService = function () {
+        var control = this.editCommunityForm.controls['serviceList'];
+        control.push(this.initService());
+    };
+    AdminEditCommunityComponent.prototype.removeService = function (index) {
+        var arrayControl = this.editCommunityForm.controls['serviceList'];
+        arrayControl.removeAt(index);
+    };
     AdminEditCommunityComponent.prototype.communityPage = function () {
         this.router.navigate(['/admin/community']);
     };
@@ -126,6 +142,7 @@ var AdminEditCommunityComponent = (function () {
             // logged in so return true
             this.loggedIn = true;
         }
+        this.getAllServices();
         this.communityServices.getCommunityByid(this.communityId)
             .subscribe(function (data) {
             if (data.status == "success") {
@@ -137,6 +154,19 @@ var AdminEditCommunityComponent = (function () {
                 _this.editCommunityForm.controls['postcode'].setValue(_this.communityDetails.postcode);
                 _this.editCommunityForm.controls['phone'].setValue(_this.communityDetails.phone);
                 _this.editCommunityForm.controls['commLogo'].setValue(_this.communityDetails.communityLogo);
+                var serviceControl = _this.editCommunityForm.controls['serviceList'];
+                if (_this.communityDetails.services && _this.communityDetails.services.length > 0) {
+                    for (var _i = 0, _a = _this.communityDetails.services; _i < _a.length; _i++) {
+                        var eachService = _a[_i];
+                        var newControl = _this.initService();
+                        serviceControl.push(newControl);
+                        newControl.controls['service'].setValue(eachService);
+                    }
+                }
+                else {
+                    var newControl = _this.initService();
+                    serviceControl.push(newControl);
+                }
             }
             else {
                 _this.alertService.error(data.msg, 'community-error');
@@ -149,6 +179,19 @@ var AdminEditCommunityComponent = (function () {
             _this.alertService.error(errr.msg, 'community-error');
         });
     };
+    //get services
+    AdminEditCommunityComponent.prototype.getAllServices = function () {
+        var _this = this;
+        this.serviceServices.getAllService()
+            .subscribe(function (data) {
+            _this.availableServices = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+    };
     AdminEditCommunityComponent.prototype.ngOnDestroy = function () {
     };
     AdminEditCommunityComponent = __decorate([
@@ -157,7 +200,7 @@ var AdminEditCommunityComponent = (function () {
             selector: 'admin-edit-community',
             templateUrl: './admin.edit.community.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.CommunityServices])
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.ServiceServices, index_1.CommunityServices])
     ], AdminEditCommunityComponent);
     return AdminEditCommunityComponent;
 }());

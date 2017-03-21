@@ -58,6 +58,24 @@
                             </div>
                         </div>
 
+                        <div *ngFor="let services of addCommunityForm.controls['serviceList'].controls; let i=index">
+                            <div class="form-group" [formGroup]="services">
+                                <label class="input-heading">Service {{i + 1}}</label>
+                                <div class="input-box">
+                                    
+                                    <select class="input-fill" [formControl]="services.controls['service']">
+                                        <option value="">Please Select</option>
+                                        <option value="{{eachService._id}}" *ngFor="let eachService of availableServices">{{eachService.title}}</option>
+                                    </select>
+                                    <button type="button" class="bt btn-danger" (click)="removeService(i);">Remove</button>    
+                                </div>
+                                <div *ngIf="services.controls['service'].hasError('required') && services.controls['service'].touched" class="alert alert-danger">You must include a service.</div>
+                            </div>
+                        </div>
+                        <div class="margin-20">
+                            <a (click)="addService();">Add another Service +</a>
+                        </div>
+
                         <div class="form-group">
                             <label class="input-heading">Community Logo :</label>
                             <div class="input-box" *ngIf="!this.addCommunityForm.value.commLogo">

@@ -382,7 +382,7 @@ var updateProfile = function (req, res) {
 
 var getAllService = function (req, res) {
 
-    Services.find({}).populate('communityId').exec(function (err, serviceDocs) {
+    Services.find({}).exec(function (err, serviceDocs) {
         if (err) {
             res.send({ status: 'error', msg: 'unable to fetch Services , please try later', error: err });
         } else {
@@ -546,12 +546,12 @@ var addPackage = function (req, res) {
 
     packageDetails.title = req.body.title;
     packageDetails.postalcode = req.body.postcode;
-    packageDetails.serviceId = req.body.serviceId;
+    //packageDetails.serviceId = req.body.serviceId;
     packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
     
-    packageDetails.communityId = req.body.communityId;
+    //packageDetails.communityId = req.body.communityId;
     packageDetails.mon_mor_price = req.body.mon_mor_price;
     packageDetails.mon_noon_price = req.body.mon_noon_price;
     packageDetails.mon_eve_price = req.body.mon_eve_price;
@@ -609,13 +609,13 @@ var updatePackage = function (req, res) {
     //userModel.
 
     packageDetails.title = req.body.title;
-    packageDetails.serviceId = req.body.serviceId;
+    //packageDetails.serviceId = req.body.serviceId;
     packageDetails.postalcode = req.body.postcode;
     packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
 
-    packageDetails.communityId = req.body.communityId;
+    //packageDetails.communityId = req.body.communityId;
     packageDetails.mon_mor_price = req.body.mon_mor_price;
     packageDetails.mon_noon_price = req.body.mon_noon_price;
     packageDetails.mon_eve_price = req.body.mon_eve_price;
@@ -640,10 +640,11 @@ var updatePackage = function (req, res) {
 
     
     packageDetails.features = [];
-    packageDetails.vendors = [];
+    
     req.body.featureList.forEach(function (eachFeature) {
         packageDetails.features.push(eachFeature.feature);
     });
+    packageDetails.vendors = [];
     req.body.vendorList.forEach(function (eachVendor) {
         packageDetails.vendors.push(eachVendor.vendor);
     });
@@ -677,6 +678,17 @@ var deletePackage = function (req, res) {
         }
     });
 
+}
+
+var getPackageByFreq=function(req, res) {
+    var freqType = req.params.freqType;
+    Packages.find({ frequency: freqType }).exec(function (err, packageDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch package , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: packageDoc });
+            }
+        });
 }
 
 
@@ -955,7 +967,9 @@ var updateService = function (req, res) {
         var updateDetails =
             {
                 title: req.body.title,
-                communityId : req.body.communityId
+                dailyPackageId : req.body.dailyPackageId,
+                monthlyPackageId : req.body.monthlyPackageId
+                //communityId : req.body.communityId
             }
 
         Services.findByIdAndUpdate(req.body.id, updateDetails, function (err, updateRes) {
@@ -980,7 +994,9 @@ var addService = function (req, res) {
         var serviceDetails = new Services();
 
         serviceDetails.title = req.body.title;
-        serviceDetails.communityId = req.body.communityId;
+        serviceDetails.dailyPackageId = req.body.dailyPackageId;
+        serviceDetails.monthlyPackageId = req.body.monthlyPackageId;
+        //serviceDetails.communityId = req.body.communityId;
         serviceDetails.created = Date.now();
 
         serviceDetails.save(function (err) {
@@ -1454,6 +1470,12 @@ var addCommunity = function (req, res) {
     communityDetails.postcode = req.body.postcode;
     communityDetails.phone = req.body.phone;
     communityDetails.communityLogo = req.body.commLogo;
+
+    communityDetails.services = [];
+    req.body.serviceList.forEach(function (eachService) {
+        communityDetails.services.push(eachService.service);
+    });
+
     communityDetails.save(function (err) {
         if (err) {
             return res.json({ status: 'error', error: err });
@@ -1488,7 +1510,14 @@ var getCommunityCalender=function(req, res){
     async.series(
             [
                 function (callback) {
-                    Communities.findOne({}).exec(
+                    Communities.findOne({}).populate({
+                    path: 'services',
+                    model: 'Services',
+                    populate: {
+                        path: 'dailyPackageId',
+                        model: 'Packages'
+                    }
+                }).exec(
                         function (err, communityDoc) {
                             if (err) {
                                 callback(err);
@@ -1500,21 +1529,14 @@ var getCommunityCalender=function(req, res){
 
                 },
                 function (callback) {
-                    Services.find({communityId:calenderDetails.community._id}).exec(
-                        function (err, serviceDoc) {
-                            if (err) {
-                                callback(err);
-                            } else {
-                                calenderDetails.services=serviceDoc;
-                                callback(null, serviceDoc);
-                            }
-                        });
+                    
+                    callback();
                 },
                 function (callback) {
-                    
-                    calenderDetails.packages=[];
-                    if(calenderDetails.services.length>0){
-                        async.forEach(calenderDetails.services, function(eachService, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
+                    callback();
+                    /*calenderDetails.packages=[];
+                    if(calenderDetails.community.services.length>0){
+                        async.forEach(calenderDetails.community.services, function(eachService, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
                             Packages.findOne({"frequency" : "daily","serviceId":eachService._id}).exec(
                                 function (err, packageDoc) {
                                     if (err) {
@@ -1531,7 +1553,7 @@ var getCommunityCalender=function(req, res){
                         });
                     }else{
                         callback();
-                    }
+                    }*/
                     
                 }
             ],
@@ -1570,6 +1592,38 @@ var getCommunityByid = function (req, res) {
     var communityId = req.params.id;
     if (communityId != '') {
         Communities.findById(communityId).exec(function (err, packageDoc) {
+            if (err) {
+                res.send({ status: 'error', msg: 'unable to fetch Community , please try later', error: err });
+            } else {
+                res.send({ status: 'success', result: packageDoc });
+            }
+        });
+    } else {
+        res.status(401);
+        res.json({ status: 'error', msg: 'some error occured' });
+        return res.send();
+    }
+}
+
+var getCommunityByZipCode = function (req, res) {
+    
+    var zipCode = req.params.zipCode;
+    if (zipCode != '') {
+        Communities.find({postcode:zipCode}).populate({
+                    path: 'services',
+                    model: 'Services',
+                    populate: {
+                        path: 'dailyPackageId',
+                        model: 'Packages'
+                    }
+                }).populate({
+                    path: 'services',
+                    model: 'Services',
+                    populate: {
+                        path: 'monthlyPackageId',
+                        model: 'Packages'
+                    }
+                }).exec(function (err, packageDoc) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch Community , please try later', error: err });
             } else {
@@ -1646,7 +1700,11 @@ var updateCommunity= function (req, res, next) {
     communityDetails.postcode = req.body.postcode;
     communityDetails.phone = req.body.phone;
     communityDetails.communityLogo = req.body.commLogo;
-    
+    communityDetails.services = [];
+    req.body.serviceList.forEach(function (eachService) {
+        communityDetails.services.push(eachService.service);
+    });
+
     Communities.findByIdAndUpdate(req.body.id, communityDetails, function (err, updateRes) {
 
         if (err) {
@@ -1690,12 +1748,14 @@ router.delete('/package/:id', deletePackage);
 router.post('/updatePackage', updatePackage);
 router.post('/getPackageByid', getPackageByid);
 router.post('/getPackageByZipcode', getPackageByZipcode);
+router.get('/getPackageByFreq/:freqType',getPackageByFreq);
 
 
 router.get('/getAllCommunity', getAllCommunity);
 router.post('/addCommunity', addCommunity);
 router.delete('/community/:id', deleteCommunity);
 router.get('/community/:id', getCommunityByid);
+router.get('/getCommunityByZipCode/:zipCode',getCommunityByZipCode);
 router.post('/updateCommunity',upload.single('communityLogo'), updateCommunity);
 router.get('/getCommunityCalender',getCommunityCalender);
 

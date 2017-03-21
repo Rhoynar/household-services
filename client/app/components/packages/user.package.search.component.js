@@ -13,11 +13,12 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var UserPackageSearchComponent = (function () {
     //constructor start
-    function UserPackageSearchComponent(router, packageService, activatedRoute, alertService, orderServices) {
+    function UserPackageSearchComponent(router, packageService, activatedRoute, alertService, communityServices, orderServices) {
         this.router = router;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
         this.alertService = alertService;
+        this.communityServices = communityServices;
         this.orderServices = orderServices;
         this.availablePackages = [];
         this.pagetitle = "Package List";
@@ -148,7 +149,6 @@ var UserPackageSearchComponent = (function () {
         var d = new Date();
         var currDay = d.getDay();
         var selDayCount = this.getWeekDayCount(day);
-        console.log("sele" + selDayCount + "-cuur" + currDay);
         if (selDayCount - currDay == 0) {
             this.selDate = {
                 year: d.getFullYear(),
@@ -175,9 +175,20 @@ var UserPackageSearchComponent = (function () {
     //get packages
     UserPackageSearchComponent.prototype.getPackageByZipcode = function () {
         var _this = this;
-        this.packageService.getPackageByZipcode(this.zipcode)
+        //this.packageService.getPackageByZipcode(this.zipcode)
+        this.communityServices.getCommunityByZipCode(this.zipcode)
             .subscribe(function (data) {
-            _this.availablePackages = data.result;
+            //this.availablePackages = data.result;
+            for (var i = 0; i <= data.result.length; i++) {
+                for (var j = 0; j <= data.result[i].services.length; j++) {
+                    if (data.result[i].services[j].dailyPackageId != '') {
+                        _this.availablePackages.push(data.result[i].services[j].dailyPackageId);
+                    }
+                    if (data.result[i].services[j].monthlyPackageId != '') {
+                        _this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
+                    }
+                }
+            }
             _this.getSelectedPackageDetail();
         }, function (error) {
             var body = error.json() || '';
@@ -256,7 +267,7 @@ var UserPackageSearchComponent = (function () {
             selector: 'user-package-search',
             templateUrl: './user.package.search.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.OrderServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.CommunityServices, index_1.OrderServices])
     ], UserPackageSearchComponent);
     return UserPackageSearchComponent;
 }());

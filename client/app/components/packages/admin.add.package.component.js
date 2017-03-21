@@ -31,7 +31,7 @@ var AdminAddPackageComponent = (function () {
         this.pagetitle = "New Package";
         this.addPackageForm = this.fb.group({
             title: ['', forms_1.Validators.required],
-            serviceId: ['', forms_1.Validators.required],
+            //serviceId: ['', Validators.required],
             //communityId: ['', Validators.required],
             postcode: ['', forms_1.Validators.required],
             price: ['', forms_1.Validators.required],

@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit,OnInit } from '@angular
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService, AuthenticationService, GooglePlaceService, PackageServices } from '../../services/index';
+import { AlertService, AuthenticationService, GooglePlaceService, PackageServices,CommunityServices } from '../../services/index';
 declare var $: any;
 
 
@@ -15,16 +15,18 @@ declare var $: any;
 })
 export class UserListServicesComponent implements AfterViewInit {
   public servicesList: any;
+  public communityList:any;
   public loggedIn = false;
   public zipcode: any = "";
-  public pagetitle: String = "Services";
+  public pagetitle: String = "Services in your Community";
   public searchServicesForm: FormGroup;
   constructor(
     private fb: FormBuilder,
     private packageService: PackageServices,
     private activatedRoute: ActivatedRoute,
     private alertService: AlertService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private communityServices: CommunityServices,
   ) {
     let params: any = this.activatedRoute.snapshot.queryParams;
 
@@ -38,6 +40,7 @@ export class UserListServicesComponent implements AfterViewInit {
       this.zipcode = currentUser.token.zipcode;
       this.getPackageByZipcode();
     } else {
+      this.pagetitle="Services from all communities"
       this.getAllPackage();
     }
 
@@ -59,8 +62,22 @@ export class UserListServicesComponent implements AfterViewInit {
       );
   }
 
-  //get packages
   getPackageByZipcode() {
+    this.communityServices.getCommunityByZipCode(this.zipcode)
+      .subscribe(data => {
+        this.communityList = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+  }
+  //get packages
+  /*getPackageByZipcode() {
     this.packageService.getPackageByZipcode(this.zipcode)
       .subscribe(data => {
         this.servicesList = data.result;
@@ -73,7 +90,7 @@ export class UserListServicesComponent implements AfterViewInit {
 
       }
       );
-  }
+  }*/
 
   searchService(){
     this.zipcode = this.searchServicesForm.value.zipcode;

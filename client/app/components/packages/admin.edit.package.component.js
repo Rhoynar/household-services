@@ -37,7 +37,7 @@ var AdminEditPackageComponent = (function () {
         this.packageId = params.id;
         this.editPackageForm = this.fb.group({
             id: ['', forms_1.Validators.required],
-            serviceId: ['', forms_1.Validators.required],
+            //serviceId: ['', Validators.required],
             //communityId: ['', Validators.required],
             title: ['', forms_1.Validators.required],
             postcode: ['', forms_1.Validators.required],
@@ -136,7 +136,7 @@ var AdminEditPackageComponent = (function () {
                 _this.editPackageForm.controls['id'].setValue(_this.packageDetails._id);
                 _this.editPackageForm.controls['title'].setValue(_this.packageDetails.title);
                 //this.editPackageForm.controls['communityId'].setValue(this.packageDetails.communityId);
-                _this.editPackageForm.controls['serviceId'].setValue(_this.packageDetails.serviceId._id);
+                //this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
                 _this.editPackageForm.controls['postcode'].setValue(_this.packageDetails.postalcode);
                 _this.editPackageForm.controls['price'].setValue(_this.packageDetails.price);
                 _this.editPackageForm.controls['frequency'].setValue(_this.packageDetails.frequency);

@@ -15,7 +15,7 @@ var index_1 = require('../../services/index');
 var http_1 = require('@angular/http');
 var AdminEditServiceComponent = (function () {
     //constructor start
-    function AdminEditServiceComponent(http, router, fb, alertService, activatedRoute, serviceServices, communityServices) {
+    function AdminEditServiceComponent(http, router, fb, alertService, activatedRoute, serviceServices, communityServices, packageServices) {
         this.http = http;
         this.router = router;
         this.fb = fb;
@@ -23,9 +23,12 @@ var AdminEditServiceComponent = (function () {
         this.activatedRoute = activatedRoute;
         this.serviceServices = serviceServices;
         this.communityServices = communityServices;
+        this.packageServices = packageServices;
         this.loggedIn = false;
         this.serviceId = '';
         this.availableCommunity = [];
+        this.monthlyPackages = [];
+        this.dailyPackages = [];
         this.serviceDetail = {};
         this.pagetitle = "Update Service";
         var params = this.activatedRoute.snapshot.params;
@@ -33,7 +36,8 @@ var AdminEditServiceComponent = (function () {
         this.editServiceForm = this.fb.group({
             id: ['', forms_1.Validators.required],
             title: ['', forms_1.Validators.required],
-            communityId: ['', forms_1.Validators.required],
+            dailyPackageId: ['', forms_1.Validators.required],
+            monthlyPackageId: ['', forms_1.Validators.required]
         });
     }
     //end of constructor
@@ -80,13 +84,32 @@ var AdminEditServiceComponent = (function () {
             // logged in so return true
             this.loggedIn = true;
         }
+        this.packageServices.getPackageByType('monthly')
+            .subscribe(function (data) {
+            _this.monthlyPackages = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+        this.packageServices.getPackageByType('daily')
+            .subscribe(function (data) {
+            _this.dailyPackages = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
         this.serviceServices.getServiceByid(this.serviceId)
             .subscribe(function (data) {
             if (data.status == "success") {
                 _this.serviceDetail = data.result;
                 _this.editServiceForm.controls['id'].setValue(_this.serviceDetail._id);
                 _this.editServiceForm.controls['title'].setValue(_this.serviceDetail.title);
-                _this.editServiceForm.controls['communityId'].setValue(_this.serviceDetail.communityId);
+                _this.editServiceForm.controls['dailyPackageId'].setValue(_this.serviceDetail.dailyPackageId);
+                _this.editServiceForm.controls['monthlyPackageId'].setValue(_this.serviceDetail.monthlyPackageId);
             }
             else {
                 alert(data.msg);
@@ -107,7 +130,7 @@ var AdminEditServiceComponent = (function () {
             selector: 'admin-edit-service',
             templateUrl: './admin.edit.services.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.ServiceServices, index_1.CommunityServices])
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, forms_1.FormBuilder, index_1.AlertService, router_1.ActivatedRoute, index_1.ServiceServices, index_1.CommunityServices, index_1.PackageServices])
     ], AdminEditServiceComponent);
     return AdminEditServiceComponent;
 }());

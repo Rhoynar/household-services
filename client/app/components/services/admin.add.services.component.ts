@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { ServiceServices,CommunityServices } from '../../services/index';
+import { ServiceServices,CommunityServices,PackageServices } from '../../services/index';
 import { UserModel } from '../../models/models';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
@@ -22,6 +22,8 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
   loggedIn: any = false;
   availableCommunity: any = [];
   addServiceForm: FormGroup;
+  monthlyPackages: any = [];
+  dailyPackages: any = [];
   customValidator = new CustomValidator(this.http);
   pagetitle = "New Service";
   //constructor start
@@ -30,12 +32,16 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
     private fb: FormBuilder,
     private router: Router,
     private serviceServices: ServiceServices,
-    private communityServices: CommunityServices
+    private communityServices: CommunityServices,
+    private packageServices: PackageServices
+
   ) {
 
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
-      communityId: ['', Validators.required],
+      dailyPackageId: ['', Validators.required],
+      monthlyPackageId: ['', Validators.required]
+      //communityId: ['', Validators.required],
     });
     console.log(this.addServiceForm);
   }
@@ -48,7 +54,7 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
 
   submitForm(): void {
 
-    console.log(this.addServiceForm.value);
+    
 
     this.serviceServices.addService(this.addServiceForm.value)
       .subscribe(data => {
@@ -90,9 +96,8 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
 
   ngAfterViewInit() {
     this.getAllCommunities();
-
-
   }
+  
   ngOnInit() {
     var currentUserStr = localStorage.getItem('currentUser')
     var currentUser = JSON.parse(currentUserStr);
@@ -102,6 +107,35 @@ export class AdminAddServiceComponent implements AfterViewInit, OnInit, OnDestro
     } else {
       this.router.navigate(['/']);
     }
+
+
+    this.packageServices.getPackageByType('monthly')
+      .subscribe(data => {
+        this.monthlyPackages = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+
+    this.packageServices.getPackageByType('daily')
+      .subscribe(data => {
+        this.dailyPackages = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+
+
   }
 
   ngOnDestroy() {

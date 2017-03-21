@@ -16,12 +16,14 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminAddCommunityComponent = (function () {
     //constructor start
-    function AdminAddCommunityComponent(http, fb, router, communityServices) {
+    function AdminAddCommunityComponent(http, fb, router, serviceServices, communityServices) {
         this.http = http;
         this.fb = fb;
         this.router = router;
+        this.serviceServices = serviceServices;
         this.communityServices = communityServices;
         this.loggedIn = false;
+        this.availableServices = [];
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
         this.pagetitle = "New Community";
         this.addCommunityForm = this.fb.group({
@@ -30,11 +32,25 @@ var AdminAddCommunityComponent = (function () {
             addressLineTwo: [''],
             postcode: ['', forms_1.Validators.required],
             phone: ['', forms_1.Validators.required],
+            serviceList: this.fb.array([this.initService()]),
             communityLogo: [''],
             commLogo: ['']
         });
     }
     //end of constructor
+    AdminAddCommunityComponent.prototype.initService = function () {
+        return this.fb.group({
+            service: ['', forms_1.Validators.required]
+        });
+    };
+    AdminAddCommunityComponent.prototype.addService = function () {
+        var control = this.addCommunityForm.controls['serviceList'];
+        control.push(this.initService());
+    };
+    AdminAddCommunityComponent.prototype.removeService = function (index) {
+        var arrayControl = this.addCommunityForm.controls['serviceList'];
+        arrayControl.removeAt(index);
+    };
     //get vendors
     AdminAddCommunityComponent.prototype.communityPage = function () {
         this.router.navigate(['/admin/community']);
@@ -86,10 +102,24 @@ var AdminAddCommunityComponent = (function () {
     AdminAddCommunityComponent.prototype.ngAfterViewInit = function () {
     };
     AdminAddCommunityComponent.prototype.ngOnInit = function () {
+        this.getAllServices();
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
             this.loggedIn = true;
         }
+    };
+    //get services
+    AdminAddCommunityComponent.prototype.getAllServices = function () {
+        var _this = this;
+        this.serviceServices.getAllService()
+            .subscribe(function (data) {
+            _this.availableServices = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     AdminAddCommunityComponent.prototype.ngOnDestroy = function () {
     };
@@ -99,7 +129,7 @@ var AdminAddCommunityComponent = (function () {
             selector: 'admin-add-community',
             templateUrl: './admin.add.community.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.CommunityServices])
+        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.ServiceServices, index_1.CommunityServices])
     ], AdminAddCommunityComponent);
     return AdminAddCommunityComponent;
 }());

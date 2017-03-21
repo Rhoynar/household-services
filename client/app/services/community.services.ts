@@ -55,6 +55,12 @@ export class CommunityServices {
             .map(this.extractData);//.catch(this.handleError);;    
     }
 
+    getCommunityByZipCode(zipcode:any){
+        var headers=this.getHeader();
+        return this.http.get('/api/getCommunityByZipCode/'+zipcode,  { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;    
+    }
+
    /* 
 
     

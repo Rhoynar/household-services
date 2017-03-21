@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot, ActivatedRoute, Params } from '@angular/router';
-import { PackageServices, AlertService, OrderServices } from '../../services/index';
+import { PackageServices, AlertService, OrderServices,CommunityServices } from '../../services/index';
 import { IMyOptions, IMyDate, IMyDateModel, IMyInputFieldChanged } from 'mydatepicker';
 
 
@@ -134,6 +134,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
     private packageService: PackageServices,
     private activatedRoute: ActivatedRoute,
     private alertService: AlertService,
+    private communityServices: CommunityServices,
     private orderServices: OrderServices
   ) {
     let d: Date = new Date();
@@ -185,7 +186,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
     let d: Date = new Date();
     var currDay = d.getDay()
     var selDayCount = this.getWeekDayCount(day);
-    console.log("sele"+selDayCount+"-cuur"+currDay);
+    
     if (selDayCount-currDay == 0) {
       this.selDate = {
         year: d.getFullYear(),
@@ -210,9 +211,22 @@ export class UserPackageSearchComponent implements AfterViewInit {
   }
   //get packages
   getPackageByZipcode() {
-    this.packageService.getPackageByZipcode(this.zipcode)
+    //this.packageService.getPackageByZipcode(this.zipcode)
+    this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
-        this.availablePackages = data.result;
+        //this.availablePackages = data.result;
+        for(var i=0;i<=data.result.length;i++){
+          for(var j=0;j<=data.result[i].services.length;j++){
+            if(data.result[i].services[j].dailyPackageId!=''){
+              this.availablePackages.push(data.result[i].services[j].dailyPackageId);
+            }
+
+            if(data.result[i].services[j].monthlyPackageId!=''){
+              this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
+            }
+            
+          }
+        }
         this.getSelectedPackageDetail();
       },
       error => {

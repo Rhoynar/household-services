@@ -16,19 +16,23 @@ var http_1 = require('@angular/http');
 var custom_validator_1 = require('../../validators/custom.validator');
 var AdminAddServiceComponent = (function () {
     //constructor start
-    function AdminAddServiceComponent(http, fb, router, serviceServices, communityServices) {
+    function AdminAddServiceComponent(http, fb, router, serviceServices, communityServices, packageServices) {
         this.http = http;
         this.fb = fb;
         this.router = router;
         this.serviceServices = serviceServices;
         this.communityServices = communityServices;
+        this.packageServices = packageServices;
         this.loggedIn = false;
         this.availableCommunity = [];
+        this.monthlyPackages = [];
+        this.dailyPackages = [];
         this.customValidator = new custom_validator_1.CustomValidator(this.http);
         this.pagetitle = "New Service";
         this.addServiceForm = this.fb.group({
             title: ['', forms_1.Validators.required],
-            communityId: ['', forms_1.Validators.required],
+            dailyPackageId: ['', forms_1.Validators.required],
+            monthlyPackageId: ['', forms_1.Validators.required]
         });
         console.log(this.addServiceForm);
     }
@@ -39,7 +43,6 @@ var AdminAddServiceComponent = (function () {
     };
     AdminAddServiceComponent.prototype.submitForm = function () {
         var _this = this;
-        console.log(this.addServiceForm.value);
         this.serviceServices.addService(this.addServiceForm.value)
             .subscribe(function (data) {
             if (data.status == 'error') {
@@ -74,6 +77,7 @@ var AdminAddServiceComponent = (function () {
         this.getAllCommunities();
     };
     AdminAddServiceComponent.prototype.ngOnInit = function () {
+        var _this = this;
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         if (currentUserStr && currentUser.token.role == "admin") {
@@ -83,6 +87,24 @@ var AdminAddServiceComponent = (function () {
         else {
             this.router.navigate(['/']);
         }
+        this.packageServices.getPackageByType('monthly')
+            .subscribe(function (data) {
+            _this.monthlyPackages = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
+        this.packageServices.getPackageByType('daily')
+            .subscribe(function (data) {
+            _this.dailyPackages = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+        });
     };
     AdminAddServiceComponent.prototype.ngOnDestroy = function () {
     };
@@ -92,7 +114,7 @@ var AdminAddServiceComponent = (function () {
             selector: 'admin-add-service',
             templateUrl: './admin.add.services.component.html'
         }), 
-        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.ServiceServices, index_1.CommunityServices])
+        __metadata('design:paramtypes', [http_1.Http, forms_1.FormBuilder, router_1.Router, index_1.ServiceServices, index_1.CommunityServices, index_1.PackageServices])
     ], AdminAddServiceComponent);
     return AdminAddServiceComponent;
 }());

@@ -38,7 +38,7 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
 
     this.addPackageForm = this.fb.group({
       title: ['', Validators.required],
-      serviceId: ['', Validators.required],
+      //serviceId: ['', Validators.required],
       //communityId: ['', Validators.required],
       postcode: ['', Validators.required],
       price: ['', Validators.required],

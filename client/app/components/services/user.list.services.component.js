@@ -13,15 +13,16 @@ var router_1 = require('@angular/router');
 var forms_1 = require('@angular/forms');
 var index_1 = require('../../services/index');
 var UserListServicesComponent = (function () {
-    function UserListServicesComponent(fb, packageService, activatedRoute, alertService, authenticationService) {
+    function UserListServicesComponent(fb, packageService, activatedRoute, alertService, authenticationService, communityServices) {
         this.fb = fb;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
         this.alertService = alertService;
         this.authenticationService = authenticationService;
+        this.communityServices = communityServices;
         this.loggedIn = false;
         this.zipcode = "";
-        this.pagetitle = "Services";
+        this.pagetitle = "Services in your Community";
         var params = this.activatedRoute.snapshot.queryParams;
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
@@ -35,6 +36,7 @@ var UserListServicesComponent = (function () {
             this.getPackageByZipcode();
         }
         else {
+            this.pagetitle = "Services from all communities";
             this.getAllPackage();
         }
     }
@@ -51,12 +53,11 @@ var UserListServicesComponent = (function () {
             alert(errr.msg);
         });
     };
-    //get packages
     UserListServicesComponent.prototype.getPackageByZipcode = function () {
         var _this = this;
-        this.packageService.getPackageByZipcode(this.zipcode)
+        this.communityServices.getCommunityByZipCode(this.zipcode)
             .subscribe(function (data) {
-            _this.servicesList = data.result;
+            _this.communityList = data.result;
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
@@ -64,6 +65,21 @@ var UserListServicesComponent = (function () {
             alert(errr.msg);
         });
     };
+    //get packages
+    /*getPackageByZipcode() {
+      this.packageService.getPackageByZipcode(this.zipcode)
+        .subscribe(data => {
+          this.servicesList = data.result;
+        },
+        error => {
+          const body = error.json() || '';
+          const err = body.error || JSON.stringify(body);
+          var errr = JSON.parse(err);
+          alert(errr.msg);
+  
+        }
+        );
+    }*/
     UserListServicesComponent.prototype.searchService = function () {
         this.zipcode = this.searchServicesForm.value.zipcode;
         this.getPackageByZipcode();
@@ -81,7 +97,7 @@ var UserListServicesComponent = (function () {
             selector: 'user-services-list',
             templateUrl: './user.list.services.component.html'
         }), 
-        __metadata('design:paramtypes', [forms_1.FormBuilder, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.AuthenticationService])
+        __metadata('design:paramtypes', [forms_1.FormBuilder, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.AuthenticationService, index_1.CommunityServices])
     ], UserListServicesComponent);
     return UserListServicesComponent;
 }());

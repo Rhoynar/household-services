@@ -23,7 +23,30 @@
                             </div>
 
                         </div>
-                        <div class="form-group" [ngClass]="{'has-error':!editServiceForm.controls['communityId'].valid && editServiceForm.controls['communityId'].touched}">
+
+                        <div class="form-group" [ngClass]="{'has-error':!editServiceForm.controls['dailyPackageId'].valid && editServiceForm.controls['dailyPackageId'].touched}">
+                            <label class="input-heading">Daily Package</label>
+                            <div class="input-box">
+                                <select class="input-fill" [formControl]="editServiceForm.controls['dailyPackageId']">
+                                        <option value="">Please Select</option>
+                                        <option value="{{eachDailyPackage._id}}" *ngFor="let eachDailyPackage of dailyPackages">{{eachDailyPackage.title}}</option>
+                                </select>
+                                <div *ngIf="editServiceForm.controls['dailyPackageId'].hasError('required') && editServiceForm.controls['dailyPackageId'].touched" class="alert alert-danger">You must include a Daily Package.</div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" [ngClass]="{'has-error':!editServiceForm.controls['monthlyPackageId'].valid && editServiceForm.controls['monthlyPackageId'].touched}">
+                            <label class="input-heading">Monthly Package</label>
+                            <div class="input-box">
+                                <select class="input-fill" [formControl]="editServiceForm.controls['monthlyPackageId']">
+                                        <option value="">Please Select</option>
+                                        <option value="{{eachMonthlyPackage._id}}" *ngFor="let eachMonthlyPackage of monthlyPackages">{{eachMonthlyPackage.title}}</option>
+                                </select>
+                                <div *ngIf="editServiceForm.controls['monthlyPackageId'].hasError('required') && editServiceForm.controls['monthlyPackageId'].touched" class="alert alert-danger">You must include a Monthly Package.</div>
+                            </div>
+                        </div>
+                        <!--<div class="form-group" [ngClass]="{'has-error':!editServiceForm.controls['communityId'].valid && editServiceForm.controls['communityId'].touched}">
                             <label class="input-heading">Community</label>
                             <div class="input-box">
 
@@ -34,7 +57,7 @@
                                 <div *ngIf="editServiceForm.controls['communityId'].hasError('required') && editServiceForm.controls['communityId'].touched" class="alert alert-danger">You must include a Community.</div>
                             </div>
                             
-                        </div>
+                        </div>-->
                         
 
                         <div class="form-group btn-wrp">

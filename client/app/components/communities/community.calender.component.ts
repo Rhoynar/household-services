@@ -21,12 +21,12 @@ export class CommunityCalenderComponent implements AfterViewInit {
     private alertService: AlertService
   ) {
 
-    this.getAllCommunity();
+    this.getCommunityCalender();
   }
   //end of constructor
 
   //get packages
-  getAllCommunity() {
+  getCommunityCalender() {
     this.communityServices.getCommunityCalender()
       .subscribe(data => {
         this.communityCalender = data.result;

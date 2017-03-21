@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AlertService,ServiceServices,CommunityServices } from '../../services/index';
+import { AlertService, ServiceServices, CommunityServices, PackageServices } from '../../services/index';
 import { Http, Headers, Response } from '@angular/http';
 
 declare var $: any;
@@ -20,11 +20,12 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
   loggedIn: any = false;
   public serviceId: string = '';
   availableCommunity: any = [];
-  
+
   editServiceForm: FormGroup;
-  
+  monthlyPackages: any = [];
+  dailyPackages: any = [];
   public serviceDetail: any = {};
-  pagetitle="Update Service";
+  pagetitle = "Update Service";
   //constructor start
   constructor(
     private http: Http,
@@ -32,8 +33,9 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
     private fb: FormBuilder,
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
-    private serviceServices:ServiceServices,
-    private communityServices: CommunityServices
+    private serviceServices: ServiceServices,
+    private communityServices: CommunityServices,
+    private packageServices: PackageServices
   ) {
     let params: any = this.activatedRoute.snapshot.params;
 
@@ -41,7 +43,9 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
     this.editServiceForm = this.fb.group({
       id: ['', Validators.required],
       title: ['', Validators.required],
-      communityId: ['', Validators.required],
+      dailyPackageId: ['', Validators.required],
+      monthlyPackageId: ['', Validators.required]
+      //communityId: ['', Validators.required],
     });
 
 
@@ -56,7 +60,7 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
   }
 
   submitForm(): void {
-    
+
     this.serviceServices.updateService(this.editServiceForm.value)
       .subscribe(data => {
         if (data.status == 'error') {
@@ -66,7 +70,7 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
           alert(data.msg);
           this.servicePage();
         }
-        
+
       },
       error => {
         const body = error.json() || '';
@@ -103,6 +107,35 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
       this.loggedIn = true;
     }
 
+    
+
+
+    this.packageServices.getPackageByType('monthly')
+      .subscribe(data => {
+        this.monthlyPackages = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+
+    this.packageServices.getPackageByType('daily')
+      .subscribe(data => {
+        this.dailyPackages = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
+      );
+
 
     this.serviceServices.getServiceByid(this.serviceId)
       .subscribe(data => {
@@ -110,7 +143,9 @@ export class AdminEditServiceComponent implements AfterViewInit, OnInit, OnDestr
           this.serviceDetail = data.result;
           this.editServiceForm.controls['id'].setValue(this.serviceDetail._id);
           this.editServiceForm.controls['title'].setValue(this.serviceDetail.title);
-          this.editServiceForm.controls['communityId'].setValue(this.serviceDetail.communityId);
+          this.editServiceForm.controls['dailyPackageId'].setValue(this.serviceDetail.dailyPackageId);
+          this.editServiceForm.controls['monthlyPackageId'].setValue(this.serviceDetail.monthlyPackageId);
+          //this.editServiceForm.controls['communityId'].setValue(this.serviceDetail.communityId);
         } else {
           alert(data.msg);
         }

@@ -54,6 +54,11 @@ var CommunityServices = (function () {
         return this.http.get('/api/getCommunityCalender', { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;    
     };
+    CommunityServices.prototype.getCommunityByZipCode = function (zipcode) {
+        var headers = this.getHeader();
+        return this.http.get('/api/getCommunityByZipCode/' + zipcode, { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;    
+    };
     /*
  
      

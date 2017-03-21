@@ -11,6 +11,7 @@ var communitySchema = new Schema({
   	postcode: String,
   	phone: String,
   	communityLogo:String,
+  	services:[{type: Schema.Types.ObjectId, ref: 'Services'}],
   	created:{ type : Date, default: new Date() }
 });
 

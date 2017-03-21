@@ -26,6 +26,10 @@ var PackageServices = (function () {
         return this.http.get('/api/getAllPackage')
             .map(this.extractData); //.catch(this.handleError);;
     };
+    PackageServices.prototype.getPackageByType = function (packageType) {
+        return this.http.get('/api/getPackageByFreq/' + packageType)
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     PackageServices.prototype.addPackage = function (packageDetails) {
         var headers = this.getHeader();
         return this.http.post('/api/addPackage', JSON.stringify(packageDetails), { headers: headers })

@@ -18,11 +18,11 @@ var CommunityCalenderComponent = (function () {
         this.communityServices = communityServices;
         this.alertService = alertService;
         this.communityCalender = [];
-        this.getAllCommunity();
+        this.getCommunityCalender();
     }
     //end of constructor
     //get packages
-    CommunityCalenderComponent.prototype.getAllCommunity = function () {
+    CommunityCalenderComponent.prototype.getCommunityCalender = function () {
         var _this = this;
         this.communityServices.getCommunityCalender()
             .subscribe(function (data) {

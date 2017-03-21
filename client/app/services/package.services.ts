@@ -18,10 +18,18 @@ export class PackageServices {
         headers.append('Content-Type', 'application/json');
         return headers;
     }
+    
     getAllPackage() {
         return this.http.get('/api/getAllPackage')
             .map(this.extractData);//.catch(this.handleError);;
     }
+
+    getPackageByType(packageType:String) {
+        return this.http.get('/api/getPackageByFreq/'+packageType)
+            .map(this.extractData);//.catch(this.handleError);;
+    }
+
+    
 
     addPackage(packageDetails:PackageModel){
         var headers=this.getHeader();

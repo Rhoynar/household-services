@@ -39,7 +39,8 @@ import {
 	AdminCommunityListComponent,
 	AdminEditCommunityComponent,
 	FaqComponent,
-	CommunityCalenderComponent
+	CommunityCalenderComponent,
+	UserNoServicesComponent
 } from './index';
 
 export const COMPONENT_DECLARATIONS = [
@@ -83,6 +84,7 @@ export const COMPONENT_DECLARATIONS = [
   AdminCommunityListComponent,
   AdminEditCommunityComponent,
   FaqComponent,
-  CommunityCalenderComponent
+  CommunityCalenderComponent,
+  UserNoServicesComponent
 ];
 

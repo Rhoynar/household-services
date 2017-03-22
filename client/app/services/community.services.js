@@ -59,6 +59,17 @@ var CommunityServices = (function () {
         return this.http.get('/api/getCommunityByZipCode/' + zipcode, { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;    
     };
+    CommunityServices.prototype.getZipAddress = function (zipcode) {
+        //var headers=this.getHeader();
+        var headers = new http_1.Headers();
+        return this.http.get('http://maps.googleapis.com/maps/api/geocode/json?address=' + zipcode + '&result_type=postal_code&sensor=true', { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;    
+    };
+    CommunityServices.prototype.addServiceDemand = function (packageDetails) {
+        var headers = this.getHeader();
+        return this.http.post('/api/addServiceDemand', JSON.stringify(packageDetails), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     /*
  
      

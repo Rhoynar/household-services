@@ -10,7 +10,7 @@ import {
   VendorOrderListComponent, VendorPackageListComponent, UserListServicesComponent,
   LearnMoreComponent, ConfirmSignupComponent, ForgotPassComponent, ResetPassComponent,
   ListPendingVendorComponent,AdminAddCommunityComponent,AdminCommunityListComponent,
-  AdminEditCommunityComponent,FaqComponent
+  AdminEditCommunityComponent,FaqComponent,UserNoServicesComponent
 } from './components/index';
 
 import {
@@ -28,6 +28,7 @@ const APP_ROUTES: Routes = [
   { path: 'resetpass/:id', component: ResetPassComponent, canActivate: [GuestGuard] },
   { path: 'confirmsignup/:type', component: ConfirmSignupComponent, canActivate: [GuestGuard] },
   { path: 'services', component: UserListServicesComponent },
+  { path:'noservice', component: UserNoServicesComponent},
   { path: 'signup', component: UserSignupComponent, canActivate: [GuestGuard] },
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [UserLoginGuard] },
   { path: 'profile', component: UserProfileComponent, canActivate: [UserLoginGuard] },

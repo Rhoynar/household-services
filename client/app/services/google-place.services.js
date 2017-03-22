@@ -38,6 +38,9 @@ var GooglePlaceService = (function () {
     GooglePlaceService.prototype.state = function (address_components) {
         return this.find(address_components, 'administrative_area_level_1', 'long_name');
     };
+    GooglePlaceService.prototype.stateCode = function (address_components) {
+        return this.find(address_components, 'administrative_area_level_1', 'short_name');
+    };
     GooglePlaceService.prototype.postal_code = function (address_components) {
         return this.find(address_components, 'postal_code', 'long_name');
     };

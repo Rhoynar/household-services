@@ -89,7 +89,7 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-
+          
           this.postal_code = this.googlePlace.postal_code(place.address_components) ? this.googlePlace.postal_code(place.address_components) : null;
 
         });

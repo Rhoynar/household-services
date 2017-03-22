@@ -11,6 +11,7 @@ var APP_ROUTES = [
     { path: 'resetpass/:id', component: index_1.ResetPassComponent, canActivate: [index_2.GuestGuard] },
     { path: 'confirmsignup/:type', component: index_1.ConfirmSignupComponent, canActivate: [index_2.GuestGuard] },
     { path: 'services', component: index_1.UserListServicesComponent },
+    { path: 'noservice', component: index_1.UserNoServicesComponent },
     { path: 'signup', component: index_1.UserSignupComponent, canActivate: [index_2.GuestGuard] },
     { path: 'dashboard', component: index_1.UserDashboardComponent, canActivate: [index_2.UserLoginGuard] },
     { path: 'profile', component: index_1.UserProfileComponent, canActivate: [index_2.UserLoginGuard] },

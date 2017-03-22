@@ -5,6 +5,7 @@ var passport = require('passport');
 const async = require('async');
 var mongoose = require('mongoose');
 var Users = require('../models/users');
+var ServiceDemand= require('../models/serviceDemand');
 var TmpUsers= require('../models/tmpusers');
 var Services = require('../models/services');
 var Passwordchange = require('../models/passwordchange');
@@ -1488,6 +1489,21 @@ var addCommunity = function (req, res) {
     //return res.json({});
 }
 
+var addServiceDemand=function(req,res){
+    var demandJson = new ServiceDemand();
+    
+    demandJson.zipcode = req.body.zipcode;
+    demandJson.email = req.body.notifyEmail;
+    
+
+    demandJson.save(function (err) {
+        if (err) {
+            return res.json({ status: 'error', error: err });
+        } else {
+            return res.json({ status: 'success', msg: 'Request added successfully' });
+        }
+    });
+}
 
 var getAllCommunity = function (req, res) {
 
@@ -1781,5 +1797,6 @@ router.get('/getUserStripeCard', getUserStripeCard);
 //router.post('/payFromExistingCard', payFromExistingCard);
 router.post('/makePayment', makePayment);
 
+router.post('/addServiceDemand',addServiceDemand);
 //https://github.com/kekeh/mydatepicker
 module.exports = router;

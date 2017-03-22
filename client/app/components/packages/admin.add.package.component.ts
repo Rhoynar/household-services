@@ -112,7 +112,7 @@ export class AdminAddPackageComponent implements AfterViewInit, OnInit, OnDestro
 
   submitForm(): void {
 
-    console.log(this.addPackageForm.value);
+    
 
     this.packageServices.addPackage(this.addPackageForm.value)
       .subscribe(data => {

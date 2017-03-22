@@ -13,7 +13,8 @@ var router_1 = require('@angular/router');
 var forms_1 = require('@angular/forms');
 var index_1 = require('../../services/index');
 var UserListServicesComponent = (function () {
-    function UserListServicesComponent(fb, packageService, activatedRoute, alertService, authenticationService, communityServices) {
+    function UserListServicesComponent(router, fb, packageService, activatedRoute, alertService, authenticationService, communityServices) {
+        this.router = router;
         this.fb = fb;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
@@ -58,6 +59,10 @@ var UserListServicesComponent = (function () {
         this.communityServices.getCommunityByZipCode(this.zipcode)
             .subscribe(function (data) {
             _this.communityList = data.result;
+            if (_this.communityList.length == 0) {
+                //this.router.navigate(['/noservice/'+this.zipcode]);
+                _this.router.navigate(['/noservice'], { queryParams: { zip: _this.zipcode } });
+            }
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
@@ -97,7 +102,7 @@ var UserListServicesComponent = (function () {
             selector: 'user-services-list',
             templateUrl: './user.list.services.component.html'
         }), 
-        __metadata('design:paramtypes', [forms_1.FormBuilder, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.AuthenticationService, index_1.CommunityServices])
+        __metadata('design:paramtypes', [router_1.Router, forms_1.FormBuilder, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.AuthenticationService, index_1.CommunityServices])
     ], UserListServicesComponent);
     return UserListServicesComponent;
 }());

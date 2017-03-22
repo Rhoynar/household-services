@@ -654,19 +654,19 @@ ul.Weekly-info li:last-child { margin-right: 0; }
 .Weekly-info:after { content: ""; display: block; clear: both; }
 video { display: block; object-fit: cover; width: 100%; }
  input::-webkit-input-placeholder {
-color: #17406b;
+/*color: #17406b;*/
 opacity:1;
 }
  input:-moz-placeholder { /* Firefox 18- */
-color:#17406b;
+/*color:#17406b;*/
 opacity:1;
 }
  input::-moz-placeholder {  /* Firefox 19+ */
-color:#17406b;
+/*color:#17406b;*/
 opacity:1;
 }
  input:-ms-input-placeholder {
-color:#17406b;
+/*color:#17406b;*/
 opacity:1;
 }
 
@@ -783,3 +783,13 @@ ul.comment-txt li i {
 .blog-txt-block p:after{ position:absolute; left:-35px; top:0; background:url(../images/arrow-left.png) no-repeat; width:20px; height:14px; content:"";}
 .blog-txt-block p:before{ position:absolute; right:330px; bottom:-5px; background:url(../images/arrow-left.png) no-repeat; width:20px; height:14px; content:"";}
 .blog-detail-img{ margin:0 0 15px;}
+
+/*rakesh css*/
+.load {
+    position: absolute;
+    background: white url('../images/pIkfp.gif') no-repeat center center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

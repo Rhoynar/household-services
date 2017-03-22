@@ -34,6 +34,10 @@ export class GooglePlaceService {
         return this.find(address_components, 'administrative_area_level_1', 'long_name')
     }
 
+    stateCode(address_components: any) {
+        return this.find(address_components, 'administrative_area_level_1', 'short_name')
+    }
+
     postal_code(address_components: any) {
         return this.find(address_components, 'postal_code', 'long_name')
     }

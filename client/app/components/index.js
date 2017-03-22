@@ -36,6 +36,7 @@ __export(require('./orders/user.order.list.component'));
 __export(require('./orders/admin.order.list.component'));
 __export(require('./orders/vendor.order.list.component'));
 __export(require('./services/admin.list.services.component'));
+__export(require('./services/user.no.services.component'));
 __export(require('./services/admin.add.services.component'));
 __export(require('./services/admin.edit.services.component'));
 __export(require('./services/user.list.services.component'));

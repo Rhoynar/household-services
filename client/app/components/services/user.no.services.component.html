@@ -1,0 +1,97 @@
+<top-header></top-header>
+
+
+<page-title [pagetitle]="pagetitle"></page-title>
+
+
+<!--inner-mid-sec-->
+<div class="inner-mid-sec white-bg">
+  <div class="container">
+    <div class="row">
+          <p class="text-center">{{addressStr}}</p>
+          <div class="col-sm-12">
+            <p class="text-center">We're sorry! At this time we do not have any services available in </p>
+            <p class="text-center">your area. Please signup below for updates.</p>
+          </div>
+
+          <div class="col-sm-12">
+            <p class="text-center">This list will help ur to prioritize where to launch our service next. we </p>
+            <p class="text-center">promise we won't spam you or sell your email address!</p>
+          </div>
+
+          <div class="col-sm-6 col-sm-offset-3">
+
+            <div class="" *ngIf="!reqReceived">
+              <form [formGroup]="notifyServiceForm" (ngSubmit)="notifyRequest();">
+                <div class="login_info_block">
+                  <div class="input-block">
+                    <input type="hidden" name="zipcode" id="zipcode" [formControl]="notifyServiceForm.controls['zipcode']">
+                    <input class="input-fill2" placeholder="Email Address" type="text" name="notifyEmail" id="notifyEmail" [formControl]="notifyServiceForm.controls['notifyEmail']">
+                    <button type="submit" class="rh_btn login_btn" [disabled]="!notifyServiceForm.valid">Notify Me</button>
+                  </div>
+                  <div *ngIf="notifyServiceForm.controls['notifyEmail'].hasError('required') && notifyServiceForm.controls['notifyEmail'].touched"
+                    class="alert alert-danger">
+                    This feild is required.
+                  </div>
+                  <div *ngIf="notifyServiceForm.controls['notifyEmail'].hasError('validateEmail') && notifyServiceForm.controls['notifyEmail'].touched"
+                    class="alert alert-danger">
+                    Please insert valid email address
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="" *ngIf="reqReceived">
+              <p class="text-center">Thanks for your request, we will notify as soon as we launch service in your area</p>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="col-sm-12 text-center">
+            <br>
+            <a class="col-sm-12 text-center" [routerLink]="['/']">Back to Home Page</a>
+            <a class="col-sm-12 text-center" [routerLink]="['/services']">Back to Services Page</a>
+          </div>
+      <!--<div class="col-sm-6 col-sm-offset-3" *ngIf="!zipcode">
+        <div class="sign-in-box">
+
+          <form [formGroup]="searchServicesForm" (ngSubmit)="searchService()">
+            <div class="login_info_block">
+              <h4>Please provide your zipcode to search services</h4>
+
+              <div class="input-block">
+
+                <input class="input-fill2" placeholder="Enter Zipcode" type="text" name="zipcode" id="zipcode" [formControl]="searchServicesForm.controls['zipcode']">
+              </div>
+              <div *ngIf="searchServicesForm.controls['zipcode'].hasError('required') && searchServicesForm.controls['zipcode'].touched"
+                class="alert alert-danger">
+                This feild is required.
+              </div>
+
+              <div class="text-center login_wrp">
+                <button type="submit" class="rh_btn login_btn" [disabled]="!searchServicesForm.valid">Submit</button>
+              </div>
+            </div>
+
+
+
+          </form>
+        </div>
+      </div>-->
+      
+    </div>
+  </div>
+</div>
+<!--inner-mid-sec-->
+
+<!--inner-mid-sec-->
+
+
+<!--inner-mid-sec-->
+
+<!--footer-section-->
+<footer></footer>
+<!--end-footer-section-->

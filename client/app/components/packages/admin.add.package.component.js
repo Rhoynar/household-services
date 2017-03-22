@@ -94,7 +94,6 @@ var AdminAddPackageComponent = (function () {
     };
     AdminAddPackageComponent.prototype.submitForm = function () {
         var _this = this;
-        console.log(this.addPackageForm.value);
         this.packageServices.addPackage(this.addPackageForm.value)
             .subscribe(function (data) {
             if (data.status == 'error') {

@@ -61,6 +61,19 @@ export class CommunityServices {
             .map(this.extractData);//.catch(this.handleError);;    
     }
 
+    getZipAddress(zipcode:any){
+        //var headers=this.getHeader();
+        var headers = new Headers();
+        return this.http.get('http://maps.googleapis.com/maps/api/geocode/json?address='+zipcode+'&result_type=postal_code&sensor=true',  { headers: headers })
+            .map(this.extractData);//.catch(this.handleError);;    
+    }
+
+    addServiceDemand(packageDetails:any){
+        var headers=this.getHeader();
+        return this.http.post('/api/addServiceDemand',JSON.stringify(packageDetails),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
    /* 
 
     

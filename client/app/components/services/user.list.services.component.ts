@@ -21,6 +21,7 @@ export class UserListServicesComponent implements AfterViewInit {
   public pagetitle: String = "Services in your Community";
   public searchServicesForm: FormGroup;
   constructor(
+    private router:Router,
     private fb: FormBuilder,
     private packageService: PackageServices,
     private activatedRoute: ActivatedRoute,
@@ -66,6 +67,11 @@ export class UserListServicesComponent implements AfterViewInit {
     this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
         this.communityList = data.result;
+        if(this.communityList.length==0){
+          //this.router.navigate(['/noservice/'+this.zipcode]);
+          this.router.navigate(['/noservice'], { queryParams: {zip:this.zipcode} });
+        }
+        
       },
       error => {
         const body = error.json() || '';
@@ -104,7 +110,6 @@ export class UserListServicesComponent implements AfterViewInit {
   ngOnInit() {
         this.searchServicesForm = this.fb.group({
             zipcode: ['', Validators.compose([Validators.required])],
-            
         });
     }
 

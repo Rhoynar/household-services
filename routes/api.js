@@ -1622,8 +1622,8 @@ var getCommunityByid = function (req, res) {
 }
 
 var getCommunityByZipCode = function (req, res) {
-    
-    var zipCode = req.params.zipCode;
+    res.send({ status: 'error', msg: 'unable to fetch Community , please try later', error:req.params.zipcode});
+    /*var zipCode = req.params.zipcode;
     if (zipCode != '') {
         Communities.find({postcode:zipCode}).populate({
                     path: 'services',
@@ -1650,7 +1650,7 @@ var getCommunityByZipCode = function (req, res) {
         res.status(401);
         res.json({ status: 'error', msg: 'some error occured' });
         return res.send();
-    }
+    }*/
 }
 
 
@@ -1771,7 +1771,7 @@ router.get('/getAllCommunity', getAllCommunity);
 router.post('/addCommunity', addCommunity);
 router.delete('/community/:id', deleteCommunity);
 router.get('/community/:id', getCommunityByid);
-router.get('/getCommunityByZipCode/:zipCode',getCommunityByZipCode);
+router.get('/getCommunityByZipCode/:zipcode',getCommunityByZipCode);
 router.post('/updateCommunity',upload.single('communityLogo'), updateCommunity);
 router.get('/getCommunityCalender',getCommunityCalender);
 

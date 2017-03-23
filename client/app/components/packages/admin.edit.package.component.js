@@ -40,8 +40,8 @@ var AdminEditPackageComponent = (function () {
             //serviceId: ['', Validators.required],
             //communityId: ['', Validators.required],
             title: ['', forms_1.Validators.required],
-            postcode: ['', forms_1.Validators.required],
-            price: ['', forms_1.Validators.required],
+            //postcode: ['', Validators.required],
+            //price: ['', Validators.required],
             mon_mor_price: [0, forms_1.Validators.required],
             mon_noon_price: [0, forms_1.Validators.required],
             mon_eve_price: [0, forms_1.Validators.required],
@@ -137,8 +137,8 @@ var AdminEditPackageComponent = (function () {
                 _this.editPackageForm.controls['title'].setValue(_this.packageDetails.title);
                 //this.editPackageForm.controls['communityId'].setValue(this.packageDetails.communityId);
                 //this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
-                _this.editPackageForm.controls['postcode'].setValue(_this.packageDetails.postalcode);
-                _this.editPackageForm.controls['price'].setValue(_this.packageDetails.price);
+                //this.editPackageForm.controls['postcode'].setValue(this.packageDetails.postalcode);
+                //this.editPackageForm.controls['price'].setValue(this.packageDetails.price);
                 _this.editPackageForm.controls['frequency'].setValue(_this.packageDetails.frequency);
                 _this.editPackageForm.controls['mon_mor_price'].setValue(_this.packageDetails.mon_mor_price);
                 _this.editPackageForm.controls['mon_noon_price'].setValue(_this.packageDetails.mon_noon_price);

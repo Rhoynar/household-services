@@ -19,9 +19,13 @@ var GuestHomeComponent = (function () {
         this.googlePlace = googlePlace;
         this.router = router;
         this.postal_code = '';
+        this.commIcon = 1;
         this.searchControl = true;
         this.searchValue = '';
     }
+    GuestHomeComponent.prototype.selCommIcon = function (iconNumber) {
+        this.commIcon = iconNumber;
+    };
     GuestHomeComponent.prototype.searchPackages = function () {
         if ('' == this.searchValue || '' == this.postal_code) {
             alert("Please enter any address");
@@ -34,22 +38,22 @@ var GuestHomeComponent = (function () {
         }
     };
     GuestHomeComponent.prototype.ngAfterViewInit = function () {
-        $(document).ready(function () {
-            $("#owl-demo").owlCarousel({
-                autoPlay: 3000,
-                items: 1,
-                itemsDesktop: [1199, 1],
-                itemsDesktopSmall: [979, 1],
-                itemsTablet: [768, 1],
-                navigation: false,
-                pagination: false,
-                slideSpeed: 300,
-                paginationSpeed: 400,
-                navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-                transitionStyle: "fade",
-            });
-            //$(".s-box").selectbox();
-        });
+        /*$(document).ready(function () {
+          $("#owl-demo").owlCarousel({
+            autoPlay: 3000, //Set AutoPlay to 3 seconds
+            items: 1,
+            itemsDesktop: [1199, 1],
+            itemsDesktopSmall: [979, 1],
+            itemsTablet: [768, 1],
+            navigation: false,
+            pagination: false,
+            slideSpeed: 300,
+            paginationSpeed: 400,
+            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            transitionStyle: "fade",
+          });
+          //$(".s-box").selectbox();
+        });*/
     };
     GuestHomeComponent.prototype.ngOnInit = function () {
         var _this = this;

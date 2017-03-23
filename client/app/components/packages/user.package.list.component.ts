@@ -32,6 +32,10 @@ export class UserPackageListComponent implements AfterViewInit {
   private expiryMonth: any = '';
   private expiryYear: any = '';
   private cvc: any = '';
+  private packagePrice = '';
+  private packageDay = '';
+  private packageMeridian = '';
+  private packagePriceType="";
 
 
   private myDatePickerOptions: IMyOptions = {
@@ -98,11 +102,83 @@ export class UserPackageListComponent implements AfterViewInit {
       );
   }
 
+getWeekDayCount(weekDay: String) {
+    var weekDayNumber = 0;
+    switch (weekDay) {
+      case 'su':
+      case 'sun':
+        weekDayNumber = 1;
+        break;
+      case 'mo':
+      case 'mon':
+        weekDayNumber = 2;
+        break;
+      case 'tu':
+      case 'tue':
+        weekDayNumber = 3;
+        break;
+      case 'we':
+      case 'wed':
+        weekDayNumber = 4;
+        break;
+      case 'th':
+      case 'thur':
+        weekDayNumber = 5;
+        break;
+      case 'fr':
+      case 'fri':
+        weekDayNumber = 6;
+        break;
+      case 'sa':
+      case 'sat':
+        weekDayNumber = 7;
+        break;
+    }
+    return weekDayNumber - 1;
+  }
+
+  setPriceDetails(price: any, day: any, meridian: any) {
+    this.packagePrice = price;
+    this.packageDay = day;
+    this.packageMeridian = meridian;
+    //this.myDatePickerOptions.enableDays = [];
+    let d: Date = new Date();
+    var currDay = d.getDay()
+    var selDayCount = this.getWeekDayCount(day);
+
+    if (selDayCount - currDay == 0) {
+      this.selDate = {
+        year: d.getFullYear(),
+        month: d.getMonth() + 1,
+        day: d.getDate()
+      };
+    } else if ((currDay - selDayCount) > 0) {
+      this.selDate = {
+        year: d.getFullYear(),
+        month: d.getMonth() + 1,
+        day: d.getDate() + (7 - (currDay - selDayCount))
+      };
+    } else if ((selDayCount - currDay) > 0) {
+      this.selDate = {
+        year: d.getFullYear(),
+        month: d.getMonth() + 1,
+        day: d.getDate() + (selDayCount - currDay)
+      };
+    }
+    this.preferedDate = this.selDate;
+
+  }
+
   cancelSelection() {
     this.selectedPackageId = "";
     this.preferedDate = "";
     this.preferedType = "";
+    this.selectedPackage={};
     this.additionalInstruction = "";
+    this.packagePrice = "";
+    this.packageDay = "";
+    this.packageMeridian = "";
+    this.packagePriceType="";
   }
 
   cancelPurchase() {

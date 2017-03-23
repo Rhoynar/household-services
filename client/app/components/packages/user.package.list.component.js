@@ -37,6 +37,10 @@ var UserPackageListComponent = (function () {
         this.expiryMonth = '';
         this.expiryYear = '';
         this.cvc = '';
+        this.packagePrice = '';
+        this.packageDay = '';
+        this.packageMeridian = '';
+        this.packagePriceType = "";
         this.myDatePickerOptions = {
             // other options...
             dateFormat: 'dd-mm-yyyy',
@@ -79,11 +83,81 @@ var UserPackageListComponent = (function () {
             alert(errr.msg);
         });
     };
+    UserPackageListComponent.prototype.getWeekDayCount = function (weekDay) {
+        var weekDayNumber = 0;
+        switch (weekDay) {
+            case 'su':
+            case 'sun':
+                weekDayNumber = 1;
+                break;
+            case 'mo':
+            case 'mon':
+                weekDayNumber = 2;
+                break;
+            case 'tu':
+            case 'tue':
+                weekDayNumber = 3;
+                break;
+            case 'we':
+            case 'wed':
+                weekDayNumber = 4;
+                break;
+            case 'th':
+            case 'thur':
+                weekDayNumber = 5;
+                break;
+            case 'fr':
+            case 'fri':
+                weekDayNumber = 6;
+                break;
+            case 'sa':
+            case 'sat':
+                weekDayNumber = 7;
+                break;
+        }
+        return weekDayNumber - 1;
+    };
+    UserPackageListComponent.prototype.setPriceDetails = function (price, day, meridian) {
+        this.packagePrice = price;
+        this.packageDay = day;
+        this.packageMeridian = meridian;
+        //this.myDatePickerOptions.enableDays = [];
+        var d = new Date();
+        var currDay = d.getDay();
+        var selDayCount = this.getWeekDayCount(day);
+        if (selDayCount - currDay == 0) {
+            this.selDate = {
+                year: d.getFullYear(),
+                month: d.getMonth() + 1,
+                day: d.getDate()
+            };
+        }
+        else if ((currDay - selDayCount) > 0) {
+            this.selDate = {
+                year: d.getFullYear(),
+                month: d.getMonth() + 1,
+                day: d.getDate() + (7 - (currDay - selDayCount))
+            };
+        }
+        else if ((selDayCount - currDay) > 0) {
+            this.selDate = {
+                year: d.getFullYear(),
+                month: d.getMonth() + 1,
+                day: d.getDate() + (selDayCount - currDay)
+            };
+        }
+        this.preferedDate = this.selDate;
+    };
     UserPackageListComponent.prototype.cancelSelection = function () {
         this.selectedPackageId = "";
         this.preferedDate = "";
         this.preferedType = "";
+        this.selectedPackage = {};
         this.additionalInstruction = "";
+        this.packagePrice = "";
+        this.packageDay = "";
+        this.packageMeridian = "";
+        this.packagePriceType = "";
     };
     UserPackageListComponent.prototype.cancelPurchase = function () {
         this.cardsvisible = false;

@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot, ActivatedRoute, Params } from '@angular/router';
-import { PackageServices, AlertService, OrderServices,CommunityServices } from '../../services/index';
+import { PackageServices, AlertService, OrderServices, CommunityServices } from '../../services/index';
 import { IMyOptions, IMyDate, IMyDateModel, IMyInputFieldChanged } from 'mydatepicker';
 
 
@@ -21,10 +21,10 @@ export class UserPackageSearchComponent implements AfterViewInit {
   public zipcode: any = "";
   public selectedPackage: String = "";
   public preferedDate: any = "";
-  public preferedType: any = "";
+  
   public additionalInstruction: any = "";
   private selDate: IMyDate = { year: 0, month: 0, day: 0 };
-  private packageCalender = {};
+  private packageCalender:any= {};
   private packagePriceType = '';
   private packagePrice = '';
   private packageDay = '';
@@ -186,27 +186,27 @@ export class UserPackageSearchComponent implements AfterViewInit {
     let d: Date = new Date();
     var currDay = d.getDay()
     var selDayCount = this.getWeekDayCount(day);
-    
-    if (selDayCount-currDay == 0) {
+
+    if (selDayCount - currDay == 0) {
       this.selDate = {
         year: d.getFullYear(),
         month: d.getMonth() + 1,
         day: d.getDate()
       };
-    }else if ((currDay-selDayCount) > 0 ) {
+    } else if ((currDay - selDayCount) > 0) {
       this.selDate = {
         year: d.getFullYear(),
         month: d.getMonth() + 1,
-        day: d.getDate()+(7-(currDay-selDayCount))
+        day: d.getDate() + (7 - (currDay - selDayCount))
       };
-    }else if((selDayCount-currDay) > 0 ) {
+    } else if ((selDayCount - currDay) > 0) {
       this.selDate = {
         year: d.getFullYear(),
         month: d.getMonth() + 1,
-        day: d.getDate()+(selDayCount-currDay)
+        day: d.getDate() + (selDayCount - currDay)
       };
     }
-    this.preferedDate =this.selDate;
+    this.preferedDate = this.selDate;
 
   }
   //get packages
@@ -214,20 +214,32 @@ export class UserPackageSearchComponent implements AfterViewInit {
     //this.packageService.getPackageByZipcode(this.zipcode)
     this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
+        console.log(this.selectedPackage);
         //this.availablePackages = data.result;
-        for(var i=0;i<=data.result.length;i++){
-          for(var j=0;j<=data.result[i].services.length;j++){
-            if(data.result[i].services[j].dailyPackageId!=''){
+        for (var i = 0; i <= data.result.length; i++) {
+          for (var j = 0; j <= data.result[i].services.length; j++) {
+            
+            
+            if (data.result[i].services[j].dailyPackageId != '') {
+
               this.availablePackages.push(data.result[i].services[j].dailyPackageId);
+              
+              if (this.selectedPackage == data.result[i].services[j].dailyPackageId._id) {
+                this.packageCalender = data.result[i].services[j].dailyPackageId;
+              }
             }
 
-            if(data.result[i].services[j].monthlyPackageId!=''){
+            if (data.result[i].services[j].monthlyPackageId != '') {
               this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
+              
+              if (this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {
+                this.packageCalender = data.result[i].services[j].monthlyPackageId;
+              }
             }
-            
+
           }
         }
-        this.getSelectedPackageDetail();
+       // this.getSelectedPackageDetail();
       },
       error => {
         const body = error.json() || '';
@@ -242,6 +254,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
   getSelectedPackageDetail() {
     if (this.selectedPackage != '') {
       for (var i = 0; i < this.availablePackages.length; i++) {
+        console.log(this.availablePackages[i]._id + " == " + this.selectedPackage);
         if (this.availablePackages[i]._id == this.selectedPackage) {
           this.packageCalender = this.availablePackages[i];
           break;
@@ -249,13 +262,13 @@ export class UserPackageSearchComponent implements AfterViewInit {
       }
     }
 
-    if(this.packagePriceType!=''){
-      var priceTypeArr=this.packagePriceType.split("_"); 
+    if (this.packagePriceType != '') {
+      var priceTypeArr = this.packagePriceType.split("_");
       //console.log(this.packageCalender);
-      this.setPriceDetails(eval("this.packageCalender."+this.packagePriceType),priceTypeArr[0],priceTypeArr[1])
+      this.setPriceDetails(eval("this.packageCalender." + this.packagePriceType), priceTypeArr[0], priceTypeArr[1])
 
     }
-      
+
 
 
   }
@@ -263,33 +276,33 @@ export class UserPackageSearchComponent implements AfterViewInit {
   setSelectedPackageDetail(i: any) {
 
     this.packageCalender = this.availablePackages[i];
-
+    console.log(this.packageCalender);
   }
 
   cancelSelection() {
     this.selectedPackage = "";
     this.preferedDate = "";
-    this.preferedType = "";
+    
     this.additionalInstruction = "";
     this.packagePriceType = "";
     this.packagePrice = "";
     this.packageDay = "";
     this.packageMeridian = "";
-    this.packageCalender = {};
+    this.packageCalender= {};
   }
 
   submitForm(form: any): void {
 
-    if (this.preferedType != '' && this.preferedDate.epoc > 0) {
+    if (this.preferedDate.epoc > 0) {
       var orderDetails = {
         "serviceDate": this.preferedDate.date,
-        "serviceType": this.preferedType,
+        "serviceType": this.packageCalender.frequency,
         "instruction": this.additionalInstruction,
         "packageId": this.selectedPackage,
-        "price":this.packagePrice,
-        "packageType":this.packagePriceType,
-        "packageDay":this.packageDay,
-        "packageMeridian":this.packageMeridian
+        "price": this.packagePrice,
+        "packageType": this.packagePriceType,
+        "packageDay": this.packageDay,
+        "packageMeridian": this.packageMeridian
       };
       this.orderServices.createOrder(orderDetails).subscribe(data => {
 

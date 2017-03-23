@@ -45,12 +45,12 @@
               <div class="main_bcx">
                 <div class="bro_top_sec">
                   <h2 class="Bronze_offers_top-head">{{eachService.dailyPackageId.title}}</h2>
-                  <div class="Bronze_offers">
+                  <!--<div class="Bronze_offers">
                     <div class="banner-up">
                       <div class="banner-in">
                         <p [ngSwitch]="eachService.dailyPackageId.frequency">
-                          <sup *ngSwitchCase="'daily'">/Day</sup>
-                          <sup *ngSwitchCase="'monthly'">/Mn</sup>
+                          <sup *ngSwitchCase="'daily'">daily</sup>
+                          <sup *ngSwitchCase="'monthly'">Monthly</sup>
                           <sup *ngSwitchCase="'yearly'">yr</sup>
                           <sup *ngSwitchDefault></sup>
 
@@ -58,7 +58,7 @@
 
                       </div>
                     </div>
-                  </div>
+                  </div>-->
                 </div>
                 <div class="bro_mid-sec">
                   <ul class="deatil_info">
@@ -74,20 +74,7 @@
               <div class="main_bcx">
                 <div class="bro_top_sec">
                   <h2 class="Bronze_offers_top-head">{{eachService.monthlyPackageId.title}}</h2>
-                  <div class="Bronze_offers">
-                    <div class="banner-up">
-                      <div class="banner-in">
-                        <p [ngSwitch]="eachService.dailyPackageId.frequency">${{eachService.monthlyPackageId.price}}
-                          <sup *ngSwitchCase="'daily'">/Day</sup>
-                          <sup *ngSwitchCase="'monthly'">/Mn</sup>
-                          <sup *ngSwitchCase="'yearly'">yr</sup>
-                          <sup *ngSwitchDefault></sup>
-
-                        </p>
-
-                      </div>
-                    </div>
-                  </div>
+                  
                 </div>
                 <div class="bro_mid-sec">
                   <ul class="deatil_info">

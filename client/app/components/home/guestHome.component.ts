@@ -17,6 +17,7 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
   @ViewChild("search") public searchElementRef: ElementRef;
 
   postal_code: any = '';
+  public commIcon=1;
   public searchControl: any = true;
   public searchValue: any = '';
   constructor(
@@ -28,7 +29,9 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
   }
 
 
-
+  selCommIcon(iconNumber:number){
+    this.commIcon=iconNumber;
+  }
 
   searchPackages() {
     if ('' == this.searchValue || '' == this.postal_code) {
@@ -49,7 +52,7 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
 
-    $(document).ready(function () {
+    /*$(document).ready(function () {
       $("#owl-demo").owlCarousel({
         autoPlay: 3000, //Set AutoPlay to 3 seconds
         items: 1,
@@ -64,7 +67,7 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
         transitionStyle: "fade",
       });
       //$(".s-box").selectbox();
-    });
+    });*/
   }
 
 

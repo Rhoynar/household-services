@@ -20,9 +20,9 @@
             </div>
             
             <p class="text-center" [ngSwitch]="package.frequency">
-              ${{package.price}}
+              
               <span *ngSwitchCase="'daily'">Daily</span>
-              <span *ngSwitchCase="'monthly'">Per Month</span>
+              <span *ngSwitchCase="'monthly'">Monthly</span>
               <span *ngSwitchCase="'yearly'">Per Year</span>
               <span *ngSwitchDefault></span>
             </p>

@@ -546,9 +546,9 @@ var addPackage = function (req, res) {
     //userModel.
 
     packageDetails.title = req.body.title;
-    packageDetails.postalcode = req.body.postcode;
+    //packageDetails.postalcode = req.body.postcode;
     //packageDetails.serviceId = req.body.serviceId;
-    packageDetails.price = req.body.price;
+    //packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
     
@@ -611,8 +611,8 @@ var updatePackage = function (req, res) {
 
     packageDetails.title = req.body.title;
     //packageDetails.serviceId = req.body.serviceId;
-    packageDetails.postalcode = req.body.postcode;
-    packageDetails.price = req.body.price;
+    //packageDetails.postalcode = req.body.postcode;
+    //packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
 

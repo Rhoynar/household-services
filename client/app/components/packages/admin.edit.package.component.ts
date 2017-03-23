@@ -46,8 +46,8 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
       //serviceId: ['', Validators.required],
       //communityId: ['', Validators.required],
       title: ['', Validators.required],
-      postcode: ['', Validators.required],
-      price: ['', Validators.required],
+      //postcode: ['', Validators.required],
+      //price: ['', Validators.required],
       mon_mor_price: [0, Validators.required],
       mon_noon_price: [0, Validators.required],
       mon_eve_price: [0, Validators.required],
@@ -168,8 +168,8 @@ export class AdminEditPackageComponent implements AfterViewInit, OnInit, OnDestr
           this.editPackageForm.controls['title'].setValue(this.packageDetails.title);
           //this.editPackageForm.controls['communityId'].setValue(this.packageDetails.communityId);
           //this.editPackageForm.controls['serviceId'].setValue(this.packageDetails.serviceId._id);
-          this.editPackageForm.controls['postcode'].setValue(this.packageDetails.postalcode);
-          this.editPackageForm.controls['price'].setValue(this.packageDetails.price);
+          //this.editPackageForm.controls['postcode'].setValue(this.packageDetails.postalcode);
+          //this.editPackageForm.controls['price'].setValue(this.packageDetails.price);
           this.editPackageForm.controls['frequency'].setValue(this.packageDetails.frequency);
           this.editPackageForm.controls['mon_mor_price'].setValue(this.packageDetails.mon_mor_price);
           this.editPackageForm.controls['mon_noon_price'].setValue(this.packageDetails.mon_noon_price);

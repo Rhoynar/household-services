@@ -27,7 +27,7 @@
                   <div class="input-block">
                     <input type="hidden" name="zipcode" id="zipcode" [formControl]="notifyServiceForm.controls['zipcode']">
                     <input class="input-fill2" placeholder="Email Address" type="text" name="notifyEmail" id="notifyEmail" [formControl]="notifyServiceForm.controls['notifyEmail']">
-                    <button type="submit" class="rh_btn login_btn" [disabled]="!notifyServiceForm.valid">Notify Me</button>
+                    <button type="submit" class="" [disabled]="!notifyServiceForm.valid">Notify Me</button>
                   </div>
                   <div *ngIf="notifyServiceForm.controls['notifyEmail'].hasError('required') && notifyServiceForm.controls['notifyEmail'].touched"
                     class="alert alert-danger">

@@ -25,7 +25,6 @@ var UserPackageSearchComponent = (function () {
         this.zipcode = "";
         this.selectedPackage = "";
         this.preferedDate = "";
-        this.preferedType = "";
         this.additionalInstruction = "";
         this.selDate = { year: 0, month: 0, day: 0 };
         this.packageCalender = {};
@@ -178,18 +177,25 @@ var UserPackageSearchComponent = (function () {
         //this.packageService.getPackageByZipcode(this.zipcode)
         this.communityServices.getCommunityByZipCode(this.zipcode)
             .subscribe(function (data) {
+            console.log(_this.selectedPackage);
             //this.availablePackages = data.result;
             for (var i = 0; i <= data.result.length; i++) {
                 for (var j = 0; j <= data.result[i].services.length; j++) {
                     if (data.result[i].services[j].dailyPackageId != '') {
                         _this.availablePackages.push(data.result[i].services[j].dailyPackageId);
+                        if (_this.selectedPackage == data.result[i].services[j].dailyPackageId._id) {
+                            _this.packageCalender = data.result[i].services[j].dailyPackageId;
+                        }
                     }
                     if (data.result[i].services[j].monthlyPackageId != '') {
                         _this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
+                        if (_this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {
+                            _this.packageCalender = data.result[i].services[j].monthlyPackageId;
+                        }
                     }
                 }
             }
-            _this.getSelectedPackageDetail();
+            // this.getSelectedPackageDetail();
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
@@ -200,6 +206,7 @@ var UserPackageSearchComponent = (function () {
     UserPackageSearchComponent.prototype.getSelectedPackageDetail = function () {
         if (this.selectedPackage != '') {
             for (var i = 0; i < this.availablePackages.length; i++) {
+                console.log(this.availablePackages[i]._id + " == " + this.selectedPackage);
                 if (this.availablePackages[i]._id == this.selectedPackage) {
                     this.packageCalender = this.availablePackages[i];
                     break;
@@ -214,11 +221,11 @@ var UserPackageSearchComponent = (function () {
     };
     UserPackageSearchComponent.prototype.setSelectedPackageDetail = function (i) {
         this.packageCalender = this.availablePackages[i];
+        console.log(this.packageCalender);
     };
     UserPackageSearchComponent.prototype.cancelSelection = function () {
         this.selectedPackage = "";
         this.preferedDate = "";
-        this.preferedType = "";
         this.additionalInstruction = "";
         this.packagePriceType = "";
         this.packagePrice = "";
@@ -228,10 +235,10 @@ var UserPackageSearchComponent = (function () {
     };
     UserPackageSearchComponent.prototype.submitForm = function (form) {
         var _this = this;
-        if (this.preferedType != '' && this.preferedDate.epoc > 0) {
+        if (this.preferedDate.epoc > 0) {
             var orderDetails = {
                 "serviceDate": this.preferedDate.date,
-                "serviceType": this.preferedType,
+                "serviceType": this.packageCalender.frequency,
                 "instruction": this.additionalInstruction,
                 "packageId": this.selectedPackage,
                 "price": this.packagePrice,

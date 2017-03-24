@@ -160,7 +160,7 @@ var AdminEditCommunityComponent = (function () {
                         var eachService = _a[_i];
                         var newControl = _this.initService();
                         serviceControl.push(newControl);
-                        newControl.controls['service'].setValue(eachService);
+                        newControl.controls['service'].setValue(eachService._id);
                     }
                 }
                 else {

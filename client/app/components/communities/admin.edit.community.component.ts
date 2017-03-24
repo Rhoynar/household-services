@@ -194,7 +194,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
             for (let eachService of this.communityDetails.services) {
               var newControl = this.initService();
               serviceControl.push(newControl);
-              newControl.controls['service'].setValue(eachService);
+              newControl.controls['service'].setValue(eachService._id);
             }
           }else{
             var newControl = this.initService();

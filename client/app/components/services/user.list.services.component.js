@@ -13,17 +13,21 @@ var router_1 = require('@angular/router');
 var forms_1 = require('@angular/forms');
 var index_1 = require('../../services/index');
 var UserListServicesComponent = (function () {
-    function UserListServicesComponent(router, fb, packageService, activatedRoute, alertService, authenticationService, communityServices) {
+    function UserListServicesComponent(router, fb, packageService, activatedRoute, alertService, userService, authenticationService, communityServices) {
+        var _this = this;
         this.router = router;
         this.fb = fb;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
         this.alertService = alertService;
+        this.userService = userService;
         this.authenticationService = authenticationService;
         this.communityServices = communityServices;
         this.loggedIn = false;
         this.zipcode = "";
         this.pagetitle = "Services in your Community";
+        this.userCommunityId = '';
+        this.selectedCommunity = {};
         var params = this.activatedRoute.snapshot.queryParams;
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
@@ -34,7 +38,21 @@ var UserListServicesComponent = (function () {
         }
         else if (currentUserStr) {
             this.zipcode = currentUser.token.zipcode;
-            this.getPackageByZipcode();
+            if (currentUser.token.cummunityId) {
+                this.userCommunityId = currentUser.token.cummunityId;
+                this.communityServices.getCommunityByid(this.userCommunityId)
+                    .subscribe(function (data) {
+                    _this.selectedCommunity = data.result;
+                }, function (error) {
+                    var body = error.json() || '';
+                    var err = body.error || JSON.stringify(body);
+                    var errr = JSON.parse(err);
+                    alert(errr.msg);
+                });
+            }
+            if (this.zipcode != '') {
+                this.getPackageByZipcode();
+            }
         }
         else {
             this.pagetitle = "Services from all communities";
@@ -53,6 +71,19 @@ var UserListServicesComponent = (function () {
             var errr = JSON.parse(err);
             alert(errr.msg);
         });
+    };
+    UserListServicesComponent.prototype.selectCommunity = function (index) {
+        this.selectedCommunity = this.communityList[index];
+        this.userCommunityId = this.selectedCommunity._id;
+        var userData = { userData: { zipcode: this.zipcode, cummunityId: this.userCommunityId } };
+        this.userService.updateUserProfile(userData)
+            .subscribe(function (data) {
+        }, function (error) {
+        });
+    };
+    UserListServicesComponent.prototype.cancelCommunitySelection = function () {
+        this.selectedCommunity = {};
+        this.userCommunityId = '';
     };
     UserListServicesComponent.prototype.getPackageByZipcode = function () {
         var _this = this;
@@ -102,7 +133,7 @@ var UserListServicesComponent = (function () {
             selector: 'user-services-list',
             templateUrl: './user.list.services.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, forms_1.FormBuilder, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.AuthenticationService, index_1.CommunityServices])
+        __metadata('design:paramtypes', [router_1.Router, forms_1.FormBuilder, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.UserServices, index_1.AuthenticationService, index_1.CommunityServices])
     ], UserListServicesComponent);
     return UserListServicesComponent;
 }());

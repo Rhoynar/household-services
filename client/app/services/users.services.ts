@@ -39,6 +39,12 @@ export class UserServices{
         .map(this.extractData);//.catch(this.handleError);;
     }
 
+    updateUserProfile(userData:any){
+        var headers=this.getHeader();
+        return this.http.put('/api/updateUser',JSON.stringify(userData),{headers:headers})
+        .map(this.extractData);//.catch(this.handleError);;
+    }
+
     loginUser(user:any){
         var headers=this.getHeader();
         return this.http.post('/login',JSON.stringify(user),{headers:headers})

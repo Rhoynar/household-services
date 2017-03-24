@@ -35,11 +35,45 @@
           </form>
         </div>
       </div>
-      <div class="packages_page" *ngIf="zipcode">
+      
+      <div class="col-md-12" *ngIf="zipcode && userCommunityId=='' && communityList?.length>0">
+        <p>Please select community which suits to best</p>
+        <div class="services_info_block clearfix" *ngFor="let community of communityList; let i=index;">
 
-        <div class="premium_block clearfix" *ngFor="let eachCommunity of communityList">
-          <h3 class="bdr-heading">Services for "{{eachCommunity.title}}" Community</h3>
-          <div class="premium_block clearfix" *ngFor="let eachService of eachCommunity.services">
+          <div class="col-md-8 ser-lf">
+            <div class="services-lf">
+              <div class="user-img" *ngIf="community.communityLogo">
+                <!--<img src="images/pic-1.jpg" alt="" />-->
+                <img src="{{community.communityLogo}}" />
+              </div>
+            </div>
+            <div class="services-rh">
+              <h3>{{community.title}}</h3>
+              <p>Address:- <b>{{community.addressLineOne}} ,{{community.addressLineTwo}}</b></p>
+              <p>Zip Code:- <b>{{community.postcode}}</b></p>
+              <p>Phone:-{{community.phone}}</p>
+            </div>
+          </div>
+          <div class="col-md-4 ser-rh">
+            <div class="">
+              <button type="button" class="dash-btn blue" (click)="selectCommunity(i)">Select</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-sm-12" *ngIf="communityList?.length==0">
+          <p>Sorry, There is no community available in your area, we will get some community for you soon.</p>
+        </div>
+
+
+      <div class="packages_page" *ngIf="zipcode && userCommunityId">
+
+        <div class="premium_block clearfix">
+          <h3 class="bdr-heading">Services for "{{selectedCommunity.title}}" Community</h3>
+          <button type="button" class="dash-btn blue" (click)="cancelCommunitySelection()">Cancel</button>
+          <div class="premium_block clearfix" *ngFor="let eachService of selectedCommunity.services">
             <h3 class="bdr-heading">Packages of "{{eachService.title}}" Service</h3>
             <div class="col-sm-3 premium_inq" *ngIf="eachService.dailyPackageId!=''">
               <div class="main_bcx">
@@ -74,7 +108,7 @@
               <div class="main_bcx">
                 <div class="bro_top_sec">
                   <h2 class="Bronze_offers_top-head">{{eachService.monthlyPackageId.title}}</h2>
-                  
+
                 </div>
                 <div class="bro_mid-sec">
                   <ul class="deatil_info">
@@ -88,15 +122,15 @@
             </div>
 
           </div>
-          
+
 
         </div>
-        <div class="col-sm-12" *ngIf="communityList?.length==0">
-          <p>Sorry, There is no community available in your area, we will get some community for you soon.</p>
-        </div>
+        
 
 
       </div>
+
+
     </div>
   </div>
 </div>

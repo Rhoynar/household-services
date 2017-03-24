@@ -187,16 +187,18 @@ var UserPackageSearchComponent = (function () {
         this.communityServices.getCommunityByZipCode(this.zipcode)
             .subscribe(function (data) {
             console.log(_this.selectedPackage);
+            console.log(data.result.length);
             //this.availablePackages = data.result;
-            for (var i = 0; i <= data.result.length; i++) {
-                for (var j = 0; j <= data.result[i].services.length; j++) {
-                    if (data.result[i].services[j].dailyPackageId != '') {
+            for (var i = 0; i < data.result.length; i++) {
+                for (var j = 0; j < data.result[i].services.length; j++) {
+                    console.log(i + 'lenght' + data.result[i].services.length + "  j" + j);
+                    if (typeof (data.result[i].services[j].dailyPackageId) != "undefined" && data.result[i].services[j].dailyPackageId != '') {
                         _this.availablePackages.push(data.result[i].services[j].dailyPackageId);
                         if (_this.selectedPackage == data.result[i].services[j].dailyPackageId._id) {
                             _this.packageCalender = data.result[i].services[j].dailyPackageId;
                         }
                     }
-                    if (data.result[i].services[j].monthlyPackageId != '') {
+                    if (typeof (data.result[i].services[j].monthlyPackageId) != "undefined" && data.result[i].services[j].monthlyPackageId != '') {
                         _this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
                         if (_this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {
                             _this.packageCalender = data.result[i].services[j].monthlyPackageId;

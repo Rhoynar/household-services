@@ -352,6 +352,30 @@ var getProfile = function (req, res) {
 
 }
 
+
+var updateUserProfile=function (req, res) {
+
+    var profile = req.body;
+    if (req.user) {
+        updateDetails =req.body.userData;
+
+        Users.findByIdAndUpdate(req.user.id, updateDetails, function (err, updateRes) {
+
+            if (err) {
+
+                return res.json({ status: 'error', error: err });
+            }
+            else {
+
+                return res.json({ status: 'success', msg: 'User updated successfully' });
+            }
+        });
+    }else{
+        return res.json({ status: 'success', msg: 'User not found' });
+    }
+}
+
+
 var updateProfile = function (req, res) {
 
     var profile = req.body;
@@ -1580,7 +1604,21 @@ var getCommunityByid = function (req, res) {
     
     var communityId = req.params.id;
     if (communityId != '') {
-        Communities.findById(communityId).exec(function (err, packageDoc) {
+        Communities.findById(communityId).populate({
+                    path: 'services',
+                    model: 'Services',
+                    populate: {
+                        path: 'dailyPackageId',
+                        model: 'Packages'
+                    }
+                }).populate({
+                    path: 'services',
+                    model: 'Services',
+                    populate: {
+                        path: 'monthlyPackageId',
+                        model: 'Packages'
+                    }
+                }).exec(function (err, packageDoc) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch Community , please try later', error: err });
             } else {
@@ -1723,6 +1761,7 @@ router.post('/checkUniqueEmail', checkUniqueEmail);
 
 router.get('/profile/:id', getProfile);
 router.put('/profile', updateProfile);
+router.put('/updateUser', updateUserProfile);
 
 router.put('/approveVendor',approveVendor);
 

@@ -39,6 +39,11 @@ var UserServices = (function () {
         return this.http.put('/api/profile', JSON.stringify(userProfile), { headers: headers })
             .map(this.extractData); //.catch(this.handleError);;
     };
+    UserServices.prototype.updateUserProfile = function (userData) {
+        var headers = this.getHeader();
+        return this.http.put('/api/updateUser', JSON.stringify(userData), { headers: headers })
+            .map(this.extractData); //.catch(this.handleError);;
+    };
     UserServices.prototype.loginUser = function (user) {
         var headers = this.getHeader();
         return this.http.post('/login', JSON.stringify(user), { headers: headers })

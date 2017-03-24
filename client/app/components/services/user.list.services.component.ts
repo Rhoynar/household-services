@@ -1,8 +1,8 @@
-import { Component, ViewChild, ElementRef, AfterViewInit,OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService, AuthenticationService, GooglePlaceService, PackageServices,CommunityServices } from '../../services/index';
+import { UserServices, AlertService, AuthenticationService, GooglePlaceService, PackageServices, CommunityServices } from '../../services/index';
 declare var $: any;
 
 
@@ -15,17 +15,20 @@ declare var $: any;
 })
 export class UserListServicesComponent implements AfterViewInit {
   public servicesList: any;
-  public communityList:any;
+  public communityList: any;
   public loggedIn = false;
   public zipcode: any = "";
   public pagetitle: String = "Services in your Community";
   public searchServicesForm: FormGroup;
+  public userCommunityId = '';
+  public selectedCommunity: any = {};
   constructor(
-    private router:Router,
+    private router: Router,
     private fb: FormBuilder,
     private packageService: PackageServices,
     private activatedRoute: ActivatedRoute,
     private alertService: AlertService,
+    private userService: UserServices,
     private authenticationService: AuthenticationService,
     private communityServices: CommunityServices,
   ) {
@@ -39,9 +42,30 @@ export class UserListServicesComponent implements AfterViewInit {
       this.getPackageByZipcode();
     } else if (currentUserStr) {
       this.zipcode = currentUser.token.zipcode;
-      this.getPackageByZipcode();
+      if (currentUser.token.cummunityId) {
+        this.userCommunityId = currentUser.token.cummunityId;
+
+        
+        this.communityServices.getCommunityByid(this.userCommunityId)
+          .subscribe(data => {
+            this.selectedCommunity = data.result;
+          },
+          error => {
+            const body = error.json() || '';
+            const err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+
+          }
+          );
+      }
+
+      if (this.zipcode != '') {
+        this.getPackageByZipcode();
+      }
+
     } else {
-      this.pagetitle="Services from all communities"
+      this.pagetitle = "Services from all communities"
       this.getAllPackage();
     }
 
@@ -63,15 +87,36 @@ export class UserListServicesComponent implements AfterViewInit {
       );
   }
 
+  selectCommunity(index: number) {
+    this.selectedCommunity = this.communityList[index];
+    this.userCommunityId = this.selectedCommunity._id;
+    var userData = { userData: { zipcode: this.zipcode, cummunityId: this.userCommunityId } };
+    this.userService.updateUserProfile(userData)
+      .subscribe(data => {
+
+
+      },
+      error => {
+
+
+      }
+      );
+
+  }
+
+  cancelCommunitySelection() {
+    this.selectedCommunity = {};
+    this.userCommunityId = '';
+  }
   getPackageByZipcode() {
     this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
         this.communityList = data.result;
-        if(this.communityList.length==0){
+        if (this.communityList.length == 0) {
           //this.router.navigate(['/noservice/'+this.zipcode]);
-          this.router.navigate(['/noservice'], { queryParams: {zip:this.zipcode} });
+          this.router.navigate(['/noservice'], { queryParams: { zip: this.zipcode } });
         }
-        
+
       },
       error => {
         const body = error.json() || '';
@@ -98,19 +143,20 @@ export class UserListServicesComponent implements AfterViewInit {
       );
   }*/
 
-  searchService(){
+  searchService() {
     this.zipcode = this.searchServicesForm.value.zipcode;
     this.getPackageByZipcode();
   }
+
   ngAfterViewInit() {
 
 
   }
 
   ngOnInit() {
-        this.searchServicesForm = this.fb.group({
-            zipcode: ['', Validators.compose([Validators.required])],
-        });
-    }
+    this.searchServicesForm = this.fb.group({
+      zipcode: ['', Validators.compose([Validators.required])],
+    });
+  }
 
 }

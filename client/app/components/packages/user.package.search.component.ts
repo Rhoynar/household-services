@@ -224,12 +224,14 @@ export class UserPackageSearchComponent implements AfterViewInit {
     this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
         console.log(this.selectedPackage);
+
+        console.log(data.result.length);
         //this.availablePackages = data.result;
-        for (var i = 0; i <= data.result.length; i++) {
-          for (var j = 0; j <= data.result[i].services.length; j++) {
+        for (var i = 0; i < data.result.length; i++) {
+          for (var j = 0; j < data.result[i].services.length; j++) {
+            console.log(i+'lenght'+data.result[i].services.length+"  j"+j);
 
-
-            if (data.result[i].services[j].dailyPackageId != '') {
+            if (typeof(data.result[i].services[j].dailyPackageId) !="undefined" && data.result[i].services[j].dailyPackageId != '') {
 
               this.availablePackages.push(data.result[i].services[j].dailyPackageId);
 
@@ -238,7 +240,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
               }
             }
 
-            if (data.result[i].services[j].monthlyPackageId != '') {
+            if (typeof(data.result[i].services[j].monthlyPackageId) !="undefined" && data.result[i].services[j].monthlyPackageId != '') {
               this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
 
               if (this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {

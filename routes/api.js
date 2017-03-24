@@ -800,14 +800,7 @@ var upComingUserOrder=function(req,res){
         var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
         condition.serviceDate={ "$gte": sDate, "$lt": eDate };
         
-        Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').populate({
-            path: 'packageId',
-            model: 'Packages',
-            populate: {
-                path: 'serviceId',
-                model: 'Services'
-            }
-        }).exec(function (err, orderDocs) {
+        Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').exec(function (err, orderDocs) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
             } else {
@@ -830,15 +823,15 @@ var userOrder = function (req, res) {
         //}
 
         
-        
-        Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').populate({
+        /*.populate({
             path: 'packageId',
             model: 'Packages',
             populate: {
                 path: 'serviceId',
                 model: 'Services'
             }
-        }).exec(function (err, orderDocs) {
+        })*/
+        Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').exec(function (err, orderDocs) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
             } else {
@@ -864,14 +857,7 @@ var upcomingVendorOrder = function (req, res) {
         var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
         condition.serviceDate={ "$gte": sDate, "$lt": eDate };
 
-        Orders.find(condition).sort({serviceDate: 1}).populate('clientId').populate('packageId').populate({
-            path: 'packageId',
-            model: 'Packages',
-            populate: {
-                path: 'serviceId',
-                model: 'Services'
-            }
-        }).exec(function (err, orderDocs) {
+        Orders.find(condition).sort({serviceDate: 1}).populate('clientId').populate('packageId').exec(function (err, orderDocs) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
             } else {
@@ -897,14 +883,7 @@ var vendorOrder = function (req, res) {
         var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
         //condition.serviceDate={ "$gte": sDate, "$lt": eDate };
 
-        Orders.find(condition).sort({serviceDate: 1}).populate('clientId').populate('packageId').populate({
-            path: 'packageId',
-            model: 'Packages',
-            populate: {
-                path: 'serviceId',
-                model: 'Services'
-            }
-        }).exec(function (err, orderDocs) {
+        Orders.find(condition).sort({serviceDate: 1}).populate('clientId').populate('packageId').exec(function (err, orderDocs) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
             } else {
@@ -922,14 +901,7 @@ var vendorOrder = function (req, res) {
 var getAllOrder = function (req, res) {
     if (req.user) {
 
-        Orders.find({}).populate('clientId').populate('vendorId').populate('packageId').populate({
-            path: 'packageId',
-            model: 'Packages',
-            populate: {
-                path: 'serviceId',
-                model: 'Services'
-            }
-        }).exec(function (err, orderDocs) {
+        Orders.find({}).populate('clientId').populate('vendorId').populate('packageId').exec(function (err, orderDocs) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
             } else {
@@ -1120,7 +1092,7 @@ var makePayment = function (req, res) {
         var userDetails = {};
         var chargeDetails = {};
         var tokenDetails = {};
-
+        orderDetails.amount = orderDetails.price;
         async.series(
             [
                 function (callback) {
@@ -1165,8 +1137,6 @@ var makePayment = function (req, res) {
                         if (err) {
                             callback(err);
                         } else {
-                            orderDetails.amount = packageDoc.price;
-
                             var vendorIndex = randomIntInc(0, packageDoc.vendors.length - 1);
                             orderDetails.vendorId = packageDoc.vendors[vendorIndex];
                             callback(null, packageDoc);
@@ -1250,6 +1220,9 @@ var makePayment = function (req, res) {
                     order.chargeDetail = chargeDetails;
                     order.tokenDetail = tokenDetails;
                     order.serviceDate = new Date(orderDetails.serviceDate.year, orderDetails.serviceDate.month - 1, orderDetails.serviceDate.day + 1,0,0,0);
+                    order.serviceMeridian = orderDetails.packageMeridian;
+                    order.packageDay = orderDetails.packageDay;
+                    order.packageType = orderDetails.packageType;
                     order.instruction = orderDetails.instruction;
                     order.serviceType = orderDetails.serviceType;
                     order.created = Date.now();

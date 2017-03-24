@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot, ActivatedRoute, Params } from '@angular/router';
-import { PackageServices, AlertService, OrderServices, CommunityServices } from '../../services/index';
+import { StripeServices, PackageServices, AlertService, OrderServices, CommunityServices } from '../../services/index';
 import { IMyOptions, IMyDate, IMyDateModel, IMyInputFieldChanged } from 'mydatepicker';
 
 
@@ -21,15 +21,23 @@ export class UserPackageSearchComponent implements AfterViewInit {
   public zipcode: any = "";
   public selectedPackage: String = "";
   public preferedDate: any = "";
-  
+
   public additionalInstruction: any = "";
   private selDate: IMyDate = { year: 0, month: 0, day: 0 };
-  private packageCalender:any= {};
+  private packageCalender: any = {};
   private packagePriceType = '';
   private packagePrice = '';
   private packageDay = '';
   private packageMeridian = '';
+  public userCreditCards: any = [];
 
+  private cardsvisible = false;
+  private useCardId: any = '';
+  private processingCard: any = false;
+  private cardNumber: any = '';
+  private expiryMonth: any = '';
+  private expiryYear: any = '';
+  private cvc: any = '';
 
 
   private myDatePickerOptions: IMyOptions = {
@@ -135,6 +143,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private alertService: AlertService,
     private communityServices: CommunityServices,
+    private stripeServices: StripeServices,
     private orderServices: OrderServices
   ) {
     let d: Date = new Date();
@@ -218,12 +227,12 @@ export class UserPackageSearchComponent implements AfterViewInit {
         //this.availablePackages = data.result;
         for (var i = 0; i <= data.result.length; i++) {
           for (var j = 0; j <= data.result[i].services.length; j++) {
-            
-            
+
+
             if (data.result[i].services[j].dailyPackageId != '') {
 
               this.availablePackages.push(data.result[i].services[j].dailyPackageId);
-              
+
               if (this.selectedPackage == data.result[i].services[j].dailyPackageId._id) {
                 this.packageCalender = data.result[i].services[j].dailyPackageId;
               }
@@ -231,7 +240,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
 
             if (data.result[i].services[j].monthlyPackageId != '') {
               this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
-              
+
               if (this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {
                 this.packageCalender = data.result[i].services[j].monthlyPackageId;
               }
@@ -239,7 +248,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
 
           }
         }
-       // this.getSelectedPackageDetail();
+        // this.getSelectedPackageDetail();
       },
       error => {
         const body = error.json() || '';
@@ -282,13 +291,13 @@ export class UserPackageSearchComponent implements AfterViewInit {
   cancelSelection() {
     this.selectedPackage = "";
     this.preferedDate = "";
-    
+
     this.additionalInstruction = "";
     this.packagePriceType = "";
     this.packagePrice = "";
     this.packageDay = "";
     this.packageMeridian = "";
-    this.packageCalender= {};
+    this.packageCalender = {};
   }
 
   submitForm(form: any): void {
@@ -304,7 +313,8 @@ export class UserPackageSearchComponent implements AfterViewInit {
         "packageDay": this.packageDay,
         "packageMeridian": this.packageMeridian
       };
-      this.orderServices.createOrder(orderDetails).subscribe(data => {
+      this.cardsvisible = true;
+      /*this.orderServices.createOrder(orderDetails).subscribe(data => {
 
         this.alertService.success(data.msg, 'additional-form');
         this.router.navigate(['/dashboard']);
@@ -316,7 +326,7 @@ export class UserPackageSearchComponent implements AfterViewInit {
           var errr = JSON.parse(err);
           this.alertService.error(errr.msg, 'additional-form');
         }
-      );
+      );*/
     } else {
 
       this.alertService.error("Please complete form", 'additional-form');
@@ -324,10 +334,108 @@ export class UserPackageSearchComponent implements AfterViewInit {
 
   }
 
+
+  //get users credit cards
+  getCards() {
+    this.stripeServices.getCards()
+      .subscribe(data => {
+        //this.stripeCustomerId = data.stripe_cus_id;
+        this.userCreditCards = data.result;
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+        if (error.status) {
+          this.router.navigate(['/login']);
+        }
+      }
+      );
+  }
+
   ngAfterViewInit() {
     //this.getAllPackage();
+    this.getCards();
+  }
+
+
+
+  makePayment(cardDetails: any) {
+
+    var orderDetails = {
+      "serviceDate": this.preferedDate.date,
+      "serviceType": this.packageCalender.frequency,
+      "instruction": this.additionalInstruction,
+      "packageId": this.selectedPackage,
+      "price": this.packagePrice,
+      "packageType": this.packagePriceType,
+      "packageDay": this.packageDay,
+      "packageMeridian": this.packageMeridian
+    };
+    this.processPayment(cardDetails, orderDetails, false, false);
 
   }
+
+
+  payWithNewCard(saveCard: any) {
+    var orderDetails = {
+      "serviceDate": this.preferedDate.date,
+      "serviceType": this.packageCalender.frequency,
+      "instruction": this.additionalInstruction,
+      "packageId": this.selectedPackage,
+      "price": this.packagePrice,
+      "packageType": this.packagePriceType,
+      "packageDay": this.packageDay,
+      "packageMeridian": this.packageMeridian
+    };
+
+    var cardDetails = {
+      number: this.cardNumber,
+      exp_month: this.expiryMonth,
+      exp_year: this.expiryYear,
+      cvc: this.cvc
+    };
+
+    this.processPayment(cardDetails, orderDetails, true, saveCard);
+
+
+  }
+
+  processPayment(cardDetails: any, orderDetails: any, newCard: any, saveCard: any) {
+    var con = confirm('Are you Sure, you wanna make this payment?');
+    if (con) {
+      this.processingCard = true;
+      //carddetail,orderdetail,newcard,savecard
+      this.stripeServices.makePayment(cardDetails, orderDetails, newCard, saveCard)
+        .subscribe(data => {
+
+          this.processingCard = false;
+          this.router.navigate(['/order']);
+        },
+        error => {
+          const body = error.json() || '';
+          const err = body.error || JSON.stringify(body);
+          var errr = JSON.parse(err);
+          //alert(errr.msg);
+          this.alertService.error(errr.msg, 'card-error');
+          if (error.status) {
+            this.router.navigate(['/login']);
+          }
+        }
+        );
+    }
+  }
+
+  cancelPurchase() {
+    this.cardsvisible = false;
+    this.cardNumber = '';
+    this.expiryMonth = '';
+    this.expiryYear = '';
+    this.cvc = '';
+    this.cancelSelection();
+  }
+
   ngOnInit() {
 
   }

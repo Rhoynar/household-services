@@ -13,12 +13,13 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var UserPackageSearchComponent = (function () {
     //constructor start
-    function UserPackageSearchComponent(router, packageService, activatedRoute, alertService, communityServices, orderServices) {
+    function UserPackageSearchComponent(router, packageService, activatedRoute, alertService, communityServices, stripeServices, orderServices) {
         this.router = router;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
         this.alertService = alertService;
         this.communityServices = communityServices;
+        this.stripeServices = stripeServices;
         this.orderServices = orderServices;
         this.availablePackages = [];
         this.pagetitle = "Package List";
@@ -32,6 +33,14 @@ var UserPackageSearchComponent = (function () {
         this.packagePrice = '';
         this.packageDay = '';
         this.packageMeridian = '';
+        this.userCreditCards = [];
+        this.cardsvisible = false;
+        this.useCardId = '';
+        this.processingCard = false;
+        this.cardNumber = '';
+        this.expiryMonth = '';
+        this.expiryYear = '';
+        this.cvc = '';
         this.myDatePickerOptions = {
             // other options...
             dateFormat: 'dd-mm-yyyy',
@@ -234,7 +243,6 @@ var UserPackageSearchComponent = (function () {
         this.packageCalender = {};
     };
     UserPackageSearchComponent.prototype.submitForm = function (form) {
-        var _this = this;
         if (this.preferedDate.epoc > 0) {
             var orderDetails = {
                 "serviceDate": this.preferedDate.date,
@@ -246,23 +254,94 @@ var UserPackageSearchComponent = (function () {
                 "packageDay": this.packageDay,
                 "packageMeridian": this.packageMeridian
             };
-            this.orderServices.createOrder(orderDetails).subscribe(function (data) {
-                _this.alertService.success(data.msg, 'additional-form');
-                _this.router.navigate(['/dashboard']);
-                //return false;
-            }, function (error) {
-                var body = error.json() || '';
-                var err = body.error || JSON.stringify(body);
-                var errr = JSON.parse(err);
-                _this.alertService.error(errr.msg, 'additional-form');
-            });
+            this.cardsvisible = true;
         }
         else {
             this.alertService.error("Please complete form", 'additional-form');
         }
     };
+    //get users credit cards
+    UserPackageSearchComponent.prototype.getCards = function () {
+        var _this = this;
+        this.stripeServices.getCards()
+            .subscribe(function (data) {
+            //this.stripeCustomerId = data.stripe_cus_id;
+            _this.userCreditCards = data.result;
+        }, function (error) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+            if (error.status) {
+                _this.router.navigate(['/login']);
+            }
+        });
+    };
     UserPackageSearchComponent.prototype.ngAfterViewInit = function () {
         //this.getAllPackage();
+        this.getCards();
+    };
+    UserPackageSearchComponent.prototype.makePayment = function (cardDetails) {
+        var orderDetails = {
+            "serviceDate": this.preferedDate.date,
+            "serviceType": this.packageCalender.frequency,
+            "instruction": this.additionalInstruction,
+            "packageId": this.selectedPackage,
+            "price": this.packagePrice,
+            "packageType": this.packagePriceType,
+            "packageDay": this.packageDay,
+            "packageMeridian": this.packageMeridian
+        };
+        this.processPayment(cardDetails, orderDetails, false, false);
+    };
+    UserPackageSearchComponent.prototype.payWithNewCard = function (saveCard) {
+        var orderDetails = {
+            "serviceDate": this.preferedDate.date,
+            "serviceType": this.packageCalender.frequency,
+            "instruction": this.additionalInstruction,
+            "packageId": this.selectedPackage,
+            "price": this.packagePrice,
+            "packageType": this.packagePriceType,
+            "packageDay": this.packageDay,
+            "packageMeridian": this.packageMeridian
+        };
+        var cardDetails = {
+            number: this.cardNumber,
+            exp_month: this.expiryMonth,
+            exp_year: this.expiryYear,
+            cvc: this.cvc
+        };
+        this.processPayment(cardDetails, orderDetails, true, saveCard);
+    };
+    UserPackageSearchComponent.prototype.processPayment = function (cardDetails, orderDetails, newCard, saveCard) {
+        var _this = this;
+        var con = confirm('Are you Sure, you wanna make this payment?');
+        if (con) {
+            this.processingCard = true;
+            //carddetail,orderdetail,newcard,savecard
+            this.stripeServices.makePayment(cardDetails, orderDetails, newCard, saveCard)
+                .subscribe(function (data) {
+                _this.processingCard = false;
+                _this.router.navigate(['/order']);
+            }, function (error) {
+                var body = error.json() || '';
+                var err = body.error || JSON.stringify(body);
+                var errr = JSON.parse(err);
+                //alert(errr.msg);
+                _this.alertService.error(errr.msg, 'card-error');
+                if (error.status) {
+                    _this.router.navigate(['/login']);
+                }
+            });
+        }
+    };
+    UserPackageSearchComponent.prototype.cancelPurchase = function () {
+        this.cardsvisible = false;
+        this.cardNumber = '';
+        this.expiryMonth = '';
+        this.expiryYear = '';
+        this.cvc = '';
+        this.cancelSelection();
     };
     UserPackageSearchComponent.prototype.ngOnInit = function () {
     };
@@ -274,7 +353,7 @@ var UserPackageSearchComponent = (function () {
             selector: 'user-package-search',
             templateUrl: './user.package.search.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.CommunityServices, index_1.OrderServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.CommunityServices, index_1.StripeServices, index_1.OrderServices])
     ], UserPackageSearchComponent);
     return UserPackageSearchComponent;
 }());

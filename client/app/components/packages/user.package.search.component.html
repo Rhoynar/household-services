@@ -35,7 +35,7 @@
         </span>
 
 
-        <div class="col-sm-6" *ngIf="selectedPackage!=''">
+        <div class="col-sm-6" *ngIf="selectedPackage!='' && cardsvisible==false">
           <div class="community-table">
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
@@ -212,7 +212,98 @@
 
         </div>
 
+        <div class="panel col-sm-6" *ngIf="selectedPackage!='' && cardsvisible==true">
 
+      <div class="panel-heading">
+        <h3 class="panel-title">Cards</h3>
+        <button type="button" class="btn btn-primary" (click)="cancelPurchase();">Cancel</button>
+      </div>
+      <div class="panel-body">
+        <!--<div class="cg-busy" *ngIf="processingCard">
+          <div class="cg-busy cg-busy-backdrop"></div>
+          <div class="cg-busy-div">
+          </div>
+        </div>-->
+        <ul class="list-group list-group-dividered list-group-full">
+          <li class="list-group-item col-md-12" *ngFor="let eachCard of userCreditCards">
+
+            <div class="col-md-12">
+              <small class="label label-round label-info pull-right">
+                    <input type="radio" name="useCardId"  [(ngModel)]="useCardId" value="{{eachCard.id}}"/>
+                    </small>
+              <p><a class="hightlight" href="javascript:void(0)">{{eachCard.id}}</a>
+
+              </p>
+              <small class="col-md-12">Card Number :-
+                      <span>[************{{eachCard.last4}}]</span>
+                  </small>
+              <small class="col-md-12">Expiry:-
+                      <span>{{eachCard.exp_month}}/{{eachCard.exp_year}}</span>
+                  </small>
+              <div class="col-md-12" *ngIf="useCardId==eachCard.id">
+                <button type="button" [disabled]="processingCard" class="btn btn-primary" (click)="makePayment(eachCard)">Pay</button>
+              </div>
+            </div>
+
+          </li>
+          <li class="list-group-item col-md-12">
+            <h3>
+              Other Card
+              <small class="label label-round label-info pull-right">
+                    <input type="radio" name="useCardId"  [(ngModel)]="useCardId" value="newcard"/>
+                    </small>
+            </h3>
+
+            <div class="col-md-12">
+
+              <alert [alertType]="'card-error'"></alert>
+
+
+              <div class="form-group">
+                <label class="control-label">Card Number :</label>
+
+                <input class="form-control" [(ngModel)]="cardNumber" name="card-number" type="text" size="20" data-stripe="number">
+
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">Expiration (MM/YY):</label>
+                <div class="row">
+                  <div class="col-md-5">
+                    <input class="form-control" [(ngModel)]="expiryMonth" name="expiry-month" type="text" size="2" data-stripe="exp_month">
+                  </div>
+
+                  <span class="col-md-1">/</span>
+
+                  <div class="col-md-5">
+                    <input class="form-control" [(ngModel)]="expiryYear" name="expiry-year" type="text" size="2" data-stripe="exp_year">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">CVC:</label>
+
+                <input class="form-control" [(ngModel)]="cvc" name="cvc" type="text" size="4" data-stripe="cvc">
+
+              </div>
+              <div class="form-group" *ngIf="useCardId=='newcard'">
+
+                <button type="button" class="btn btn-primary" [disabled]="processingCard" (click)="payWithNewCard(false);">Pay</button>
+                <button type="button" class="btn btn-primary" [disabled]="processingCard" (click)="payWithNewCard(true);">Pay And Save Card</button>
+
+              </div>
+
+            </div>
+
+          </li>
+        </ul>
+      </div>
+
+
+
+
+    </div>
 
         <div class="clearfix"></div>
 

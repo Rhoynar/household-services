@@ -24,7 +24,7 @@ var nev = require('email-verification')(mongoose);
 
 
 nev.configure({
-    verificationURL: 'http://ec2-184-73-127-34.compute-1.amazonaws.com:5000/email-verification/${URL}',
+    verificationURL: 'http://ec2-34-204-210-132.compute-1.amazonaws.com:5000/email-verification/${URL}',
     URLLength: 48,
 
     // mongo-stuff
@@ -479,10 +479,10 @@ var vendorbystatus = function (req, res) {
     if (req.user) {
         var statusCondition=[{'status':req.params.status}];
         if(req.params.status==0){
-            statusCondition.push({'status':null});    
-            statusCondition.push({'status':''});    
+            statusCondition.push({'status':null});
+            statusCondition.push({'status':''});
         }
-        
+
         Users.find({ 'role': 'vendor',$or:statusCondition }).populate('services').exec(function (err, vendorDoc) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch data , please try later', error: err });
@@ -575,7 +575,7 @@ var addPackage = function (req, res) {
     //packageDetails.price = req.body.price;
     packageDetails.frequency = req.body.frequency;
     packageDetails.created = Date.now();
-    
+
     //packageDetails.communityId = req.body.communityId;
     packageDetails.mon_mor_price = req.body.mon_mor_price;
     packageDetails.mon_noon_price = req.body.mon_noon_price;
@@ -663,9 +663,9 @@ var updatePackage = function (req, res) {
     packageDetails.sun_noon_price = req.body.sun_noon_price;
     packageDetails.sun_eve_price = req.body.sun_eve_price;
 
-    
+
     packageDetails.features = [];
-    
+
     req.body.featureList.forEach(function (eachFeature) {
         packageDetails.features.push(eachFeature.feature);
     });
@@ -815,7 +815,7 @@ var upComingUserOrder=function(req,res){
     if (req.user) {
         var condition = {};
         //if (req.body.postalCode != '') {
-            condition = { 
+            condition = {
                 clientId: req.user.id
              };
         //}
@@ -823,7 +823,7 @@ var upComingUserOrder=function(req,res){
         var sDate=moment(new Date()).format("YYYY-MM-DD");
         var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
         condition.serviceDate={ "$gte": sDate, "$lt": eDate };
-        
+
         Orders.find(condition).sort({serviceDate: 1}).populate('vendorId').populate('packageId').exec(function (err, orderDocs) {
             if (err) {
                 res.send({ status: 'error', msg: 'unable to fetch orders , please try later', error: err });
@@ -836,17 +836,17 @@ var upComingUserOrder=function(req,res){
         res.json({ status: 'error', msg: 'some error occured' });
         return res.send();
     }
-} 
+}
 var userOrder = function (req, res) {
     if (req.user) {
         var condition = {};
         //if (req.body.postalCode != '') {
-            condition = { 
+            condition = {
                 clientId: req.user.id
              };
         //}
 
-        
+
         /*.populate({
             path: 'packageId',
             model: 'Packages',
@@ -873,9 +873,9 @@ var userOrder = function (req, res) {
 var upcomingVendorOrder = function (req, res) {
     if (req.user) {
         var condition = {};
-        
+
         condition = { vendorId: req.user.id };
-        
+
 
         var sDate=moment(new Date()).format("YYYY-MM-DD");
         var eDate=moment(new Date()).add(1, 'days').format("YYYY-MM-DD");
@@ -1289,23 +1289,23 @@ var forgotpass= function (req, res) {
         }
 
         if(user){
-            
+
             var newChangeReq = new Passwordchange();
-            
+
             newChangeReq.userId = user._id;
             var thirdyMinutesLater = new Date();
             thirdyMinutesLater.setMinutes(thirdyMinutesLater.getMinutes() + 30);
             newChangeReq.validtill=thirdyMinutesLater,
-            
+
 
             newChangeReq.save(function (err,data) {
                 if (err) {
                     res.status(400);
                     res.json({ msg: err });  // handle errors!
                 } else {
-                    
 
-                    var verificationURL='http://ec2-184-73-127-34.compute-1.amazonaws.com:5000/resetpass/'+data._id;
+
+                    var verificationURL='http://ec2-34-204-210-132.compute-1.amazonaws.com:5000/resetpass/'+data._id;
                     let mailOptions = {
                         from: 'Do Not Reply <user@gmail.com>', // sender address
                         to: user.email, // list of receivers
@@ -1314,8 +1314,8 @@ var forgotpass= function (req, res) {
                         html: '<b>Hello '+user.name+'</b><p>we have received your password change request.</p><p>please change it by clicking <a href="'+verificationURL+'">this link</a></p>If you are unable to do so, copy and ' +
                 'paste the following link into your browser:</p><p>'+verificationURL+'</p>'
                     };
-                    
-                    
+
+
                     // send mail with defined transport object
                     transporter.sendMail(mailOptions, (err, info) => {
                         if (err) {
@@ -1324,12 +1324,12 @@ var forgotpass= function (req, res) {
                             //res.json({ msg: "Unable to send email , please try later" });  // handle errors!
                         }else{
                             res.status(200);
-                            res.json({ msg: 'Change Request generated succesfully' });  // handle errors!    
+                            res.json({ msg: 'Change Request generated succesfully' });  // handle errors!
                         }
                         transporter.close();
-                        
+
                     });
-                    
+
                 }
             });
         }else{
@@ -1337,8 +1337,8 @@ var forgotpass= function (req, res) {
             res.json({ msg: 'Profile with this email is not found' });  // handle errors!
         }
     });
-    
-    
+
+
 }
 
 var getForgotReq = function (req, res) {
@@ -1369,10 +1369,10 @@ var resetpass =function (req, res) {
             res.status(400);
             res.json({ msg: err,msgType:"unexpected" });  // handle errors!
         }
-        
+
         if(changeData){
             if(changeData.validtill<new Date || changeData.used=="yes"){
-                res.status(400).json({ msg: "Change request Expired or already used",msgType:"expiredLink" }); 
+                res.status(400).json({ msg: "Change request Expired or already used",msgType:"expiredLink" });
             }else{
 
 
@@ -1387,7 +1387,7 @@ var resetpass =function (req, res) {
                         else {
                             callback();
                         }
-                    }); 
+                    });
                 },
                 function (callback) {
 
@@ -1402,7 +1402,7 @@ var resetpass =function (req, res) {
                         else {
                             callback();
                         }
-                    }); 
+                    });
                 }
             ],
             function (error, result) {
@@ -1416,19 +1416,19 @@ var resetpass =function (req, res) {
             });
 
 
-                   
+
             }
 
-            
+
         }else{
             res.status(400);
             res.json({ msg: 'No Change request found',msgType:"notfound" });  // handle errors!
         }
 
-        
+
     });
-    
-    
+
+
 }
 
 
@@ -1488,10 +1488,10 @@ var addCommunity = function (req, res) {
 
 var addServiceDemand=function(req,res){
     var demandJson = new ServiceDemand();
-    
+
     demandJson.zipcode = req.body.zipcode;
     demandJson.email = req.body.notifyEmail;
-    
+
 
     demandJson.save(function (err) {
         if (err) {
@@ -1504,7 +1504,7 @@ var addServiceDemand=function(req,res){
 
 var getAllCommunity = function (req, res) {
 
-    
+
         Communities.find({}).exec(
             function (err, communityDoc) {
                 if (err) {
@@ -1514,11 +1514,11 @@ var getAllCommunity = function (req, res) {
                 }
             });
 
-     
+
 }
 
 var getCommunityCalender=function(req, res){
-    
+
     var calenderDetails={};
     async.series(
             [
@@ -1542,7 +1542,7 @@ var getCommunityCalender=function(req, res){
 
                 },
                 function (callback) {
-                    
+
                     callback();
                 },
                 function (callback) {
@@ -1567,17 +1567,17 @@ var getCommunityCalender=function(req, res){
                     }else{
                         callback();
                     }*/
-                    
+
                 }
             ],
             function (error, result) {
-                
+
                     if (error) {
                         return res.json({ status: 'error', error: error });
                     } else {
                         return res.json({ status: 'success', result:calenderDetails });
                     }
-                
+
 
             });
 }
@@ -1601,7 +1601,7 @@ var deleteCommunity=function (req, res) {
 }
 
 var getCommunityByid = function (req, res) {
-    
+
     var communityId = req.params.id;
     if (communityId != '') {
         Communities.findById(communityId).populate({
@@ -1633,7 +1633,7 @@ var getCommunityByid = function (req, res) {
 }
 
 var getCommunityByZipCode = function (req, res) {
-    
+
     var zipCode = req.params.zipcode;
     if (zipCode != '') {
         Communities.find({postcode:zipCode}).populate({
@@ -1718,7 +1718,7 @@ var updateCommunity= function (req, res, next) {
 
   //console.log(req.file);
 
-    
+
     var communityDetails = {};
 
     communityDetails.title = req.body.title;
@@ -1744,7 +1744,7 @@ var updateCommunity= function (req, res, next) {
         }
     });
 
-  
+
 };
 
 

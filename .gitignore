@@ -37,3 +37,17 @@ jspm_packages
 .node_repl_history
 
 #node_modules/
+
+
+client/app/**/*.js
+client/app/**/*.map
+
+app/**/*.js
+app/**/*.map
+
+# ignore js and map files
+**/*.map
+#src/**/*.js
+app/**/*.js
+!app/assets/*.js
+api/**/*.js

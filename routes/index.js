@@ -9,7 +9,7 @@ var TmpUsers= require('../models/tmpusers');
 var nev = require('email-verification')(mongoose);
 
 nev.configure({
-    verificationURL: 'http://ec2-54-165-12-165.compute-1.amazonaws.com:5000/email-verification/${URL}',
+    verificationURL: 'http://ec2-34-204-210-132.compute-1.amazonaws.com:5000/email-verification/${URL}',
     URLLength: 48,
 
     // mongo-stuff
@@ -78,7 +78,7 @@ var getTemplate = function (req, res) {
 }
 
 var forGuestOnly = function (req, res, next) {
-    
+
     // if no user seesion is there, show page
     if (typeof(req.user)=="undefined" || !req.isAuthenticated()   ) {
         return next();
@@ -104,26 +104,26 @@ var forGuestOnly = function (req, res, next) {
 // route middleware to make sure a user is logged in
 var isUserLoggedIn=function(req, res, next) {
 
-    // if user is authenticated in the session, carry on 
+    // if user is authenticated in the session, carry on
     if (req.isAuthenticated()) {
 
         switch (req.user.role) {
             case 'admin':
                 res.redirect('/admin/dashboard');
-                return false;    
+                return false;
                 break;
             case 'vendor':
                 res.redirect('/vendor/dashboard');
-                return false;    
+                return false;
                 break;
             case 'user':
-                return next();    
+                return next();
                 break;
             default:
                 res.redirect('/');
                 return false;
         }
-        
+
     } else {
         // if they aren't redirect them to the home page
         res.redirect('/');

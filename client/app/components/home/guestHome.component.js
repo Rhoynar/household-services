@@ -22,19 +22,29 @@ var GuestHomeComponent = (function () {
         this.commIcon = 1;
         this.searchControl = true;
         this.searchValue = '';
+        this.altZipCode = '';
     }
     GuestHomeComponent.prototype.selCommIcon = function (iconNumber) {
         this.commIcon = iconNumber;
     };
     GuestHomeComponent.prototype.searchPackages = function () {
-        if ('' == this.searchValue || '' == this.postal_code) {
-            alert("Please enter any address");
+        if (('' == this.searchValue || '' == this.postal_code) && '' == this.altZipCode) {
+            alert("Please enter any address or zipcode");
             return false;
         }
         else {
             //this.router.navigate(['/package/search']);
             //this.router.navigate(['/package/search'], { queryParams: {zip:this.postal_code} });
-            this.router.navigate(['/services'], { queryParams: { zip: this.postal_code } });
+            if (this.postal_code != '') {
+                this.router.navigate(['/services'], { queryParams: { zip: this.postal_code } });
+            }
+            else if ('' != this.altZipCode) {
+                this.router.navigate(['/services'], { queryParams: { zip: this.altZipCode } });
+            }
+            else {
+                alert("Please enter any address or zipcode");
+                return false;
+            }
         }
     };
     GuestHomeComponent.prototype.ngAfterViewInit = function () {

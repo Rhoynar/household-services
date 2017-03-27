@@ -13,13 +13,15 @@ var router_1 = require('@angular/router');
 var index_1 = require('../../services/index');
 var UserPackageSearchComponent = (function () {
     //constructor start
-    function UserPackageSearchComponent(router, packageService, activatedRoute, alertService, communityServices, stripeServices, orderServices) {
+    function UserPackageSearchComponent(router, packageService, activatedRoute, alertService, communityServices, stripeServices, authenticationService, orderServices) {
+        var _this = this;
         this.router = router;
         this.packageService = packageService;
         this.activatedRoute = activatedRoute;
         this.alertService = alertService;
         this.communityServices = communityServices;
         this.stripeServices = stripeServices;
+        this.authenticationService = authenticationService;
         this.orderServices = orderServices;
         this.availablePackages = [];
         this.pagetitle = "Package List";
@@ -41,13 +43,27 @@ var UserPackageSearchComponent = (function () {
         this.expiryMonth = '';
         this.expiryYear = '';
         this.cvc = '';
+        this.loggedIn = false;
         this.myDatePickerOptions = {
             // other options...
-            dateFormat: 'dd-mm-yyyy',
+            dateFormat: 'mm-dd-yyyy',
             editableDateField: false,
             openSelectorOnInputClick: true,
             disableUntil: { year: 0, month: 0, day: 0 }
         };
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            var currentUserStr = localStorage.getItem('currentUser');
+            var currentUser = JSON.parse(currentUserStr);
+            if (currentUserStr) {
+                if (currentUser.token.role == "user") {
+                    _this.loggedIn = true;
+                }
+            }
+            else {
+                _this.loggedIn = false;
+            }
+        });
         var d = new Date();
         // this.selDate = {
         //   year: d.getFullYear(),
@@ -76,6 +92,7 @@ var UserPackageSearchComponent = (function () {
             this.packagePriceType = params.priceType;
         }
     }
+    ;
     UserPackageSearchComponent.prototype.onDateChanged = function (event) {
         // event properties are: event.date, event.jsdate, event.formatted and event.epoc
         //console.log()
@@ -157,56 +174,69 @@ var UserPackageSearchComponent = (function () {
         var d = new Date();
         var currDay = d.getDay();
         var selDayCount = this.getWeekDayCount(day);
+        var numberOfDaysToAdd = 0;
         if (selDayCount - currDay == 0) {
-            this.selDate = {
-                year: d.getFullYear(),
-                month: d.getMonth() + 1,
-                day: d.getDate()
-            };
+            numberOfDaysToAdd = 0;
         }
         else if ((currDay - selDayCount) > 0) {
-            this.selDate = {
-                year: d.getFullYear(),
-                month: d.getMonth() + 1,
-                day: d.getDate() + (7 - (currDay - selDayCount))
-            };
+            numberOfDaysToAdd = 7 - (currDay - selDayCount);
         }
         else if ((selDayCount - currDay) > 0) {
-            this.selDate = {
-                year: d.getFullYear(),
-                month: d.getMonth() + 1,
-                day: d.getDate() + (selDayCount - currDay)
-            };
+            numberOfDaysToAdd = selDayCount - currDay;
         }
+        d.setDate(d.getDate() + numberOfDaysToAdd);
+        this.selDate = {
+            year: d.getFullYear(),
+            month: d.getMonth() + 1,
+            day: d.getDate()
+        };
         this.preferedDate = this.selDate;
     };
     //get packages
     UserPackageSearchComponent.prototype.getPackageByZipcode = function () {
-        var _this = this;
         //this.packageService.getPackageByZipcode(this.zipcode)
-        this.communityServices.getCommunityByZipCode(this.zipcode)
-            .subscribe(function (data) {
-            console.log(_this.selectedPackage);
-            console.log(data.result.length);
+        /*this.communityServices.getCommunityByZipCode(this.zipcode)
+          .subscribe(data => {
+            
             //this.availablePackages = data.result;
             for (var i = 0; i < data.result.length; i++) {
-                for (var j = 0; j < data.result[i].services.length; j++) {
-                    console.log(i + 'lenght' + data.result[i].services.length + "  j" + j);
-                    if (typeof (data.result[i].services[j].dailyPackageId) != "undefined" && data.result[i].services[j].dailyPackageId != '') {
-                        _this.availablePackages.push(data.result[i].services[j].dailyPackageId);
-                        if (_this.selectedPackage == data.result[i].services[j].dailyPackageId._id) {
-                            _this.packageCalender = data.result[i].services[j].dailyPackageId;
-                        }
-                    }
-                    if (typeof (data.result[i].services[j].monthlyPackageId) != "undefined" && data.result[i].services[j].monthlyPackageId != '') {
-                        _this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
-                        if (_this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {
-                            _this.packageCalender = data.result[i].services[j].monthlyPackageId;
-                        }
-                    }
+              for (var j = 0; j < data.result[i].services.length; j++) {
+                
+    
+                if (typeof(data.result[i].services[j].dailyPackageId) !="undefined" && data.result[i].services[j].dailyPackageId != '') {
+    
+                  this.availablePackages.push(data.result[i].services[j].dailyPackageId);
+    
+                  if (this.selectedPackage == data.result[i].services[j].dailyPackageId._id) {
+                    this.packageCalender = data.result[i].services[j].dailyPackageId;
+                  }
                 }
+    
+                if (typeof(data.result[i].services[j].monthlyPackageId) !="undefined" && data.result[i].services[j].monthlyPackageId != '') {
+                  this.availablePackages.push(data.result[i].services[j].monthlyPackageId);
+    
+                  if (this.selectedPackage == data.result[i].services[j].monthlyPackageId._id) {
+                    this.packageCalender = data.result[i].services[j].monthlyPackageId;
+                  }
+                }
+    
+              }
             }
             // this.getSelectedPackageDetail();
+          },
+          error => {
+            const body = error.json() || '';
+            const err = body.error || JSON.stringify(body);
+            var errr = JSON.parse(err);
+            alert(errr.msg);
+    
+          }
+          );*/
+        var _this = this;
+        this.packageService.getAllPackage()
+            .subscribe(function (data) {
+            _this.availablePackages = data.result;
+            _this.getSelectedPackageDetail();
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
@@ -217,7 +247,6 @@ var UserPackageSearchComponent = (function () {
     UserPackageSearchComponent.prototype.getSelectedPackageDetail = function () {
         if (this.selectedPackage != '') {
             for (var i = 0; i < this.availablePackages.length; i++) {
-                console.log(this.availablePackages[i]._id + " == " + this.selectedPackage);
                 if (this.availablePackages[i]._id == this.selectedPackage) {
                     this.packageCalender = this.availablePackages[i];
                     break;
@@ -355,7 +384,7 @@ var UserPackageSearchComponent = (function () {
             selector: 'user-package-search',
             templateUrl: './user.package.search.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.CommunityServices, index_1.StripeServices, index_1.OrderServices])
+        __metadata('design:paramtypes', [router_1.Router, index_1.PackageServices, router_1.ActivatedRoute, index_1.AlertService, index_1.CommunityServices, index_1.StripeServices, index_1.AuthenticationService, index_1.OrderServices])
     ], UserPackageSearchComponent);
     return UserPackageSearchComponent;
 }());

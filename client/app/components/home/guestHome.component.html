@@ -39,18 +39,24 @@
                     <!--<div class="more_sec">-->
                       <div class="">
                       <!--(click)="searchControl=false"-->
-                      <a href="javascript:void(0);" (click)="searchControl=!searchControl" class="rh_btn">Get Started</a>
+                      <a href="javascript:void(0);" (click)="searchControl=!searchControl" class="rh_btn" [ngClass]="{active: searchControl}" >Get Started</a>
                     </div>
                     <br>
                   </div>
                   
                   <div class="search_block clearfix" [ngClass]="{'hide': searchControl}" >
-                      
-                    <input placeholder="Property Address" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="rh_btn"
+                      <div>
+                          <input placeholder="Property Address" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="rh_btn"
                       #search [(ngModel)]="searchValue">
-                    <input type="hidden" [(ngModel)]="postal_code" id="userZipcode" name="userZipcode" />
-
-                    <span class="marker_block"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                          <input type="hidden" [(ngModel)]="postal_code" id="userZipcode" name="userZipcode" />
+                          <span class="marker_block"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                      </div>
+                      <br/>
+                      <div class="or-box clearfix"><span>or</span></div>
+                      <div>
+                          <input placeholder="Zip Code" type="text" class="rh_btn" [(ngModel)]="altZipCode">
+                      </div>
+                    
                   </div>
 
                   <div class="search_btn-wrp" [ngClass]="{'hide': searchControl}">

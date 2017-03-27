@@ -20,6 +20,7 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
   public commIcon=1;
   public searchControl: any = true;
   public searchValue: any = '';
+  public altZipCode:any='';
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
@@ -34,13 +35,21 @@ export class GuestHomeComponent implements AfterViewInit, OnInit {
   }
 
   searchPackages() {
-    if ('' == this.searchValue || '' == this.postal_code) {
-      alert("Please enter any address");
+    if (('' == this.searchValue || '' == this.postal_code) && ''==this.altZipCode) {
+      alert("Please enter any address or zipcode");
       return false;
     }else{
       //this.router.navigate(['/package/search']);
       //this.router.navigate(['/package/search'], { queryParams: {zip:this.postal_code} });
-      this.router.navigate(['/services'], { queryParams: {zip:this.postal_code} });
+      if(this.postal_code!=''){
+        this.router.navigate(['/services'], { queryParams: {zip:this.postal_code} });
+      }else if(''!=this.altZipCode){
+        this.router.navigate(['/services'], { queryParams: {zip:this.altZipCode} });
+      }else{
+        alert("Please enter any address or zipcode");
+        return false;
+      }
+      //this.router.navigate(['/services'], { queryParams: {zip:this.postal_code} });
     }
 
 

@@ -28,11 +28,25 @@ var UserListServicesComponent = (function () {
         this.pagetitle = "Services in your Community";
         this.userCommunityId = '';
         this.selectedCommunity = {};
+        this.getAllPackage();
         var params = this.activatedRoute.snapshot.queryParams;
         var currentUserStr = localStorage.getItem('currentUser');
         var currentUser = JSON.parse(currentUserStr);
         console.log(currentUser);
         this.zipcode = params.zip;
+        this.authenticationService.generatetoken()
+            .subscribe(function (result) {
+            var currentUserStr = localStorage.getItem('currentUser');
+            var currentUser = JSON.parse(currentUserStr);
+            if (currentUserStr) {
+                if (currentUser.token.role == "user") {
+                    _this.loggedIn = true;
+                }
+            }
+            else {
+                _this.loggedIn = false;
+            }
+        });
         if (params.zip) {
             this.getPackageByZipcode();
         }
@@ -64,7 +78,7 @@ var UserListServicesComponent = (function () {
         var _this = this;
         this.packageService.getAllPackage()
             .subscribe(function (data) {
-            _this.servicesList = data.result;
+            _this.packageList = data.result;
         }, function (error) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
@@ -72,9 +86,14 @@ var UserListServicesComponent = (function () {
             alert(errr.msg);
         });
     };
-    UserListServicesComponent.prototype.selectCommunity = function (index) {
-        this.selectedCommunity = this.communityList[index];
-        this.userCommunityId = this.selectedCommunity._id;
+    UserListServicesComponent.prototype.selectCommunity = function () {
+        if (this.userCommunityId == '') {
+            alert("Select any community");
+            return false;
+        }
+        //this.selectedCommunity = this.communityList[index];
+        //this.userCommunityId = this.selectedCommunity._id;
+        console.log(this.userCommunityId);
         var userData = { userData: { zipcode: this.zipcode, cummunityId: this.userCommunityId } };
         this.userService.updateUserProfile(userData)
             .subscribe(function (data) {
@@ -105,7 +124,7 @@ var UserListServicesComponent = (function () {
     /*getPackageByZipcode() {
       this.packageService.getPackageByZipcode(this.zipcode)
         .subscribe(data => {
-          this.servicesList = data.result;
+          this.packageList = data.result;
         },
         error => {
           const body = error.json() || '';

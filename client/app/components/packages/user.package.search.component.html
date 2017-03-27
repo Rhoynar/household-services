@@ -2,7 +2,7 @@
 
 
 <page-title [pagetitle]="pagetitle"></page-title>
-
+<mid-header *ngIf="loggedIn"></mid-header>
 <!--inner-mid-sec-->
 <div class="inner-mid-sec white-bg">
   <div class="container">
@@ -24,7 +24,7 @@
                 <li *ngFor="let feature of package.features">{{feature}}</li>
               </ul>
               <div class="Select_package">
-                <div class="radio-block">
+                <div class="">
                   <input type="radio" (click)="setSelectedPackageDetail(i);" name="selectedPackage" [(ngModel)]="selectedPackage" value="{{package._id}}" id="package_{{package._id}}"
                     class="css-checkbox" />
                   <label for="package_{{package._id}}">Select the package</label>
@@ -158,7 +158,7 @@
               <alert [alertType]="'additional-form'"></alert>
               
               <div class="form-group">
-                <label class="input-heading">Prefered Date :</label>
+                <label class="input-heading">Prefered Date:</label>
                 <div class="input-box">
                   <!--(calendarViewChanged)="onCalendarViewChanged($event)"-->
                   <my-date-picker [selDate]="selDate"  [options]="myDatePickerOptions"
@@ -192,7 +192,7 @@
               </div>-->
 
               <div class="form-group">
-                <label class="input-heading">Additional Instruction :</label>
+                <label class="input-heading">Instructions:</label>
                 <div class="input-box">
                   <textarea required class="input-fill msg" [(ngModel)]="additionalInstruction" name="additionalInstruction"></textarea>
                 </div>

@@ -14,7 +14,7 @@ declare var $: any;
   //styles: [main]
 })
 export class UserListServicesComponent implements AfterViewInit {
-  public servicesList: any;
+  public packageList: any;
   public communityList: any;
   public loggedIn = false;
   public zipcode: any = "";
@@ -32,12 +32,33 @@ export class UserListServicesComponent implements AfterViewInit {
     private authenticationService: AuthenticationService,
     private communityServices: CommunityServices,
   ) {
+
+    this.getAllPackage();
     let params: any = this.activatedRoute.snapshot.queryParams;
 
     var currentUserStr = localStorage.getItem('currentUser');
     var currentUser = JSON.parse(currentUserStr);
     console.log(currentUser);
     this.zipcode = params.zip;
+    
+    this.authenticationService.generatetoken()
+      .subscribe(result => {
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        if (currentUserStr) { //if user is there
+          if (currentUser.token.role == "user") {  //if current user is admin
+            this.loggedIn = true;
+          }
+        } else {
+          this.loggedIn = false;
+          // if(this.router.url!='/'){
+          //   this.router.navigate(['/login']);
+          // }
+          
+          
+        }
+      });
+    
     if (params.zip) {
       this.getPackageByZipcode();
     } else if (currentUserStr) {
@@ -75,7 +96,7 @@ export class UserListServicesComponent implements AfterViewInit {
   getAllPackage() {
     this.packageService.getAllPackage()
       .subscribe(data => {
-        this.servicesList = data.result;
+        this.packageList = data.result;
       },
       error => {
         const body = error.json() || '';
@@ -87,9 +108,14 @@ export class UserListServicesComponent implements AfterViewInit {
       );
   }
 
-  selectCommunity(index: number) {
-    this.selectedCommunity = this.communityList[index];
-    this.userCommunityId = this.selectedCommunity._id;
+  selectCommunity() {
+    if(this.userCommunityId==''){
+      alert("Select any community");
+      return false;
+    }
+    //this.selectedCommunity = this.communityList[index];
+    //this.userCommunityId = this.selectedCommunity._id;
+    console.log(this.userCommunityId);
     var userData = { userData: { zipcode: this.zipcode, cummunityId: this.userCommunityId } };
     this.userService.updateUserProfile(userData)
       .subscribe(data => {
@@ -108,6 +134,7 @@ export class UserListServicesComponent implements AfterViewInit {
     this.selectedCommunity = {};
     this.userCommunityId = '';
   }
+  
   getPackageByZipcode() {
     this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
@@ -131,7 +158,7 @@ export class UserListServicesComponent implements AfterViewInit {
   /*getPackageByZipcode() {
     this.packageService.getPackageByZipcode(this.zipcode)
       .subscribe(data => {
-        this.servicesList = data.result;
+        this.packageList = data.result;
       },
       error => {
         const body = error.json() || '';

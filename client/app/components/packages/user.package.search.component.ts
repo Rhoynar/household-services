@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, RouterStateSnapshot, ActivatedRoute, Params } from '@angular/router';
-import { StripeServices, PackageServices, AlertService, OrderServices, CommunityServices } from '../../services/index';
+import { AuthenticationService,StripeServices, PackageServices, AlertService, OrderServices, CommunityServices } from '../../services/index';
 import { IMyOptions, IMyDate, IMyDateModel, IMyInputFieldChanged } from 'mydatepicker';
 
 
@@ -38,11 +38,11 @@ export class UserPackageSearchComponent implements AfterViewInit {
   private expiryMonth: any = '';
   private expiryYear: any = '';
   private cvc: any = '';
-
+  public loggedIn: any=false;;
 
   private myDatePickerOptions: IMyOptions = {
     // other options...
-    dateFormat: 'dd-mm-yyyy',
+    dateFormat: 'mm-dd-yyyy',
     editableDateField: false,
     openSelectorOnInputClick: true,
     disableUntil: { year: 0, month: 0, day: 0 }
@@ -144,8 +144,31 @@ export class UserPackageSearchComponent implements AfterViewInit {
     private alertService: AlertService,
     private communityServices: CommunityServices,
     private stripeServices: StripeServices,
+    private authenticationService: AuthenticationService,
     private orderServices: OrderServices
   ) {
+
+
+
+    this.authenticationService.generatetoken()
+      .subscribe(result => {
+        var currentUserStr = localStorage.getItem('currentUser');
+        var currentUser = JSON.parse(currentUserStr);
+        if (currentUserStr) { //if user is there
+          if (currentUser.token.role == "user") {  //if current user is admin
+            this.loggedIn = true;
+          }
+        } else {
+          this.loggedIn = false;
+          // if(this.router.url!='/'){
+          //   this.router.navigate(['/login']);
+          // }
+          
+          
+        }
+      });
+
+
     let d: Date = new Date();
     // this.selDate = {
     //   year: d.getFullYear(),
@@ -195,41 +218,36 @@ export class UserPackageSearchComponent implements AfterViewInit {
     let d: Date = new Date();
     var currDay = d.getDay()
     var selDayCount = this.getWeekDayCount(day);
-
+    var numberOfDaysToAdd=0;
     if (selDayCount - currDay == 0) {
-      this.selDate = {
+      
+      numberOfDaysToAdd=0;
+      
+    } else if ((currDay - selDayCount) > 0) {
+      
+      numberOfDaysToAdd=7 - (currDay - selDayCount);
+    } else if ((selDayCount - currDay) > 0) {
+      numberOfDaysToAdd=selDayCount - currDay;
+    }
+    d.setDate(d.getDate() + numberOfDaysToAdd); 
+    this.selDate = {
         year: d.getFullYear(),
         month: d.getMonth() + 1,
         day: d.getDate()
       };
-    } else if ((currDay - selDayCount) > 0) {
-      this.selDate = {
-        year: d.getFullYear(),
-        month: d.getMonth() + 1,
-        day: d.getDate() + (7 - (currDay - selDayCount))
-      };
-    } else if ((selDayCount - currDay) > 0) {
-      this.selDate = {
-        year: d.getFullYear(),
-        month: d.getMonth() + 1,
-        day: d.getDate() + (selDayCount - currDay)
-      };
-    }
     this.preferedDate = this.selDate;
 
   }
   //get packages
   getPackageByZipcode() {
     //this.packageService.getPackageByZipcode(this.zipcode)
-    this.communityServices.getCommunityByZipCode(this.zipcode)
+    /*this.communityServices.getCommunityByZipCode(this.zipcode)
       .subscribe(data => {
-        console.log(this.selectedPackage);
-
-        console.log(data.result.length);
+        
         //this.availablePackages = data.result;
         for (var i = 0; i < data.result.length; i++) {
           for (var j = 0; j < data.result[i].services.length; j++) {
-            console.log(i+'lenght'+data.result[i].services.length+"  j"+j);
+            
 
             if (typeof(data.result[i].services[j].dailyPackageId) !="undefined" && data.result[i].services[j].dailyPackageId != '') {
 
@@ -259,13 +277,27 @@ export class UserPackageSearchComponent implements AfterViewInit {
         alert(errr.msg);
 
       }
+      );*/
+
+      this.packageService.getAllPackage()
+      .subscribe(data => {
+        this.availablePackages = data.result;
+        this.getSelectedPackageDetail();
+      },
+      error => {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        var errr = JSON.parse(err);
+        alert(errr.msg);
+
+      }
       );
   }
 
   getSelectedPackageDetail() {
     if (this.selectedPackage != '') {
       for (var i = 0; i < this.availablePackages.length; i++) {
-        console.log(this.availablePackages[i]._id + " == " + this.selectedPackage);
+        
         if (this.availablePackages[i]._id == this.selectedPackage) {
           this.packageCalender = this.availablePackages[i];
           break;

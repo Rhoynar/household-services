@@ -2,7 +2,7 @@
 
 
 <page-title [pagetitle]="pagetitle"></page-title>
-
+<mid-header *ngIf="loggedIn"></mid-header>
 
 <!--inner-mid-sec-->
 <div class="inner-mid-sec white-bg">
@@ -14,7 +14,7 @@
 
           <form [formGroup]="searchServicesForm" (ngSubmit)="searchService()">
             <div class="login_info_block">
-              <h4>Please provide your zipcode to search services</h4>
+              <h4>Enter your zip code to continue</h4>
 
               <div class="input-block">
 
@@ -35,15 +35,45 @@
           </form>
         </div>
       </div>
+
+      <div class="col-sm-6 col-sm-offset-3" *ngIf="zipcode && userCommunityId=='' && communityList?.length>0">
+        <div class="sign-in-box">
+
+          <form>
+            <div class="login_info_block">
+              <h4>Please Select community</h4>
+              
+              <div class="input-box">
+                <select class="input-fill" id="communityNumber" name="communityNumber" [(ngModel)]="userCommunityId">
+                  <option value="">Select</option>
+                  <option value="{{eachCommunity._id}}" *ngFor="let eachCommunity of communityList; let i=index;">
+                    {{eachCommunity.title}}
+                  </option>
+                </select>
+                
+              </div>
+              
+
+              <div class="text-center login_wrp">
+                <button type="button" class="rh_btn login_btn" (click)="selectCommunity()">Submit</button>
+                
+              </div>
+            </div>
+
+
+
+          </form>
+        </div>
+      </div>
       
-      <div class="col-md-12" *ngIf="zipcode && userCommunityId=='' && communityList?.length>0">
-        <p>Please select community which suits to best</p>
+      <!--<div class="col-md-12" *ngIf="zipcode && userCommunityId=='' && communityList?.length>0">
+        <p>Please select community which suits you best</p>
         <div class="services_info_block clearfix" *ngFor="let community of communityList; let i=index;">
 
           <div class="col-md-8 ser-lf">
             <div class="services-lf">
               <div class="user-img" *ngIf="community.communityLogo">
-                <!--<img src="images/pic-1.jpg" alt="" />-->
+                
                 <img src="{{community.communityLogo}}" />
               </div>
             </div>
@@ -61,7 +91,7 @@
           </div>
 
         </div>
-      </div>
+      </div>-->
 
       <div class="col-sm-12" *ngIf="communityList?.length==0">
           <p>Sorry, There is no community available in your area, we will get some community for you soon.</p>
@@ -71,62 +101,26 @@
       <div class="packages_page" *ngIf="zipcode && userCommunityId">
 
         <div class="premium_block clearfix">
-          <h3 class="bdr-heading">Services for "{{selectedCommunity.title}}" Community</h3>
+          <!--<h3 class="bdr-heading">Services for "{{selectedCommunity.title}}" Community</h3>-->
           <button type="button" class="dash-btn blue" (click)="cancelCommunitySelection()">Cancel</button>
-          <div class="premium_block clearfix" *ngFor="let eachService of selectedCommunity.services">
-            <h3 class="bdr-heading">Packages of "{{eachService.title}}" Service</h3>
-            <div class="col-sm-3 premium_inq" *ngIf="eachService.dailyPackageId!=''">
+          <div class="premium_block clearfix" >
+            <div class="col-sm-3 premium_inq" *ngFor="let eachPackage of packageList">
               <div class="main_bcx">
                 <div class="bro_top_sec">
-                  <h2 class="Bronze_offers_top-head">{{eachService.dailyPackageId.title}}</h2>
-                  <!--<div class="Bronze_offers">
-                    <div class="banner-up">
-                      <div class="banner-in">
-                        <p [ngSwitch]="eachService.dailyPackageId.frequency">
-                          <sup *ngSwitchCase="'daily'">daily</sup>
-                          <sup *ngSwitchCase="'monthly'">Monthly</sup>
-                          <sup *ngSwitchCase="'yearly'">yr</sup>
-                          <sup *ngSwitchDefault></sup>
-
-                        </p>
-
-                      </div>
-                    </div>
-                  </div>-->
+                  <h2 class="Bronze_offers_top-head">{{eachPackage.title}}</h2>
                 </div>
                 <div class="bro_mid-sec">
                   <ul class="deatil_info">
-                    <li *ngFor="let feature of eachService.dailyPackageId.features">
+                    <li *ngFor="let feature of eachPackage.features">
                       {{feature}}
                     </li>
                   </ul>
                 </div>
-                <div class="buy_now bronze"><a [routerLink]="['/package/search']" [queryParams]="{id: eachService.dailyPackageId._id}">Get Started</a></div>
+                <div class="buy_now bronze"><a [routerLink]="['/package/search']" [queryParams]="{id: eachPackage._id}">Get Started</a></div>
               </div>
             </div>
-            <div class="col-sm-3 premium_inq" *ngIf="eachService.monthlyPackageId!=''">
-              <div class="main_bcx">
-                <div class="bro_top_sec">
-                  <h2 class="Bronze_offers_top-head">{{eachService.monthlyPackageId.title}}</h2>
-
-                </div>
-                <div class="bro_mid-sec">
-                  <ul class="deatil_info">
-                    <li *ngFor="let feature of eachService.monthlyPackageId.features">
-                      {{feature}}
-                    </li>
-                  </ul>
-                </div>
-                <div class="buy_now bronze"><a [routerLink]="['/package/search']" [queryParams]="{id: eachService.monthlyPackageId._id}">Get Started</a></div>
-              </div>
-            </div>
-
           </div>
-
-
         </div>
-        
-
 
       </div>
 

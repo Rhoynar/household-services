@@ -1,0 +1,75 @@
+image: docker:latest
+
+# When using dind, it's wise to use the overlayfs driver for
+# improved performance.
+variables:
+  REGISTRY: registry.gitlab.com
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+
+services:
+- docker:dind
+
+stages:
+  - development
+  - master
+
+before_script:
+  # Install ssh-agent if not already installed, it is required by Docker.
+  # (change apt-get to yum if you use a CentOS-based image)
+
+  - apk add --update openssh
+  # - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  # - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - echo "$SSH_PRIVATE_KEY" > ~/id_rsa && chmod 600 ~/id_rsa && ssh-add ~/id_rsa
+
+  # For Docker builds disable host key checking. Be aware that by adding that
+  # you are suspectible to man-in-the-middle attacks.
+  # WARNING: Use this only with the Docker executor, if you use it with shell
+  # you will overwrite your user's SSH config.
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  # In order to properly check the server's host key, assuming you created the
+  # SSH_SERVER_HOSTKEYS variable previously, uncomment the following two lines
+  # instead.
+  # - mkdir -p ~/.ssh
+  # - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+
+
+development:
+  image: docker:latest
+  stage: development
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY
+    - docker build -t "$CONTAINER_TEST_IMAGE" .
+    - docker push "$CONTAINER_TEST_IMAGE"
+    - mkdir -p $HOME/PEM_KEY_PATH
+    - echo "$PEM_KEY" > $HOME/PEM_KEY_PATH/household_service.pem
+    - chmod 400 $HOME/PEM_KEY_PATH/household_service.pem
+    - ssh  -t -t -i $HOME/PEM_KEY_PATH/household_service.pem ubuntu@34.204.210.132 " pwd; cd /srv/webapp/household-services/ ; pwd; sudo git pull origin new-mockup; sudo pm2 kill; sudo service apache2 restart; cd client/; sudo npm install; sudo pm2 start npm --name "household-client" -- start; cd .. ; sudo npm install; sudo pm2 start --name "household-services" server.js; pm2 ls; exit;"
+    - ls -al
+  only:
+    - new-mockup
+  tags:
+    - docker
+
+
+master:
+  image: docker:latest
+  stage: master
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY
+    - docker build -t "$CONTAINER_TEST_IMAGE" .
+    - docker push "$CONTAINER_TEST_IMAGE"
+    - mkdir -p $HOME/PEM_KEY_PATH
+    - echo "$PEM_KEY" > $HOME/PEM_KEY_PATH/household_service.pem
+    - chmod 400 $HOME/PEM_KEY_PATH/household_service.pem
+    - ssh  -t -t -i $HOME/PEM_KEY_PATH/household_service.pem ubuntu@34.204.210.132 " pwd; cd /srv/webapp/household-services/ ; sudo git pull origin master; sudo pm2 kill; sudo service apache2 restart; cd client/; sudo npm install; sudo pm2 start npm --name "household-client" -- start; cd .. ; sudo npm install; sudo pm2 start --name "household-services" server.js; exit;"
+  only:
+    - master
+  tags:
+    - docker

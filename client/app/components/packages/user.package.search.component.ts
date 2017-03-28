@@ -44,7 +44,9 @@ export class UserPackageSearchComponent implements AfterViewInit {
     // other options...
     dateFormat: 'mm-dd-yyyy',
     editableDateField: false,
-    openSelectorOnInputClick: true,
+    openSelectorOnInputClick: false,
+    showClearDateBtn:false,
+    componentDisabled:true,
     disableUntil: { year: 0, month: 0, day: 0 }
     //disableUntil: { year: 9999, month: 12, day: 31 }
   };

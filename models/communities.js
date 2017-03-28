@@ -8,6 +8,8 @@ var communitySchema = new Schema({
     title: String,
   	addressLineOne: String,
   	addressLineTwo: String,
+  	city: String,
+  	state: String,
   	postcode: String,
   	phone: String,
   	communityLogo:String,

@@ -1468,11 +1468,13 @@ var addCommunity = function (req, res) {
     communityDetails.postcode = req.body.postcode;
     communityDetails.phone = req.body.phone;
     communityDetails.communityLogo = req.body.commLogo;
+    communityDetails.city = req.body.city;
+    communityDetails.state = req.body.state;
 
     communityDetails.services = [];
-    req.body.serviceList.forEach(function (eachService) {
-        communityDetails.services.push(eachService.service);
-    });
+    // req.body.serviceList.forEach(function (eachService) {
+    //     communityDetails.services.push(eachService.service);
+    // });
 
     communityDetails.save(function (err) {
         if (err) {
@@ -1727,10 +1729,13 @@ var updateCommunity= function (req, res, next) {
     communityDetails.postcode = req.body.postcode;
     communityDetails.phone = req.body.phone;
     communityDetails.communityLogo = req.body.commLogo;
+    communityDetails.city = req.body.city;
+    communityDetails.state = req.body.state;
+    
     communityDetails.services = [];
-    req.body.serviceList.forEach(function (eachService) {
-        communityDetails.services.push(eachService.service);
-    });
+    // req.body.serviceList.forEach(function (eachService) {
+    //     communityDetails.services.push(eachService.service);
+    // });
 
     Communities.findByIdAndUpdate(req.body.id, communityDetails, function (err, updateRes) {
 

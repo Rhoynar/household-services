@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } fr
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { CommunityServices,ServiceServices } from '../../services/index';
+import { CommunityServices, ServiceServices } from '../../services/index';
 import { UserModel } from '../../models/models';
 import { Http, Headers, Response } from '@angular/http';
 import { CustomValidator } from '../../validators/custom.validator';
@@ -18,13 +18,14 @@ declare var $: any;
 })
 export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDestroy {
 
-  
+
   loggedIn: any = false;
-  
+
   availableServices: any = [];
   addCommunityForm: FormGroup;
+  addCommunityFormSubmit=false;
   customValidator = new CustomValidator(this.http);
-  pagetitle="New Community";
+  pagetitle = "New Community";
   //constructor start
   constructor(
     private http: Http,
@@ -32,24 +33,26 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
     private router: Router,
     private serviceServices: ServiceServices,
     private communityServices: CommunityServices
-    
+
   ) {
 
     this.addCommunityForm = this.fb.group({
       title: ['', Validators.required],
       addressLineOne: ['', Validators.required],
       addressLineTwo: [''],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
       postcode: ['', Validators.required],
       phone: ['', Validators.required],
-      serviceList: this.fb.array([this.initService()]),
+      //serviceList: this.fb.array([this.initService()]),
       communityLogo: [''],
       commLogo: ['']
     });
-    
+
   }
   //end of constructor
 
-  
+
   initService() {
     return this.fb.group({
       service: ['', Validators.required]
@@ -65,19 +68,23 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
     var arrayControl: any = this.addCommunityForm.controls['serviceList']
     arrayControl.removeAt(index);
   }
-  
+
 
   //get vendors
   communityPage() {
-    
+
     this.router.navigate(['/admin/community']);
   }
 
-  
 
-  submitForm(): void {
-    
-    
+
+  submitForm() {
+    //console.log(this.addCommunityForm);
+    if (!this.addCommunityForm.valid) {
+      this.addCommunityFormSubmit=true;
+      return false;
+    }
+
 
     this.communityServices.addCommunity(this.addCommunityForm.value)
       .subscribe(data => {
@@ -96,7 +103,7 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
         const body = error.json() || '';
         const err = body.error || JSON.stringify(body);
         var errr = JSON.parse(err);
-        
+
       }
       );
   }
@@ -117,7 +124,7 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
       obj.addCommunityForm.controls['communityLogo'].setValue('');
       return false;
     }
-    
+
     var reader = new FileReader();
 
     reader.onload = function (readerEvt: any) {
@@ -131,13 +138,13 @@ export class AdminAddCommunityComponent implements AfterViewInit, OnInit, OnDest
     obj.addCommunityForm.controls['commLogo'].setValue(img);
   }
 
-  removeLogo(){
+  removeLogo() {
     this.addCommunityForm.controls['commLogo'].setValue('');
   }
 
   ngAfterViewInit() {
-    
-    
+
+
 
   }
   ngOnInit() {

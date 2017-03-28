@@ -32,7 +32,7 @@ require('dotenv').config();
 
 
 
-var port=4000;
+var port=3000;
 
 var app=express();
 

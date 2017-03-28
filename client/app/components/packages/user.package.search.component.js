@@ -48,7 +48,9 @@ var UserPackageSearchComponent = (function () {
             // other options...
             dateFormat: 'mm-dd-yyyy',
             editableDateField: false,
-            openSelectorOnInputClick: true,
+            openSelectorOnInputClick: false,
+            showClearDateBtn: false,
+            componentDisabled: true,
             disableUntil: { year: 0, month: 0, day: 0 }
         };
         this.authenticationService.generatetoken()

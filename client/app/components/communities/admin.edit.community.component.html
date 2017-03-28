@@ -10,55 +10,80 @@
             <div class="col-md-12 no-padding dashboard_page">
 
                 <div class="form_block">
-                    
+
                     <alert [alertType]="'community-error'"></alert>
                     <form [formGroup]="editCommunityForm" (ngSubmit)="submitForm()">
-                        <div class="form-group" [ngClass]="{'has-error':!editCommunityForm.controls['title'].valid && editCommunityForm.controls['title'].touched}">
+                        <div class="form-group" [ngClass]="{'has-error':!editCommunityForm.controls['title'].valid && (editCommunityForm.controls['title'].touched  || editCommunityFormSubmit)}">
                             <label class="input-heading">Title :</label>
                             <div class="input-box">
                                 <input type="text" name="title" id="title" class="input-fill" [formControl]="editCommunityForm.controls['title']" />
 
-                                <div *ngIf="editCommunityForm.controls['title'].hasError('required') && editCommunityForm.controls['title'].touched" class="alert alert-danger">You must include a title.</div>
+                                <div *ngIf="editCommunityForm.controls['title'].hasError('required') && (editCommunityForm.controls['title'].touched || editCommunityFormSubmit)"
+                                    class="alert alert-danger">You must include a title.</div>
                             </div>
 
                         </div>
 
-                        <div class="form-group" [ngClass]="{'has-error':!editCommunityForm.controls['addressLineOne'].valid && editCommunityForm.controls['addressLineOne'].touched}">
+                        <div class="form-group" [ngClass]="{'has-error':!editCommunityForm.controls['addressLineOne'].valid && (editCommunityForm.controls['addressLineOne'].touched  || editCommunityFormSubmit)}">
                             <label class="input-heading">Address Line One</label>
                             <div class="input-box">
-                                <input type="text" name="addressLineOne" id="addressLineOne" class="input-fill" [formControl]="editCommunityForm.controls['addressLineOne']" />
+                                <input type="text" name="addressLineOne" id="addressLineOne" class="input-fill" [formControl]="editCommunityForm.controls['addressLineOne']"
+                                />
 
-                                <div *ngIf="editCommunityForm.controls['addressLineOne'].hasError('required') && editCommunityForm.controls['addressLineOne'].touched" class="alert alert-danger">You must include a Address.</div>
+                                <div *ngIf="editCommunityForm.controls['addressLineOne'].hasError('required') && (editCommunityForm.controls['addressLineOne'].touched || editCommunityFormSubmit)"
+                                    class="alert alert-danger">You must include a Address.</div>
                             </div>
 
-                            
+
                         </div>
 
                         <div class="form-group">
                             <label class="input-heading">Address Line Two :</label>
                             <div class="input-box">
-                                <input type="text" name="addressLineTwo" id="addressLineTwo" class="input-fill" [formControl]="editCommunityForm.controls['addressLineTwo']" />
-
-                                
+                                <input type="text" name="addressLineTwo" id="addressLineTwo" class="input-fill" [formControl]="editCommunityForm.controls['addressLineTwo']"
+                                />
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">City :</label>
+                            <div class="input-box">
+                                <input type="text" name="city" id="city" class="input-fill" [formControl]="editCommunityForm.controls['city']" />
+                                <div *ngIf="editCommunityForm.controls['city'].hasError('required') && (editCommunityForm.controls['city'].touched  || editCommunityFormSubmit)"
+                                    class="alert alert-danger">You must include a city.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="input-heading">State :</label>
+                            <div class="input-box">
+                                <input type="text" name="state" id="state" class="input-fill" [formControl]="editCommunityForm.controls['state']" />
+                                <div *ngIf="editCommunityForm.controls['state'].hasError('required') && (editCommunityForm.controls['state'].touched  || editCommunityFormSubmit)"
+                                    class="alert alert-danger">You must include a state.</div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="input-heading">Postcode :</label>
                             <div class="input-box">
-                                <input type="text" name="postcode" id="postcode" class="input-fill" [formControl]="editCommunityForm.controls['postcode']" />
-                                <div *ngIf="editCommunityForm.controls['postcode'].hasError('required') && editCommunityForm.controls['postcode'].touched" class="alert alert-danger">You must include a Postcode.</div>
+                                <input type="text" name="postcode" id="postcode" class="input-fill" [formControl]="editCommunityForm.controls['postcode']"
+                                />
+                                <div *ngIf="editCommunityForm.controls['postcode'].hasError('required') && (editCommunityForm.controls['postcode'].touched  || editCommunityFormSubmit)"
+                                    class="alert alert-danger">You must include a Postcode.</div>
                             </div>
                         </div>
+
 
                         <div class="form-group">
                             <label class="input-heading">Phone :</label>
                             <div class="input-box">
                                 <input type="text" name="phone" id="phone" class="input-fill" [formControl]="editCommunityForm.controls['phone']" />
-                                <div *ngIf="editCommunityForm.controls['phone'].hasError('required') && editCommunityForm.controls['phone'].touched" class="alert alert-danger">You must include a phone.</div>
+                                <div *ngIf="editCommunityForm.controls['phone'].hasError('required') && (editCommunityForm.controls['phone'].touched  || editCommunityFormSubmit)"
+                                    class="alert alert-danger">You must include a phone.</div>
                             </div>
                         </div>
-                        
-                        <div *ngFor="let services of editCommunityForm.controls['serviceList'].controls; let i=index">
+
+                        <!--<div *ngFor="let services of editCommunityForm.controls['serviceList'].controls; let i=index">
                             <div class="form-group" [formGroup]="services">
                                 <label class="input-heading">Service {{i + 1}}</label>
                                 <div class="input-box">
@@ -74,44 +99,45 @@
                         </div>
                         <div class="margin-20">
                             <a (click)="addService();">Add another Service +</a>
-                        </div>
-                        
+                        </div>-->
+
                         <div class="form-group">
                             <label class="input-heading">Community Logo :</label>
-                            <div class="input-box" *ngIf="!this.editCommunityForm.value.commLogo">
-                                <input type="file" name="communityLogo" id="communityLogo"  class="input-fill" [formControl]="editCommunityForm.controls['communityLogo']" (change)="fileChangeEvent($event)" />
-                                
+                            <div class="input-box" *ngIf="!editCommunityForm.value.commLogo">
+                                <input type="file" name="communityLogo" id="communityLogo" class="input-fill" [formControl]="editCommunityForm.controls['communityLogo']"
+                                    (change)="fileChangeEvent($event)" />
+
                                 <!--{{this.editCommunityForm.value|json}}-->
                             </div>
-                            <div class="input-box" *ngIf="this.editCommunityForm.value.commLogo">
+                            <div class="input-box" *ngIf="editCommunityForm.value.commLogo">
                                 <button type="button" class="sub-btn cancel-btn" (click)="removeLogo();">remove</button>
-                                <img src="{{this.editCommunityForm.value.commLogo}}" style="max-width: 300px;"/>
-                                
-                                <!--{{this.editCommunityForm.value|json}}-->
-                            </div>
-                            
-                        </div>
+                                <img src="{{editCommunityForm.value.commLogo}}" style="max-width: 300px;"/>
 
-                        <div class="form-group btn-wrp">
+<!--{{this.editCommunityForm.value|json}}-->
+</div>
 
-                            <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->
-                            <button type="submit" [disabled]="!editCommunityForm.valid" class="sub-btn">Submit</button>
-                            <button type="button" class="sub-btn cancel-btn" (click)="communityPage();">Cancel</button>
+</div>
 
-                        </div>
+<div class="form-group btn-wrp">
+    <!--[disabled]="!editCommunityForm.valid"-->
+    <!--<button class="sub-btn" (click)="updateProfile();">Submit</button>-->
+    <button type="submit" class="sub-btn">Submit</button>
+    <button type="button" class="sub-btn cancel-btn" (click)="communityPage();">Cancel</button>
 
-
-                    </form>
-
-                </div>
+</div>
 
 
+</form>
+
+</div>
 
 
-            </div>
-        </div>
 
-    </div>
+
+</div>
+</div>
+
+</div>
 </div>
 <!--inner-mid-sec-->
 

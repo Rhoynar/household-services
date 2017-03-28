@@ -7,25 +7,25 @@
         <h2 class="main-heading"><span>Thank You</span></h2>
       </div>
       <div class="about_info">
-        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='alreadyexist'">
+        <div class="col-sm-12 about_info_lf text-center" *ngIf="msgType=='alreadyexist'">
           <p>You have already signed up and confirmed your account. Did you forget your password?</p>
           <p class="account-txt">After confirmation of account you may <a [routerLink]="['/login']">login from here.</a></p>
 
         </div>
 
-        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='emailsent'">
+        <div class="col-sm-12 about_info_lf text-center" *ngIf="msgType=='emailsent'">
           
           <p>An email has been sent to you. Please check it to verify your account.</p>
           <p class="account-txt">After confirmation of account you may <a [routerLink]="['/login']">login from here.</a></p>
         </div>
 
-        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='emailsentagain'">
+        <div class="col-sm-12 about_info_lf text-center" *ngIf="msgType=='emailsentagain'">
           
           <p>An email has been sent to you, yet again. Please check it to verify your account.</p>
           <p class="account-txt">After confirmation of account you may <a [routerLink]="['/login']">login from here.</a></p>
         </div>
 
-        <div class="col-sm-12 about_info_lf" *ngIf="msgType=='code-expired'">
+        <div class="col-sm-12 about_info_lf text-center" *ngIf="msgType=='code-expired'">
           <p>Your verification code has expired. Please sign up again.</p>
           <p class="account-txt"><a [routerLink]="['/signup']">Click.</a> here to signup again</p>
 

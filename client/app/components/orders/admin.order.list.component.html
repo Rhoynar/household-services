@@ -27,8 +27,15 @@
             </div>
             <div class="col-md-4 ser-rh">
               <ul class="time-info">
-                <li>{{eachorder.created | date: 'jm'}} </li>
+                <li>Booked On: {{eachorder.created | date: 'jm'}} </li>
                 <li>{{eachorder.created | date: 'EEEE , dd-MM-y'}} </li>
+              </ul>
+              <ul class="time-info">
+                <li>Scheduled For:{{eachorder.serviceDate | date: 'jm'}} </li>
+                <li>{{eachorder.serviceDate | date: 'EEEE , dd-MM-y'}} </li>
+                
+              </ul>
+              <ul class="time-info">
                 <li>Paid $ {{eachorder.amount}} </li>
               </ul>
               <div class="">

@@ -27,7 +27,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
   communityDetails: any = {};
   availableVendors: any;
   pagetitle = "Update Community";
-
+  editCommunityFormSubmit=false;
   //constructor start
   constructor(
     private http: Http,
@@ -46,9 +46,11 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
       title: ['', Validators.required],
       addressLineOne: ['', Validators.required],
       addressLineTwo: [''],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
       postcode: ['', Validators.required],
       phone: ['', Validators.required],
-      serviceList: this.fb.array([]),
+      //serviceList: this.fb.array([]),
       communityLogo: [''],
       commLogo: ['']
     });
@@ -78,7 +80,12 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
   }
 
 
-  submitForm(): void {
+  submitForm() {
+
+    if (!this.editCommunityForm.valid) {
+      this.editCommunityFormSubmit=true;
+      return false;
+    }
     this.formData.append('id', this.editCommunityForm.value.id);
     this.formData.append('title', this.editCommunityForm.value.title);
     this.formData.append('addressLineOne', this.editCommunityForm.value.addressLineOne);
@@ -185,11 +192,13 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
           this.editCommunityForm.controls['title'].setValue(this.communityDetails.title);
           this.editCommunityForm.controls['addressLineOne'].setValue(this.communityDetails.addressLineOne);
           this.editCommunityForm.controls['addressLineTwo'].setValue(this.communityDetails.addressLineTwo);
+          this.editCommunityForm.controls['city'].setValue(this.communityDetails.city);
+          this.editCommunityForm.controls['state'].setValue(this.communityDetails.state);
           this.editCommunityForm.controls['postcode'].setValue(this.communityDetails.postcode);
           this.editCommunityForm.controls['phone'].setValue(this.communityDetails.phone);
           this.editCommunityForm.controls['commLogo'].setValue(this.communityDetails.communityLogo);
 
-          var serviceControl: any = this.editCommunityForm.controls['serviceList'];
+         /* var serviceControl: any = this.editCommunityForm.controls['serviceList'];
           if (this.communityDetails.services && this.communityDetails.services.length > 0) {
             for (let eachService of this.communityDetails.services) {
               var newControl = this.initService();
@@ -199,7 +208,7 @@ export class AdminEditCommunityComponent implements AfterViewInit, OnInit, OnDes
           }else{
             var newControl = this.initService();
             serviceControl.push(newControl);
-          }
+          }*/
 
 
 
